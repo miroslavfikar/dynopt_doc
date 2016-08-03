@@ -1,11 +1,8 @@
-[time,state,control] = tuxprint(x,3,2,10,4,8,1000);
-
-ntimes = 20;
-[tplot,uplot,xplot] = profiles(optimout,optimparam,ntimes);
+load optimprofiles tplot uplot xplot
 
 % ploting
 %..........................................................................
-plot(time,controls(:,1),'k-')
+plot(tplot,uplot(:,1),'k-')
 title('')
 xlabel('time')
 ylabel('u_1')
@@ -17,7 +14,7 @@ set(1,'PaperPosition',[3 10 11 8.25])
 print -depsc u1_3210.eps
 pause
 
-plot(time,controls(:,2),'k-')
+plot(tplot,uplot(:,2),'k-')
 title('')
 xlabel('time')
 ylabel('u_2')
@@ -29,7 +26,7 @@ set(1,'PaperPosition',[3 10 11 8.25])
 print -depsc u2_3210.eps
 pause
 
-plot(time,controls(:,3),'k-')
+plot(tplot,uplot(:,3),'k-')
 title('')
 xlabel('time')
 ylabel('u_3')
@@ -41,7 +38,7 @@ set(1,'PaperPosition',[3 10 11 8.25])
 print -depsc u3_3210.eps
 pause
 
-plot(time,controls(:,4),'k-')
+plot(tplot,uplot(:,4),'k-')
 title('')
 xlabel('time')
 ylabel('u_4')
@@ -53,7 +50,9 @@ set(1,'PaperPosition',[3 10 11 8.25])
 print -depsc u4_3210.eps
 pause
 
-plot(time,states(:,1),'k-',time,states(:,2),'b-',time,states(:,3),'r-',time,states(:,4),'g-',time,states(:,5),'c-',time,states(:,6),'y-',time,states(:,7),'m-')
+plot(tplot,xplot(:,1),'k-',tplot,xplot(:,2),'b-',tplot,xplot(:,3),'r-', ...
+     tplot,xplot(:,4),'g-',tplot,xplot(:,5),'c-',tplot,xplot(:,6),'y-', ...
+     tplot,xplot(:,7),'m-')
 title('')
 xlabel('time')
 ylabel('x_1, x_2, x_3, x_4, x_5, x_6, x_7')
@@ -66,7 +65,7 @@ set(1,'PaperPosition',[3 10 11 8.25])
 print -depsc x17_3210.eps
 pause
 
-plot(time,states(:,8),'k-')
+plot(tplot,xplot(:,8),'k-')
 title('')
 xlabel('time')
 ylabel('x_8')

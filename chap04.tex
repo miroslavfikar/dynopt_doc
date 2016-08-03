@@ -5,7 +5,7 @@
 This chapter contains description of the function~\fun{dynopt}, the
 main function of the collection of functions which extend the
 capability of MATLAB Optimisation Toolbox, specifically of the
-constrained nonlinear minimisation routin~\fun{fmincon}. The chapter
+constrained nonlinear minimisation routine~\fun{fmincon}. The chapter
 starts with section listing general descriptions of all the input and
 output arguments and the parameters in the optimisation options
 structure, continues with the function description, and ends with some 
@@ -52,9 +52,9 @@ As mentioned before, input arguments described bellow do entry
 them as fields, e.g., \argfun{optimparam.optvar}. \argfun{optimparam}
 has following fields to be set: 
 \begin{description}
-\item[\argfun{optvar}] -- The choise of optimisation variables: 1 -
+\item[\argfun{optvar}] -- The choice of optimisation variables: 1 -
   times, 2 - control, 2 - parameters. Their combination is given by
-  their summations, e.g., 3 - otpimise times and control. All the
+  their summations, e.g., 3 - optimise times and control. All the
   possibilities are listed below
   \begin{enumerate}[1]
   \item - optimise times,
@@ -72,7 +72,7 @@ has following fields to be set:
   \item[Mayer type] - if Mayer type objective function is used set the
     parameter \argfun{objtype} to an empty matrix.
   \item[Sum type] - if Sum type objective function is used, parameter
-    \argfun{objtype} is a structure containig two variables
+    \argfun{objtype} is a structure containing two variables
     \argfun{tm}, and \argfun{xm}. \argfun{tm} is a $nm$-by-1 vector of
     times, in which the measurements are taken. \argfun{xm} is a
     $nx$-by-$nm$ matrix of taken measurements in times
@@ -81,15 +81,15 @@ has following fields to be set:
     \ref{sec:fundesarg}. 
   \end{description}
 \item[\argfun{ncolx}] -- Parameter which represents the number of
-  collocation points for state variables. This has allways to be a
+  collocation points for state variables. This has always to be a
   number greater than zero. 
 \item[\argfun{ncolu}] -- Parameter which represents the number of
   collocation points for control variables. It may have been defined
   as $[~]$ if control variable doesn't belong to optimisation
-  variables and also doesn't occure in \fun{process}, \fun{objfun},
+  variables and also doesn't occur in \fun{process}, \fun{objfun},
   \fun{confun}. Otherwise it has to be a number greater than zero.
-\item[\argfun{li}] --  Parameter representing lenghs of intervals. It
-  has allways to be filled with ni--by--1 vector of initial lengths of
+\item[\argfun{li}] --  Parameter representing lengths of intervals. It
+  has always to be filled with ni--by--1 vector of initial lengths of
   intervals. 
 \item[\argfun{tf}] -- Parameter representing the final time, if the
   value of $t_{f}$ is not specified use empty brackets [~].
@@ -253,7 +253,7 @@ e.g., \argfun{optimout.nlpx}. \argfun{optimout} has following fields:
 
 Function parameters described in section \ref{sec:outarg}, and
 Tab.~\ref{tab:optpar} are implicitly given by MATLAB Optimization
-Toolbox for all it's subroutines. They also present parameters usefull
+Toolbox for all it's subroutines. They also present parameters useful
 for~\fun{dynopt} through function~\fun{fmincon}. 
 
 \section{Function Description}
@@ -290,7 +290,7 @@ such that
   at final conditions,  
 \item[$\sum_{i=1}^{nm} \mf{S}(\cdot)$]  -- objective function of Sum
   form evaluated in times of taking the measurements $t_{i}$, 
-\item [$\ve{M}$] -- a konstant mass matrix,
+\item [$\ve{M}$] -- a constant mass matrix,
 \item [$\ve{h}$] -- equality design constraint vector,
 \item [$\ve{g}$] -- inequality design constraint vector,
 \item [$\ve{x}(t)$] -- state profile vector,
@@ -320,7 +320,7 @@ system in \argfun{process} with the optimisation parameters specified
 in the structure \argfun{options}, with the defined set of lower and
 upper bounds on the control variables \argfun{bdu}, state variables
 \argfun{bdx}, and time independent parameters \argfun{bdp} so that
-solution is allways in the range of this bounds. All before mentioned
+solution is always in the range of this bounds. All before mentioned
 variables do entry \fun{dynopt} in \argfun{optimparam} structure. The
 solution is returned in the \argfun{otpimout} structure described in
 section \ref{sec:outarg}.   
@@ -343,7 +343,7 @@ included below for \argfun{objfun}, \argfun{confun}, \argfun{process}.
     evaluated at the final time $t_{f}$, thus \fun{objfun} takes a
     scalar \argfun{t}~-~final time $t_{f}$, scalar/vector
     \argfun{x}~-~the state variable(s), scalar/vector \argfun{u}~-~the
-    control variable(s), both evaluated at coresponding  final time
+    control variable(s), both evaluated at corresponding  final time
     $t_{f}$, scalar/vector \argfun{p}~-~time independent parameters,
     and returns a scalar value \argfun{f} of the objective function
     evaluated at these value. The M-file function has to have the
@@ -353,9 +353,9 @@ included below for \argfun{objfun}, \argfun{confun}, \argfun{process}.
     the times of taking measurements $t_{i}$, thus \fun{objfun} takes
     a scalar \argfun{t}~-~time of taking measurements $t_{i}$,
     scalar/vector \argfun{x}~-~state variable(s), \argfun{u}~-~the
-    control variable(s), both evaluated at coresponding time $t_{i}$,
+    control variable(s), both evaluated at corresponding time $t_{i}$,
     scalar/vector \argfun{p}~-~time independent parameters,
-    scalar/vector \argfun{xm}~-~measured variable(s) in the afore
+    scalar/vector \argfun{xm}~-~measured variable(s) in the above
     mentioned time $t_{i}$, and returns a scalar value \argfun{f} of
     the objective function evaluated at these values. The M-file
     function has to have the following form:   
@@ -395,10 +395,10 @@ included below for \argfun{objfun}, \argfun{confun}, \argfun{process}.
   \end{description}
   \argfun{confun} is a string containing the name of an M-file
   function, e.g., \subor{confun.m}. \fun{confun} takes a
-  scalar~\argfun{t}~-~time value coresponding to the time $t$,
+  scalar~\argfun{t}~-~time value corresponding to the time $t$,
   scalar/vec\-tor \argfun{x}~-~state variable value(s), and
   scalar/vector \argfun{u}~-~control variable value(s) both
-  coresponding to the value of \argfun{t}, scalar/vector
+  corresponding to the value of \argfun{t}, scalar/vector
   \argfun{p}~-~time independent parameters, and returns two arguments,
   a vector \argfun{c} of the nonlinear inequalities and a vector
   \argfun{ceq} of the nonlinear equalities, both evaluated at
@@ -429,7 +429,7 @@ included below for \argfun{objfun}, \argfun{confun}, \argfun{process}.
   \argfun{Dceq.u}, \argfun{Dceq.p} are the partial derivatives of
   \argfun{ceq} at the points \argfun{t}, \argfun{x}, \argfun{u},
   \argfun{p}. 
-\item[\argfun{process}] The function wich describes process model,
+\item[\argfun{process}] The function which describes process model,
   that means the right hand sizes of ODE or DAE equations. If the
   process model is described by system of ODE's the mass matrix M in
   \argfun{flag} = 7 shall be left an empty matrix, because of being
@@ -439,7 +439,7 @@ included below for \argfun{objfun}, \argfun{confun}, \argfun{process}.
   function, e.g., \subor{process.m}. \fun{process} takes a time
   \argfun{t}, scalar/vector of state variable \argfun{x}, scalar
   \argfun{flag}, scalar/vector of control variable \argfun{u}, both
-  coresponding to time \argfun{t}, and scalar/vector of time
+  corresponding to time \argfun{t}, and scalar/vector of time
   independent parameters \argfun{p}, and returns \argfun{sys} values
   with respect to \argfun{flag} value evaluated at time \argfun{t}.
   The M-file function has to be written in the following form: 
@@ -482,8 +482,8 @@ used.
 \label{sec:addfun}
 
 In this section, two functions are presented: \fun{profiles}, which
-prepares plotable state and control profiles and \fun{constraints},
-which prepares a user given equality and inequality plotable
+prepares plot-able state and control profiles and \fun{constraints},
+which prepares a user given equality and inequality plot-able
 constraints from the optimisation results returned in
 \argfun{optimout}.
 
@@ -497,7 +497,7 @@ takes an optimal output \argfun{optimout} and other input arguments
 \argfun{optimparam} described in section \ref{sec:inarg}, and returns
 vector \argfun{tplot}, vector/matrix \argfun{uplot}, vector/matrix
 \argfun{xplot} with respect to \argfun{ntimes} which defines the
-number of points ploted per interval.
+number of points plotted per interval.
 
 \subsection{Function~\fun{constraints}}
 \label{sec:constraints}
@@ -510,7 +510,7 @@ other input arguments \argfun{optimparam} described in section
 \ref{sec:inarg}, and returns vector \argfun{tp},nonlinear inequality 
 constraint vector/matrix \argfun{cp}, nonlinear equality constraint
 vector/matrix \argfun{ceqp} defined in \argfun{confun} with respect to
-\argfun{ntimes} which defines the number of points ploted per interval.
+\argfun{ntimes} which defines the number of points plotted per interval.
 
 It is simple to make a graphical representation of obtained results by
 using MATLAB's \fun{plot} function.

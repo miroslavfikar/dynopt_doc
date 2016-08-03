@@ -47,7 +47,7 @@ optimises it at final conditions, thus the input arguments of
 \fun{objfun} are as follows: \argfun{t}~-~scalar value $t_{f}$,
 \argfun{x}~-~scalar/vector of state variable(s),
 \argfun{u}~-~scalar/vector of control variable(s), both evaluated at
-coresponding  final time $t_{f}$, \argfun{p}~-~scalar/vector of time
+corresponding  final time $t_{f}$, \argfun{p}~-~scalar/vector of time
 independent parameters. \fun{objfun} should be defined as follows:
 
 \paragraph{Step2: Write an M-file~\subor{objfun.m}}
@@ -69,7 +69,7 @@ the parameter \argfun{optimparam.objtype} was left an empty
 matrix. Moreover 3 collocation points for state variables
 (\argfun{optimparam.ncolx}), 2 collocation points for control
 variables (\argfun{optimparam.ncolu}), 3 time intervals with the same
-initial lengths (\argfun{optimparam.li}) euqal to $1/3$ were
+initial lengths (\argfun{optimparam.li}) equal to $1/3$ were
 chosen. Final time $t_f = 1$ was given by the problem definition
 (\argfun{optimparam.tf}), the control variable initial values
 (\argfun{optimparam.ui}) were set to 0 for each time interval. As can
@@ -83,24 +83,24 @@ was set to [~].
 
 The results returned by \fun{dynopt} in \argfun{optimout} structure
 contain the vector of times \argfun{t}, the vector of optimal control
-profile \argfun{u}. They are ready to be ploted.\\  
+profile \argfun{u}. They are ready to be plotted.\\
 The objective function at the optimal solution [\argfun{t},\argfun{u}]
-is returned in before mentioned output structure \argfun{optimout} as
-parameter \argfun{fval}:
+is returned after 3126 iterations in before mentioned output structure
+\argfun{optimout} as parameter \argfun{fval}:
 \begin{verbatim}
-optimout.fval = 0.761775
+optimout.fval = 0.76166
 \end{verbatim}
 The parameter \argfun{exitflag} tells if the algorithm converged. An
 exitflag $>$ 0 means a local minimum was found: 
 \begin{verbatim}
-optimout.exitflag = 1
+optimout.exitflag = 5
 \end{verbatim}
 More details about the optimisation are given by the
 \argfun{optimout.output} structure. In this example, the default
 selection of the large-scale algorithm has been turned off, so the
 medium-scale algorithm is used. Also all termination tolerances have
-been changed. For more informations about \argfun{options} and
-\fun{dynopt} input and output arguments, see capter
+been changed. For more information about \argfun{options} and
+\fun{dynopt} input and output arguments, see chapter
 \ref{cha:reference}. 
 
 The user may want to plot also the state profiles but without
@@ -110,7 +110,7 @@ function \fun{profiles} for this reason as follows:
 \begin{verbatim}
 [tplot,uplot,xplot] = profiles(optimout,optimparam,ntimes);
 \end{verbatim}
-where \argfun{ntimes} represents the density of the points ploted per
+where \argfun{ntimes} represents the density of the points plotted per
 interval.
 
 Graphical representation of the problem \eqref{eq:ucp} solution is
@@ -167,7 +167,7 @@ same differential equations as problem \eqref{eq:ucp}. As we decided
 to supply analytical gradients, they should be defined for all the
 user supplied functions: \fun{process}, \fun{objfun},
 \fun{confun}. The form of the gradients will be explained on the
-function \fun{process} and is valid for all afore mentioned user
+function \fun{process} and is valid for all above mentioned user
 functions.  
 
 \paragraph{Step1: Write an M-file~\subor{process.m}}
@@ -209,7 +209,7 @@ respect to each of the elements in \argfun{u}:
 \end{bmatrix} 
 \end{displaymath}
 If needed, the gradients with respect to other defined variables
-(\argfun{t}, \argfun{p}) are filled similary. For more informations
+(\argfun{t}, \argfun{p}) are filled similarly. For more information
 about \fun{process} definition, and its input and output arguments
 see chapter \ref{cha:reference}.
 
@@ -225,7 +225,7 @@ variables \argfun{t}, \argfun{u}, \argfun{x}, and \argfun{p} and
 representing the gradients with respect to the appropriate
 variable. Just the variables used in problem are filled by
 user. Unused variables are set to be an empty matrix. For more
-informations about \fun{objfun} definition, and its input and output
+information about \fun{objfun} definition, and its input and output
 arguments see chapter \ref{cha:reference}. 
 
 \fun{dynopt} optimises a given performance index, subject to the
@@ -233,7 +233,7 @@ constraints defined at the beginning $t =
 t_{0}$ (\argfun{flag} = 0), over the full time interval $t \in
 [t_{0},t_{f}]$ (\argfun{flag} = 1), and at the end $t = t_{f}$
 (\argfun{flag} = 2). Thus the input arguments of \fun{confun} are the
-same as of \fun{process} but it is neccessary to tell \fun{dynopt} by
+same as of \fun{process} but it is necessary to tell \fun{dynopt} by
 defining the constraints and their gradients with respect to the
 appropriate variables in the corresponding flag in which time should
 they be evaluated. How the gradients have to seem like, was explained
@@ -244,8 +244,8 @@ before. \fun{confun} should be defined as follows:
 {\small \verbatiminput{examples/problem1b/confun.m}}
 
 Here the gradients are written into the structures \argfun{Dc},
-\argfun{Dceq} similar to those, descirbed in \fun{objfun}. For more
-informations about \fun{confun} definition, and its input and output
+\argfun{Dceq} similar to those, described in \fun{objfun}. For more
+information about \fun{confun} definition, and its input and output
 arguments see chapter \ref{cha:reference}.
 
 Since you are providing the gradients of the objective function in
@@ -277,7 +277,11 @@ chosen. Other parameter are as same as in problem \eqref{eq:ucp}.
 
 The optimal solution is shown in Figs. \ref{fig:prob1b_u} and
 \ref{fig:prob1b_x}. The value of the objective function at this
-solution is 0.924236. 
+solution is 0.924245 after 999 iterations and with exitflag equal to~5. 
+
+We note that this example was calculated using MATLAB 2007a because
+it did not converge in neither 2008a nor 2008b, probably due to changes
+in fmincon. 
 
 \begin{figure}[htb]
 \begin{minipage}[t]{0.5\linewidth}
@@ -329,9 +333,10 @@ such that $t_{f}=1$.
 {\small \verbatiminput{examples/problem2/problem2.m}}
 
 The value of the objective function evaluated for optimal control
-profile is of value of 0.121685. Graphical representation of the
-solution of the problem \eqref{eq:ucpgb} is shown in
-Figs. \ref{fig:prob2_u} and \ref{fig:prob2_x}. 
+profile is of value of 0.120825 after 758 iterations with exitflag
+equal to~5. Graphical representation of the solution of the problem
+\eqref{eq:ucpgb} is shown in Figs. \ref{fig:prob2_u} and
+\ref{fig:prob2_x}.
 
 \begin{figure}[htb]
 \begin{minipage}[t]{0.5\linewidth}
@@ -396,10 +401,10 @@ M-file~\subor{problem3.m} as follows:
 
 {\small \verbatiminput{examples/problem3/problem3.m}}
 
-An optimal value of $x_{3}(t_{f})=0.170239$ was computed. Graphical
-representation of the solution of the problem~\eqref{eq:ispcpb} is
-shown in Figs. \ref{fig:prob3_u}, \ref{fig:prob3_x}, and
-\ref{fig:prob3_c}. 
+An optimal value of $x_{3}(t_{f})=0.17014$ was computed after 2154
+iterations with exitflag equal to~5. Graphical representation of the
+solution of the problem~\eqref{eq:ispcpb} is shown in
+Figs. \ref{fig:prob3_u}, \ref{fig:prob3_x}, and \ref{fig:prob3_c}.
 
 \begin{figure}[htb]
 \begin{minipage}[t]{0.5\linewidth}
@@ -464,7 +469,6 @@ specified in Tab.~\ref{tab:measureddatas}.
 \end{table}
  
 \subsubsection{Function~\fun{process},~\fun{objfun},~\fun{confun}  definitions}
-\label{sec:statepathconprob-fundef}
 
 \paragraph{Step1: Write an M-file \subor{process.m}}
 
@@ -504,7 +508,7 @@ such that
 \dot{x}_{2} = k_{1}x_{1}^{2} - k_{2}x_{2}, \qquad x_2(0) = 0 \\
 0 = k_{1} - 4000e^{(-\frac{2500}{T})} \\
 0 = k_{2} - 620000e^{(-\frac{5000}{T})} 
-\end{gather} with $x_{1}, x_{2}$ as states representing concetrations
+\end{gather} with $x_{1}, x_{2}$ as states representing concentrations
 of A, and B, temperature $T \in [298,398]$ as control variable, such
 that $t_{f} = 1$.
 
@@ -524,7 +528,7 @@ M-file~\subor{problem5dae.m} as follows:
 
 {\small \verbatiminput{examples/problem5_dae/problem5.m}}
 
-After 295 iteration and 825 function evaluatons, optimal value of
+After 295 iteration and 825 function evaluations, optimal value of
 $x_{2}(t_{f}) = 0.610589$ was found. The higher number of iteration
 and function evaluations is resulting from an higher accuracy set to
 $10^{-7}$. Graphical representation of the problem
@@ -549,7 +553,7 @@ and \ref{fig:prob5dae_x}.
 \section{Maximisation}
 \label{sec:maximisation}
 
-\fun{dynopt} performes minimisation of the objective
+\fun{dynopt} performs minimisation of the objective
 function $f(t,x,u)$. Maximisation is achieved by supplying the
 routine with $-f(t,x,u)$ . 
 

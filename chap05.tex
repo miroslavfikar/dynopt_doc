@@ -3,7 +3,7 @@
 
 
 This chapter contains a few another examples from the literature
-dealing with chemical reactors. The examples were choosen to
+dealing with chemical reactors. The examples were chosen to
 illustrate the ability of the~\fun{dynopt} package to treat the
 problems of varying levels of difficulty. The example files can be
 found in the directory~\subor{examples/problemX}, where X means the
@@ -34,12 +34,13 @@ where
 This problem was treated by~\cite{dad95,log89,raj01} and the value of
 performance index of value of 0.57353 was reported as global optimum
 by \cite{dad95}. Moreover the value of 0.57284 was reported by
-\cite{raj01}. By using 6 collocation points for state variables, 2  
-collocation points for control variables on the same number of
+\cite{raj01}. By using 6 collocation points for state variables,
+2 collocation points for control variables on the same number of
 intervals as in the literature to this problem, we obtained a slightly
-closer value of performance index of 0.57310 to the reported global
-maximum. The optimal control and state profiles are given in
-Figs. \ref{fig:prob4_u} and \ref{fig:prob4_x}.
+closer value of performance index of 0.57338 to the reported global
+maximum (2794 iterations, exitflag equal to~5). The optimal control
+and state profiles are given in Figs. \ref{fig:prob4_u} and
+\ref{fig:prob4_x}.
 
 \begin{figure}[htb]
 \begin{minipage}[t]{0.5\linewidth}
@@ -84,15 +85,15 @@ where
 The objective of problem~\eqref{eq:batch} is to obtain the optimal
 temperature profile that maximises the yield of the intermediate
 product B at the end of a specified time of operation in a batch
-reactor where the reaction  $A \rightarrow B \rightarrow C$ take
+reactor where the reaction $A \rightarrow B \rightarrow C$ take
 place. The problem was solved using a relaxed reduced space SQP
 strategy by~\cite{log89} and the value of 0.610775 was reported as
 global maximum.~\citeauthor{raj01} reached the value of 0.61045. We
-obtained optimal value of 0.610756, by using 5 collocation points for
-state variables and keeping control variable profile as piecewise
-linear on 4 time intervals. This is quite closer to the global
-one. The optimal control and state profiles are given in
-Figs.~\ref{fig:prob5_u} and \ref{fig:prob5_x}. 
+obtained optimal value of 0.610756 (1781 iterations, exitflag equal
+to~5), by using 5 collocation points for state variables and keeping
+control variable profile as piecewise linear on 4 time intervals. This
+is quite closer to the global one. The optimal control and state
+profiles are given in Figs.~\ref{fig:prob5_u} and \ref{fig:prob5_x}.
   
 \begin{figure}[htb]
 \begin{minipage}[t]{0.5\linewidth}
@@ -135,11 +136,11 @@ where
 Optimisation of this problem has also been analysed. This problem was
 solved by~\cite{log89,raj01} and the optima 0.476946, 0.47615 were
 reported. Value of the performance index obtained for this problem
-using~\fun{dynopt} was 0.477456. In this case 5 collocation points for
-state variables and 2 collocation points for control variables were
-choosen. The number of time-intervals have been set to 12. The optimal
-control and state profiles are given in Figs.~\ref{fig:prob6_u} and
-\ref{fig:prob6_x}.  
+using~\fun{dynopt} was 0.477457 (214 iterations, exitflag equal
+to~5). In this case 5 collocation points for state variables and
+2 collocation points for control variables were chosen. The number of
+time-intervals have been set to 12. The optimal control and state
+profiles are given in Figs.~\ref{fig:prob6_u} and \ref{fig:prob6_x}.
 
 \begin{figure}[htb]
 \begin{minipage}[t]{0.5\linewidth}
@@ -199,10 +200,11 @@ This problem was solved by~\cite{fik02,jac69}. Reported optimal value
 of 21.757 was obtained using CVP method implemented in DYNO. For this
 problem, 4 collocation points for state variables, 2 collocation
 points for control variables for 10 intervals were defined and an
-optimum was found at value of 21.8003. The optimal control profiles
-are given in Figs. \ref{fig:prob7_u1}, \ref{fig:prob7_u2},
-\ref{fig:prob7_u3}, \ref{fig:prob7_u4} and optimal state profiles are
-represented in Fig.~\ref{fig:prob7_x}.  
+optimum was found at value of 21.7632 (1665 iterations, exitflag equal
+to~5). The optimal control profiles are given in
+Figs. \ref{fig:prob7_u1}, \ref{fig:prob7_u2}, \ref{fig:prob7_u3},
+\ref{fig:prob7_u4} and optimal state profiles are represented in
+Fig.~\ref{fig:prob7_x}.
 
 \begin{figure}[htb]
 \begin{minipage}[t]{0.5\linewidth}
