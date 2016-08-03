@@ -85,15 +85,15 @@ The results returned by \fun{dynopt} in \argfun{optimout} structure
 contain the vector of times \argfun{t}, the vector of optimal control
 profile \argfun{u}. They are ready to be plotted.\\
 The objective function at the optimal solution [\argfun{t},\argfun{u}]
-is returned after 611 iterations in before mentioned output structure
+is returned after 31 iterations in before mentioned output structure
 \argfun{optimout} as parameter \argfun{fval}:
 \begin{verbatim}
-optimout.fval = 0.7615959
+optimout.fval = 0.7615968
 \end{verbatim}
 The parameter \argfun{exitflag} tells if the algorithm converged. An
-exitflag $>$ 0 means a local minimum was found: 
+\argfun{exitflag} $>$ 0 means a local minimum was found: 
 \begin{verbatim}
-optimout.exitflag = 1
+optimout.exitflag = 2
 \end{verbatim}
 More details about the optimisation are given by the
 \argfun{optimout.output} structure. In this example, the default
@@ -277,9 +277,8 @@ chosen. Other parameter are as same as in problem \eqref{eq:ucp}.
 
 The optimal solution is shown in Figs. \ref{fig:prob1b_u} and
 \ref{fig:prob1b_x}. The value of the objective function at this
-solution is 0.9242346 after 368 iterations (10000 function
-evaluations) and with exitflag equal to~0 (limit of function
-evaluations).
+solution is 0.9245624 after 1136 iterations and with \argfun{exitflag}
+equal to~2.
 
 \begin{figure}[htb]
 \begin{minipage}[t]{0.5\linewidth}
@@ -399,7 +398,7 @@ M-file~\subor{problem3.m} as follows:
 
 {\small \verbatiminput{examples/problem3/problem3.m}}
 
-An optimal value of $x_{3}(t_{f})=0.1701564$ was computed after 3014
+An optimal value of $x_{3}(t_{f})=0.1701564$ was computed after 3013
 iterations with exitflag equal to~1. Graphical representation of the
 solution of the problem~\eqref{eq:ispcpb} is shown in
 Figs. \ref{fig:prob3_u}, \ref{fig:prob3_x}, and \ref{fig:prob3_c}.
@@ -496,7 +495,7 @@ Consider a following problem optimising a car that has to be moved
 from origin and stopped at a distance of 300\,m in a minimum time
 \begin{align}
 \dot{x}_1 &= u, \quad  &x_{1}(0) &= 0 , \quad  &x_{1}(t_f) &= 0 \\
-\dot{x}_2 &= -x_{1}, \quad &x_{2}(0) &= 0, \quad  &x_{2}(t_f) &= 300  
+\dot{x}_2 &= x_{1}, \quad &x_{2}(0) &= 0, \quad  &x_{2}(t_f) &= 300  
 \end{align} 
 optimised for $-2 \leq u(t) \leq 1$ with the cost function:
 \begin{equation} \label{eq:car}
