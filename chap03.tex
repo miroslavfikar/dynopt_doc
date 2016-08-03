@@ -489,6 +489,86 @@ The results obtained by \fun{dynopt} are the same as those published
 in \cite{fik02}. Fig. \ref{fig:prob8_x} shows the comparison of
 estimated and measured state trajectory. 
 
+\subsection{Example: Minimum Time Problem}
+\label{sec:car}
+
+Consider a following problem optimising a car that has to be moved
+from origin and stopped at a distance of 300\,m in a minimum time
+\begin{align}
+\dot{x}_1 &= u, \quad  &x_{1}(0) &= 0 , \quad  &x_{1}(t_f) &= 0 \\
+\dot{x}_2 &= -x_{1}, \quad &x_{2}(0) &= 0, \quad  &x_{2}(t_f) &= 300  
+\end{align} 
+optimised for $-2 \leq u(t) \leq 1$ with the cost function:
+\begin{equation} \label{eq:car}
+\min_{u(t)} \mf{J} = t_{f} 
+\end{equation} 
+with $x_1(t)$ -- velocity, $x_2(t)$ -- distance, $u(t)$ control --
+acceleration.
+
+\subsubsection{Function~\fun{process},~\fun{objfun},~\fun{confun}  definitions}
+\label{sec:car-fundef}
+
+\paragraph{Step1: Write an M-file~\subor{process.m}}
+
+{\small \verbatiminput{examples/problem-car/process.m}}
+
+\paragraph{Step2: Write an M-file~\subor{objfun}}
+
+{\small \verbatiminput{examples/problem-car/objfun.m}}
+
+\paragraph{Step3: Invoke~\fun{dynopt}} writing an M-file
+\subor{car.m} as follows: 
+
+{\small \verbatiminput{examples/problem-car/car.m}}
+
+The value of the objective function evaluated for optimal control
+profile is of value of 30.00 after 85 iterations with exitflag
+equal to~1. Graphical representation of the solution of the
+problem~\eqref{eq:car} is shown in Figs. \ref{fig:car_u} and
+\ref{fig:car_x}.
+
+\begin{figure}[htb]
+\begin{minipage}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=0.99\textwidth]{examples/problem-car/car_u.eps}
+\caption[Tutorial example car: control profile]{Control profile for
+  minimum time car problem} \label{fig:car_u} 
+\end{minipage}
+\begin{minipage}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=0.99\textwidth]{examples/problem-car/car_x.eps}
+\caption[Tutorial example car: state profile]{State profiles for
+  minimum time car problem} \label{fig:car_x} 
+\end{minipage}
+\end{figure}
+
+The same problem with constrained velocity during the whole trajectory
+$x_2 < 10$ (problem car2) converged to the minimum value of 37.50 after
+139 iterations with exitflag equal to~1. Graphical representation of
+the solution is shown in Figs. \ref{fig:car2_u},  \ref{fig:car2_x2}, and \ref{fig:car2_x1}.
+
+
+\begin{figure}[htb]
+\begin{minipage}[t]{0.32\linewidth}
+\centering
+\includegraphics[width=0.99\textwidth]{examples/problem-car2/car_u.eps}
+\caption[Tutorial example constrained car: control profile]{Control profile for
+  constrained minimum time car problem} \label{fig:car2_u} 
+\end{minipage}
+\begin{minipage}[t]{0.32\linewidth}
+\centering
+\includegraphics[width=0.99\textwidth]{examples/problem-car2/car_x1.eps}
+\caption[Tutorial example constrained car: state profile 1]{Distance profile for
+  minimum time car problem} \label{fig:car2_x1} 
+\end{minipage}
+\begin{minipage}[t]{0.32\linewidth}
+\centering
+\includegraphics[width=0.99\textwidth]{examples/problem-car2/car_x2.eps}
+\caption[Tutorial example constrained car: state profile 2]{Velocity profile for
+  minimum time car problem} \label{fig:car2_x2} 
+\end{minipage}
+\end{figure}
+
 \section{DAE systems}
 \label{sec:daes}
 
