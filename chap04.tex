@@ -103,11 +103,20 @@ has following fields to be set:
   either np--by--1 vector of time independent parameters or an empty
   matrix [~]. 
 \item[\argfun{bdu}] -- Parameter representing bounds to the control
-  variables. If defined it has to be an nu--by--2 matrix:
-  [$\ve{lbu}~\ve{ubu}$], otherwise an empty matrix [~].
-\item[\argfun{bdx}] -- Parameter representing bounds to the states. If
-  defined it has to be an nx--by--2 matrix: [$\ve{lbx}~\ve{ubx}$],
-  otherwise an empty matrix [~]. 
+  variables. If not defined it has to be an empty matrix [~].  If
+  control constraints are the same in each time interval then it has
+  to be an nu--by--2 matrix: [$\ve{lbu}~\ve{ubu}$].  If control
+  constraints are not the same in each time interval then it has to be
+  an nu--by--ni*2 matrix: [$\ve{lbu}_1~\ve{ubu}_1, \ldots,
+  \ve{lbu}_{n_i}~\ve{ubu}_{n_i}$] where $n_i$ is the number of intervals.
+\item[\argfun{bdx}] -- Parameter representing bounds to the states.
+  If not defined it has to be an empty matrix [~].  If state
+  constraints are the same in each time interval then it has to be an
+  nx--by--2 matrix: [$\ve{lbx}~\ve{ubx}$].  If state constraints are
+  not the same in each time interval then it has to be an nx--by--ni*2
+  matrix: [$\ve{lbx}_1~\ve{ubx}_1, \ldots,
+  \ve{lbx}_{n_i}~\ve{ubx}_{n_i}$] where $n_i$ is the number of
+  intervals.
 \item[\argfun{bdp}] -- Parameter representing bounds to the
   parameters. If defined it has to be an np--by--2 matrix:
   [$\ve{lbp}~\ve{ubp}$], otherwise an empty matrix [~].
@@ -276,15 +285,16 @@ described by following set of DAEs:
 \label{eq:objsum}  
 \end{equation} 
 such that
-\begin{gather*}
-\ve{M\dot{x}}(t)=\ve{f}(t,\ve{x}(t),\ve{u}(t),\ve{p})\\ 
-\ve{x}(t_{0})=\ve{x}_{0}(\ve{p})\\ 
-\ve{h}(t,\ve{x},\ve{u},\ve{p}) = \ve{0}\\
-\ve{g}(t,\ve{x},\ve{u},\ve{p}) \leq \ve{0}\\
-\ve{x}(t)^{L}\leq \ve{x}(t)\leq \ve{x}(t)^{U}\\ 
-\ve{u}(t)^{L}\leq \ve{u}(t)\leq \ve{u}(t)^{U}\\
-\ve{p}^{L}\leq \ve{p}\leq \ve{p}^{U}
-\end{gather*}with the following nomenclature:
+\begin{align*}
+\ve{M\dot{x}}(t)&=\ve{f}(t,\ve{x}(t),\ve{u}(t),\ve{p})\\ 
+\ve{x}(t_{0})&=\ve{x}_{0}(\ve{p})\\ 
+\ve{h}(t,\ve{x},\ve{u},\ve{p}) &= \ve{0}\\
+\ve{g}(t,\ve{x},\ve{u},\ve{p}) &\leq \ve{0}\\
+\ve{x}^{L}_i\leq &\ve{x}(t)\leq \ve{x}^{U}_i, \quad i=1,\ldots, n_i\\ 
+\ve{u}^{L}_i\leq &\ve{u}(t)\leq \ve{u}^{U}_i, \quad i=1,\ldots, n_i\\
+\ve{p}^{L}\leq &\ve{p}\leq \ve{p}^{U}
+\end{align*}
+with the following nomenclature:
 \begin{description}
 \item[$\mf{G}(\cdot)$] -- objective function in Mayer form evaluated
   at final conditions,  
@@ -297,8 +307,10 @@ such that
 \item [$\ve{u}(t)$] -- control profile vector,
 \item [$\ve{p}$] -- vector of time independent parameters,
 \item [$\ve{x}_0$] -- initial conditions for state vector,
-\item [$\ve{x}(t)^{L},\ve{x}(t)^{U}$] -- state profile bounds, 
-\item [$\ve{u}(t)^{L},\ve{u}(t)^{U}$] -- control profile bounds,
+\item [$\ve{x}^{L}_i,\ve{x}^{U}_i$] -- state profile bounds on
+  each interval $i=1,\ldots, n_i$, 
+\item [$\ve{u}^{L}_i,\ve{u}^{U}_i$] -- control profile bounds on
+  each interval $i=1,\ldots, n_i$, 
 \item [$\ve{p}^{L},\ve{p}^{U}$] -- bounds to the parameters.
 \end{description} 
 
@@ -320,7 +332,7 @@ system in \argfun{process} with the optimisation parameters specified
 in the structure \argfun{options}, with the defined set of lower and
 upper bounds on the control variables \argfun{bdu}, state variables
 \argfun{bdx}, and time independent parameters \argfun{bdp} so that
-solution is always in the range of this bounds. All before mentioned
+solution is always in the range of these bounds. All before mentioned
 variables do entry \fun{dynopt} in \argfun{optimparam} structure. The
 solution is returned in the \argfun{otpimout} structure described in
 section \ref{sec:outarg}.   
@@ -362,7 +374,7 @@ included below for \argfun{objfun}, \argfun{confun}, \argfun{process}.
     {\small \verbatiminput{userfunctions/sumobjfun.m}} 
    \end{description}
    If the gradients of the objective function can also be computed
-   and options.GradObj is 'on', as set by options =
+   and \argfun{options.GradObj} is 'on', as set by options =
    optimset('GradObj','on') then the function~\fun{objfun} must return,
    in the second output argument, the structure \argfun{Df} holding the
    gradient values with respect to time \argfun{t}, states \argfun{x},

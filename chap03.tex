@@ -350,6 +350,35 @@ equal to~1. Graphical representation of the solution of the problem
 \end{minipage}
 \end{figure}
 
+\subsubsection{Control Constrained on Intervals}
+If we would like to constrain control on the first interval to be at
+most 9, we will redefine variable \argfun{bdu}
+(\verb+problem2_bdu/problem2bdu.m+).  Now it will be a matrix composed
+of lower and upper bounds on every interval as follows
+\begin{verbatim}
+optimparam.bdu = [-4 9 -4 10 -4 10 -4 10]; 
+\end{verbatim}
+
+The value of the objective function evaluated for optimal control
+profile has increased to 0.1249686 after 153 iterations with exitflag
+equal to~1. Graphical representation of the modified solution is shown in Figs. \ref{fig:prob2bdu_u} and
+\ref{fig:prob2bdu_x}.
+
+\begin{figure}[htb]
+\begin{minipage}[t]{0.5\linewidth}
+\centering
+\includegraphics[width=0.99\textwidth]{examples/problem2_bdu/graphs/u_624bdu.eps}
+\caption[Tutorial example 3: control profile]{Control profile for
+  unconstrained problem with gradients and bounds on intervals} \label{fig:prob2bdu_u} 
+\end{minipage}
+\begin{minipage}[t]{0.5\linewidth}
+\centering
+\includegraphics[width=0.99\textwidth]{examples/problem2_bdu/graphs/x13_624bdu.eps}
+\caption[Tutorial example 3: state profiles]{State profiles for
+  unconstrained problem with gradients and bounds on intervals} \label{fig:prob2bdu_x}
+\end{minipage}
+\end{figure}
+
 \subsection{Example 4: Inequality State Path Constraint Problem}
 \label{sec:statepathconprob}
 
@@ -544,7 +573,7 @@ problem~\eqref{eq:car} is shown in Figs. \ref{fig:car_u} and
 The same problem with constrained velocity during the whole trajectory
 $x_2 < 10$ (problem car2) converged to the minimum value of 37.50 after
 139 iterations with exitflag equal to~1. Graphical representation of
-the solution is shown in Figs. \ref{fig:car2_u},  \ref{fig:car2_x2}, and \ref{fig:car2_x1}.
+the solution is shown in Figs. \ref{fig:car2_u},  \ref{fig:car2_x1}, and \ref{fig:car2_x2}.
 
 
 \begin{figure}[htb]
