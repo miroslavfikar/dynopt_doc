@@ -85,15 +85,15 @@ The results returned by \fun{dynopt} in \argfun{optimout} structure
 contain the vector of times \argfun{t}, the vector of optimal control
 profile \argfun{u}. They are ready to be plotted.\\
 The objective function at the optimal solution [\argfun{t},\argfun{u}]
-is returned after 3126 iterations in before mentioned output structure
+is returned after 611 iterations in before mentioned output structure
 \argfun{optimout} as parameter \argfun{fval}:
 \begin{verbatim}
-optimout.fval = 0.76166
+optimout.fval = 0.7615959
 \end{verbatim}
 The parameter \argfun{exitflag} tells if the algorithm converged. An
 exitflag $>$ 0 means a local minimum was found: 
 \begin{verbatim}
-optimout.exitflag = 5
+optimout.exitflag = 1
 \end{verbatim}
 More details about the optimisation are given by the
 \argfun{optimout.output} structure. In this example, the default
@@ -277,11 +277,9 @@ chosen. Other parameter are as same as in problem \eqref{eq:ucp}.
 
 The optimal solution is shown in Figs. \ref{fig:prob1b_u} and
 \ref{fig:prob1b_x}. The value of the objective function at this
-solution is 0.924245 after 999 iterations and with exitflag equal to~5. 
-
-We note that this example was calculated using MATLAB 2007a because
-it did not converge in neither 2008a nor 2008b, probably due to changes
-in fmincon. 
+solution is 0.9242346 after 368 iterations (10000 function
+evaluations) and with exitflag equal to~0 (limit of function
+evaluations).
 
 \begin{figure}[htb]
 \begin{minipage}[t]{0.5\linewidth}
@@ -333,8 +331,8 @@ such that $t_{f}=1$.
 {\small \verbatiminput{examples/problem2/problem2.m}}
 
 The value of the objective function evaluated for optimal control
-profile is of value of 0.120825 after 758 iterations with exitflag
-equal to~5. Graphical representation of the solution of the problem
+profile is of value of 0.1202688 after 175 iterations with exitflag
+equal to~1. Graphical representation of the solution of the problem
 \eqref{eq:ucpgb} is shown in Figs. \ref{fig:prob2_u} and
 \ref{fig:prob2_x}.
 
@@ -401,8 +399,8 @@ M-file~\subor{problem3.m} as follows:
 
 {\small \verbatiminput{examples/problem3/problem3.m}}
 
-An optimal value of $x_{3}(t_{f})=0.17014$ was computed after 2154
-iterations with exitflag equal to~5. Graphical representation of the
+An optimal value of $x_{3}(t_{f})=0.1701564$ was computed after 3014
+iterations with exitflag equal to~1. Graphical representation of the
 solution of the problem~\eqref{eq:ispcpb} is shown in
 Figs. \ref{fig:prob3_u}, \ref{fig:prob3_x}, and \ref{fig:prob3_c}.
 
@@ -528,8 +526,8 @@ M-file~\subor{problem5dae.m} as follows:
 
 {\small \verbatiminput{examples/problem5_dae/problem5.m}}
 
-After 295 iteration and 825 function evaluations, optimal value of
-$x_{2}(t_{f}) = 0.610589$ was found. The higher number of iteration
+After 134 iteration and 347 function evaluations, optimal value of
+$x_{2}(t_{f}) = 0.6106136$ was found. The higher number of iteration
 and function evaluations is resulting from an higher accuracy set to
 $10^{-7}$. Graphical representation of the problem
 \eqref{eq:batch_dae} solution is shown in Figs. \ref{fig:prob5dae_u}
