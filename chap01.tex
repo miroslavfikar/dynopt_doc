@@ -1,0 +1,94 @@
+\chapter{Before You Begin}
+\label{cha:beforebegin}
+
+\section{What is~\fun{dynopt}}
+\label{sec:whatisdynopt}
+
+\fun{dynopt} is a set of MATLAB functions for determination of optimal
+control trajectory by given description of the process, the cost to be
+minimised, subject to equality and inequality constraints, using
+orthogonal collocation on finite elements method. 
+
+The actual optimal control problem is solved by complete
+parametrisation both the control and the state profile vector. That
+is, the original continuous control and state profiles are
+approximated by a sequence of linear combinations of some basis
+functions. It is assumed that the basis functions are known and
+optimised are the coefficients of their linear combinations. In
+addition, each segment of the control sequence is defined on a time
+interval whose length itself may also be subject to
+optimisation. Finally, a set of time independent parameters may
+influence the process model and can also be optimised.
+
+It is assumed, that the optimised dynamic model may be described by a
+set of ordinary differential equations (ODE's) or
+differential-algebraic equations (DAE's).
+
+This collection of functions extend the capability of the MATLAB
+Optimization Toolbox, specifically of the constrained nonlinear
+minimisation routine~\fun{fmincon}. 
+
+
+\section{What is New in this Version}
+\label{sec:what-new-this}
+
+
+Version 4 introduces several new properties of the package:
+\begin{itemize}
+\item three type of constraints can be defined in the same
+  time:~constraints in $t_{0}$, constraints over full time interval 
+  $[t_{0},t_{f}]$, and constraints in $t_{f}$. Previously only one of
+  them was possible.
+\item time independent parameters are introduced into the \fun{process}
+  function, \fun{objfun} function and \fun{confun}.
+\end{itemize}
+
+\section{How to Use this Manual}
+\label{sec:howtouseman}
+
+This manual has four main parts:
+\begin{description}
+\item[Chapter 2] introduces implementation of orthogonal collocation
+  on finite elements method into general optimisation problems.
+\item[Chapter 3] provides a tutorial for solving different
+  optimisation problems.
+\item[Chapter 4] provides a detailed reference description
+  of~\fun{dynopt} function. Reference descriptions include the
+  function syntax, detailed information about arguments to the
+  function, including relevant optimisation options parameters.
+\item[Chapter 5] provides some more examples solved by~\fun{dynopt},
+  their definitions and solutions.
+\end{description}
+
+\section{Installing~\fun{dynopt}}
+\label{sec:instdynopt}
+
+\fun{dynopt} code does not need any special installation procedure. To
+use~\fun{dynopt}, just add the Dynamic Optimisation Tool directory
+\subor{dynoptim} into the path by addpath environment. 
+
+As mentioned before,~\fun{dynopt} is a set of functions that extend
+the capability of the MATLAB Optimization Toolbox. That means, that
+for using~\fun{dynopt} this toolbox has to be provided. To determine
+if the Optimization Toolbox is installed on your system, type this
+command at the MATLAB prompt:
+\begin{verbatim}
+ver
+\end{verbatim}
+After entering this command, MATLAB displays information about the
+version of MATLAB you are running, including a list of all toolboxes
+installed on your system and their version numbers.  If the
+Optimization Toolbox is not installed, check the Installation Guide
+for instructions on how to install it.
+
+\fun{dynopt} has been developed and thus most extensively tested on
+MATLAB 6.5 (R13), therefore all the results are related to this
+version.  \fun{dynopt} should in principle also work with latest
+MATLAB versions.  However, results obtained and convergence criteria
+achieved can (and will) differ slightly.
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "dynopt_guide"
+%%% End: 

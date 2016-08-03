@@ -1,0 +1,523 @@
+\chapter{Reference}
+\label{cha:reference}
+
+
+This chapter contains description of the function~\fun{dynopt}, the
+main function of the collection of functions which extend the
+capability of MATLAB Optimisation Toolbox, specifically of the
+constrained nonlinear minimisation routin~\fun{fmincon}. The chapter
+starts with section listing general descriptions of all the input and
+output arguments and the parameters in the optimisation options
+structure, continues with the function description, and ends with some 
+tutorial. 
+
+\section{Function Arguments}
+\label{sec:funarg}
+
+All input and output arguments to the \fun{dynopt} function are
+described in this section. Section \ref{sec:inarg} describes all input
+arguments built in input structure \argfun{optimparam}. Then output
+arguments built in output structure \argfun{optimout} are treated in
+section \ref{sec:outarg} and as last the optimisation options parameters
+structure~\argfun{options} which is given by MATLAB is described in
+Tab.~\ref{tab:optpar}. It is important to mention here, that the names
+of input and output structures can be changed by user, but their fields
+described later have to be used as described. 
+
+\begin{table}[ht]
+\begin{center}
+\begin{tabular}{r p{10cm}}
+\hline
+$ni$ &-- number of intervals\\
+$nx$ &-- number of state variables\\
+$nu$ &-- number of control variables\\
+$np$ &-- number of parameters\\
+$nm$ &-- number of measurements\\
+\hline
+\end{tabular}
+\caption[Predefined variables]{Some predefined variables which are used for
+  function description}\label{tab:shortcuts}
+\end{center}
+\end{table}
+
+Table \ref{tab:shortcuts} describes some predefined variables which
+are used to simplify \fun{dynopt's} description in sections
+\ref{sec:inarg} and \ref{sec:outarg}. 
+
+\subsection{Input Arguments}
+\label{sec:inarg}
+
+As mentioned before, input arguments described bellow do entry
+\fun{dynopt} in a structure called \argfun{optimparam}. This contains
+them as fields, e.g., \argfun{optimparam.optvar}. \argfun{optimparam}
+has following fields to be set: 
+\begin{description}
+\item[\argfun{optvar}] -- The choise of optimisation variables: 1 -
+  times, 2 - control, 2 - parameters. Their combination is given by
+  their summations, e.g., 3 - otpimise times and control. All the
+  possibilities are listed below
+  \begin{enumerate}[1]
+  \item - optimise times,
+  \item - optimise control,
+  \item - optimise times and control,
+  \item - optimise parameters,
+  \item - optimise times and parameters,
+  \item - optimise control and parameters,
+  \item - optimise all: times, control, and parameters.
+  \end{enumerate}
+\item[\argfun{objtype}] -- Parameter which defines the type of
+  objective function to be minimised/maximised in optimisation. Two
+  possible types of objective function may have been used: 
+  \begin{description}
+  \item[Mayer type] - if Mayer type objective function is used set the
+    parameter \argfun{objtype} to an empty matrix.
+  \item[Sum type] - if Sum type objective function is used, parameter
+    \argfun{objtype} is a structure containig two variables
+    \argfun{tm}, and \argfun{xm}. \argfun{tm} is a $nm$-by-1 vector of
+    times, in which the measurements are taken. \argfun{xm} is a
+    $nx$-by-$nm$ matrix of taken measurements in times
+    \argfun{tm}. For more information about the types of objective
+    functions see \fun{objfun} description in section
+    \ref{sec:fundesarg}. 
+  \end{description}
+\item[\argfun{ncolx}] -- Parameter which represents the number of
+  collocation points for state variables. This has allways to be a
+  number greater than zero. 
+\item[\argfun{ncolu}] -- Parameter which represents the number of
+  collocation points for control variables. It may have been defined
+  as $[~]$ if control variable doesn't belong to optimisation
+  variables and also doesn't occure in \fun{process}, \fun{objfun},
+  \fun{confun}. Otherwise it has to be a number greater than zero.
+\item[\argfun{li}] --  Parameter representing lenghs of intervals. It
+  has allways to be filled with ni--by--1 vector of initial lengths of
+  intervals. 
+\item[\argfun{tf}] -- Parameter representing the final time, if the
+  value of $t_{f}$ is not specified use empty brackets [~].
+\item[\argfun{ui}] --  Parameter representing control variables
+  applied on each time interval in \argfun{li}. As mentioned for
+  \argfun{ncolu} parameter, if control variable is needed it has to be
+  defined as nu--by--ni matrix of control variables for each
+  interval. Otherwise it has to be an empty matrix [~]. 
+\item[\argfun{par}] -- Parameter representing time independent
+  parameters. As in \argfun{ui} also here it may have been defined
+  either np--by--1 vector of time independent parameters or an empty
+  matrix [~]. 
+\item[\argfun{bdu}] -- Parameter representing bounds to the control
+  variables. If defined it has to be an nu--by--2 matrix:
+  [$\ve{lbu}~\ve{ubu}$], otherwise an empty matrix [~].
+\item[\argfun{bdx}] -- Parameter representing bounds to the states. If
+  defined it has to be an nx--by--2 matrix: [$\ve{lbx}~\ve{ubx}$],
+  otherwise an empty matrix [~]. 
+\item[\argfun{bdp}] -- Parameter representing bounds to the
+  parameters. If defined it has to be an np--by--2 matrix:
+  [$\ve{lbp}~\ve{ubp}$], otherwise an empty matrix [~].
+\item[\argfun{objfun}] --  The function to be
+  optimised.~\subor{objfun} is the name of an M-file. For more
+  information about this input argument, see section
+  \ref{sec:fundesarg}. 
+\item[\argfun{confun}] --  The function that computes the nonlinear
+  equality and inequality constraints. \subor{confun} is the name of
+  an M-file. For more information about this input argument, see
+  section \ref{sec:fundesarg}.  
+\item[\argfun{process}] -- The function that describes given
+  process. \subor{process} is the name of an M-file. For more
+  information about this input argument, see section
+  \ref{sec:fundesarg}. 
+\item[\argfun{options}] -- An optimisation options parameter structure
+  that defines parameters used by the optimisation functions. This
+  parameter is defined by MATLAB for all optimisation routines of
+  MATLAB Optimization Toolbox. For information about the parameters 
+  which are important for \fun{dynopt}, see Tab.~\ref{tab:optpar} or
+  the individual function reference pages.
+\end{description}
+
+% continualna tabulka
+%---------------------------------------------------------------------
+\begin{longtable}{r||p{0.75\textwidth}}
+\caption{Optimisation options parameters} \label{tab:optpar}\\
+\hline \hline
+{\textbf{Parameter Name}} & \multicolumn{1}{c}{\textbf{Description}}\\
+\hline \hline
+\endfirsthead
+\caption*{concluded from previous page}\\
+\hline
+{\textbf{Parameter Name}} & \multicolumn{1}{c}{\textbf{Description}}\\ 
+\hline \hline
+\endhead
+\multicolumn{2}{r}{{Continued on next page}}\\
+\hline
+\endfoot
+\hline \hline
+\endlastfoot
+\hline
+\argfun{DerivativeCheck} & Compare user-supplied analytic derivatives
+ (gradients) to finite differencing derivatives (medium-scale algorithm
+ only), default value: 'off'.\\  
+\hline
+\argfun{Diagnostics} & Print diagnostic information about the function to be
+minimised or solved, default value: 'off'.\\ 
+\hline
+\argfun{DiffMaxChange} & Maximum change in variables for finite difference
+derivatives (medium-scale algorithm only), default value: 0.1000.\\ 
+\hline
+\argfun{DiffMinChange} & Minimum change in variables for finite difference
+derivatives (medium-scale algorithm only), default value:
+1.0000e-008.\\ 
+\hline
+\argfun{Display} & Level of display. 'off' displays no output, 'iter' displays
+output at each iteration, 'final' displays just the final output,
+default value: 'final'.\\ 
+\hline
+\argfun{GradConstr} & Gradients for the nonlinear constraints defined by user,
+default value: 'off'.\\ 
+\hline
+\argfun{GradObj} & Gradient for the objective function defined by user, default
+value: 'off'.\\ 
+\hline
+LargeScale & User large-scale algorithm if possible, default value:
+'on'.\\ 
+\hline
+\argfun{MaxFunEvals} & Maximum number of function evaluations allowed, default
+value: '100*numberofvariables'.\\
+\hline 
+\argfun{MaxIter} & Maximum number of iterations allowed, default value: 400.\\
+\hline 
+\argfun{TolCon} & Termination Tolerance on the constraint violation, default
+value: 1.0000e-006.\\
+\hline 
+\argfun{TolFun} & Termination Tolerance on the function value, default value:
+1.0000e-006.\\ 
+\hline
+\argfun{TolX} & Termination Tolerance on x, default value: 1.0000e-006.\\
+\hline
+\argfun{TypicalX} & Typical x values (large-scale algorithm only), default
+value: 'ones(numberofvariables,1)'.\\
+\hline
+\end{longtable}
+%---------------------------------------------------------------------
+
+\subsection{Output Arguments}
+\label{sec:outarg}
+
+As for input arguments, the same holds for output arguments. That
+means that the output arguments described bellow do leave \fun{dynopt}
+in a structure called \argfun{optimout}. This contains them as fields,
+e.g., \argfun{optimout.nlpx}. \argfun{optimout} has following fields: 
+\begin{description}
+\item[\argfun{nlpx}] -- holds the solution found by the
+  \fun{dynopt}. If \argfun{exitflag} $>$ 0, then \argfun{nlpx} is a
+  solution  otherwise, \argfun{nlpx} is the value the optimisation
+  routine was at when it terminated prematurely. Vector \argfun{nlpx}
+  contains all the parameters $\Delta \zeta_{i}, \ve{u_{ij}},
+  \ve{x_{ij}}, \ve{p}$ defined in the NLP formulation in section
+  \ref{sec:nlp-fp}. 
+\item[\argfun{fval}] -- holds the value of the objective
+  function in~\argfun{objfun} at the solution~\argfun{nlpx}.
+\item[\argfun{exitflag}] -- represents the exit condition of
+  optimisation. \argfun{exitflag} may be:
+  \begin{description}
+  \item[$>0$] indicates that the function converged to a solution
+    \argfun{nlpx}, 
+  \item[$0$] indicates that the maximum number of function evaluations
+    or iterations was reached, 
+  \item[$<0$] indicates that the function did not converge to a
+    solution. 
+  \end{description}
+\item[\argfun{output}] -- represents an output structure that contains
+  information about the results of the
+  optimisation. \argfun{output.iterations} gives the information about
+  the number of iteration, \argfun{output.funcCount} gives the
+  information about the number of function  evaluations,
+  \argfun{output.algorithm} returns the used algorithm,
+  \argfun{output.stepsize} returns the taken final stepsize
+  (medium-scale algorithm only), \argfun{output.firstorderopt} gives
+  the information about a measure of first-order optimality
+  (large-scale algorithm only). 
+\item[\argfun{lambda}] -- The Lagrange multipliers at the solution
+  \argfun{nlpx}. \argfun{lambda} is a structure where each field is
+  for a different constraint type. \argfun{lamdba.lower} for the lower
+  bounds lb, \argfun{lambda.upper} for the upper bounds ub,
+  \argfun{lambda.ineqlin} for the linear inequalities,
+  \argfun{lambda.eqlin} for the linear equalities,
+  \argfun{lambda.ineqnonlin} for the nonlinear inequalities,
+  \argfun{lambda.eqnonlin} for the nonlinear equalities.
+\item[\argfun{grad}] -- holds the value of the gradient of objfun at
+  the solution \argfun{nlpx}.   
+\item[\argfun{t}] -- is a vector of times for optimal control profile
+  returned by \fun{dynopt}.
+\item[\argfun{u}] -- is a vector/matrix of optimal control profiles
+  returned by \fun{dynopt}.
+\item[\argfun{p}] -- is a vector/empty matrix of the optimal values of
+  the parameters. 
+\end{description}
+
+Function parameters described in section \ref{sec:outarg}, and
+Tab.~\ref{tab:optpar} are implicitly given by MATLAB Optimization
+Toolbox for all it's subroutines. They also present parameters usefull
+for~\fun{dynopt} through function~\fun{fmincon}. 
+
+\section{Function Description}
+\label{sec:fundes}
+
+\subsection{Purpose} 
+\label{sec:fundespur}
+
+The actual version of~\fun{dynopt} is able to solve dynamic
+optimisation problems which cost functions can be expressed either in
+the Mayer form or in the Sum form. The problem formulation can be
+described by following set of DAEs: 
+\begin{equation}
+\min_{\ve{u}(t),\ve{p}}\mf{G}(\ve{x}(t_{f}),t_{f},\ve{p})
+\label{eq:objmajer}  
+\end{equation} or
+\begin{equation}
+\min_{\ve{u}(t),\ve{p}} \sum_{i=1}^{nm} 
+\mf{S}(t_{i},\ve{x}(t_{i}),\ve{u}(t_{i}),\ve{p},\ve{x}^{\text{mes}}(t_{i}))
+\label{eq:objsum}  
+\end{equation} 
+such that
+\begin{gather*}
+\ve{M\dot{x}}(t)=\ve{f}(t,\ve{x}(t),\ve{u}(t),\ve{p})\\ 
+\ve{x}(t_{0})=\ve{x}_{0}(\ve{p})\\ 
+\ve{h}(t,\ve{x},\ve{u},\ve{p}) = \ve{0}\\
+\ve{g}(t,\ve{x},\ve{u},\ve{p}) \leq \ve{0}\\
+\ve{x}(t)^{L}\leq \ve{x}(t)\leq \ve{x}(t)^{U}\\ 
+\ve{u}(t)^{L}\leq \ve{u}(t)\leq \ve{u}(t)^{U}\\
+\ve{p}^{L}\leq \ve{p}\leq \ve{p}^{U}
+\end{gather*}with the following nomenclature:
+\begin{description}
+\item[$\mf{G}(\cdot)$] -- objective function in Mayer form evaluated
+  at final conditions,  
+\item[$\sum_{i=1}^{nm} \mf{S}(\cdot)$]  -- objective function of Sum
+  form evaluated in times of taking the measurements $t_{i}$, 
+\item [$\ve{M}$] -- a konstant mass matrix,
+\item [$\ve{h}$] -- equality design constraint vector,
+\item [$\ve{g}$] -- inequality design constraint vector,
+\item [$\ve{x}(t)$] -- state profile vector,
+\item [$\ve{u}(t)$] -- control profile vector,
+\item [$\ve{p}$] -- vector of time independent parameters,
+\item [$\ve{x}_0$] -- initial conditions for state vector,
+\item [$\ve{x}(t)^{L},\ve{x}(t)^{U}$] -- state profile bounds, 
+\item [$\ve{u}(t)^{L},\ve{u}(t)^{U}$] -- control profile bounds,
+\item [$\ve{p}^{L},\ve{p}^{U}$] -- bounds to the parameters.
+\end{description} 
+
+\subsection{Syntax and Description}
+\label{sec:fundessyndes}
+ 
+\begin{verbatim} 
+[optimout,optimparam]=dynopt(optimparam)
+\end{verbatim} 
+starts with the initial lengths of intervals \argfun{li}, initial
+control values for each interval \argfun{ui} for defined number of
+collocation points for state variables \argfun{ncolx}, and for control
+variables \argfun{ncolu} to the final time \argfun{tf}, and minimises
+either a Mayer type \argfun{objfun} evaluated in the final time or Sum type
+\argfun{objfun} subject to the nonlinear inequalities or equalities
+defined in \argfun{confun} for time $t_0$, $t_f$ or over full time
+interval characterised by flag in \fun{confun} subject to a given
+system in \argfun{process} with the optimisation parameters specified
+in the structure \argfun{options}, with the defined set of lower and
+upper bounds on the control variables \argfun{bdu}, state variables
+\argfun{bdx}, and time independent parameters \argfun{bdp} so that
+solution is allways in the range of this bounds. All before mentioned
+variables do entry \fun{dynopt} in \argfun{optimparam} structure. The
+solution is returned in the \argfun{otpimout} structure described in
+section \ref{sec:outarg}.   
+
+\subsection{Arguments}
+\label{sec:fundesarg}
+
+The arguments passed into the function are described in section
+\ref{sec:inarg}. The arguments returned by the function are described
+in section \ref{sec:outarg}. Details relevant to \fun{dynopt} are
+included below for \argfun{objfun}, \argfun{confun}, \argfun{process}. 
+
+\begin{description}
+\item[\argfun{objfun}] The function to be minimised. \argfun{objfun}
+  is a string containing the name of an M-file function, e.g.,
+  \subor{objfun.m}. Whereas \fun{dynopt} optimises a given performance
+  index 
+  \begin{description}
+  \item[Mayer form \eqref{eq:objmajer}] objective function is
+    evaluated at the final time $t_{f}$, thus \fun{objfun} takes a
+    scalar \argfun{t}~-~final time $t_{f}$, scalar/vector
+    \argfun{x}~-~the state variable(s), scalar/vector \argfun{u}~-~the
+    control variable(s), both evaluated at coresponding  final time
+    $t_{f}$, scalar/vector \argfun{p}~-~time independent parameters,
+    and returns a scalar value \argfun{f} of the objective function
+    evaluated at these value. The M-file function has to have the
+    following form: 
+    {\small \verbatiminput{userfunctions/majerobjfun.m}} 
+  \item[Sum form \eqref{eq:objsum}] objective function is evaluated in
+    the times of taking measurements $t_{i}$, thus \fun{objfun} takes
+    a scalar \argfun{t}~-~time of taking measurements $t_{i}$,
+    scalar/vector \argfun{x}~-~state variable(s), \argfun{u}~-~the
+    control variable(s), both evaluated at coresponding time $t_{i}$,
+    scalar/vector \argfun{p}~-~time independent parameters,
+    scalar/vector \argfun{xm}~-~measured variable(s) in the afore
+    mentioned time $t_{i}$, and returns a scalar value \argfun{f} of
+    the objective function evaluated at these values. The M-file
+    function has to have the following form:   
+    {\small \verbatiminput{userfunctions/sumobjfun.m}} 
+   \end{description}
+   If the gradients of the objective function can also be computed
+   and options.GradObj is 'on', as set by options =
+   optimset('GradObj','on') then the function~\fun{objfun} must return,
+   in the second output argument, the structure \argfun{Df} holding the
+   gradient values with respect to time \argfun{t}, states \argfun{x},
+   controls \argfun{u} and parameters \argfun{p} as follows:
+   {\small \verbatiminput{userfunctions/objfungrad.m}}
+   The gradients \argfun{Df.t}, \argfun{Df.x}, \argfun{Df.u},
+   \argfun{Df.p} are the partial derivatives of \argfun{f} at the
+   points \argfun{t}, \argfun{x}, \argfun{u}, \argfun{p}. That means,
+   \argfun{Df.t} is the partial derivative of \argfun{f} with respect
+   to the \argfun{t}, the ith component of \argfun{Df.x} is the partial
+   derivative of \argfun{f} with respect to the ith component of
+   \argfun{x}, the ith component of \argfun{Df.u} is the partial
+   derivative of \argfun{f} with respect to the ith component of
+   \argfun{u}, the ith component of \argfun{Df.p} is the partial
+   derivative of \argfun{f} with respect to the ith component of
+   \argfun{p}.  
+\item[\argfun{confun}] The function that computes the nonlinear
+  inequality constraints $\ve{g}(t,x,u,p)<=\ve{0}$ marked as output
+  argument \argfun{c} and nonlinear equality constraints
+  $\ve{h}(t,x,u,p)=0$, marked as output argument \argfun{ceq}. As
+  mentioned before, \fun{dynopt} optimises a given performance index
+  subject to the constraints defined in corresponding flag:
+  \begin{description}
+  \item[\argfun{flag} = 0] the constraints are implied at the
+    beginning $t = t_{0}$,
+  \item[\argfun{flag} = 1] the constraints are implied over the whole
+    time interval $t \in [t_{0},t_{f}]$,
+  \item[\argfun{flag} = 2] the constraints are implied at the end $t
+  = t_{f}$.
+  \end{description}
+  \argfun{confun} is a string containing the name of an M-file
+  function, e.g., \subor{confun.m}. \fun{confun} takes a
+  scalar~\argfun{t}~-~time value coresponding to the time $t$,
+  scalar/vec\-tor \argfun{x}~-~state variable value(s), and
+  scalar/vector \argfun{u}~-~control variable value(s) both
+  coresponding to the value of \argfun{t}, scalar/vector
+  \argfun{p}~-~time independent parameters, and returns two arguments,
+  a vector \argfun{c} of the nonlinear inequalities and a vector
+  \argfun{ceq} of the nonlinear equalities, both evaluated at
+  \argfun{t}, \argfun{x}, \argfun{u}, \argfun{p} for given flag. For
+  example, if confun=@confun, then the M-file \subor{confun.m} would
+  have the form: 
+  {\small \verbatiminput{userfunctions/confun.m}}
+  If the gradients of the constraints can also be computed and the
+  \argfun{options.GradConstr} is 'on', as set by \argfun{options} =
+  optimset('GradConstr','on') then \argfun{confun} is a string
+  containing the name of an M-file function, e.g.,
+  \subor{confun.m}. The function \fun{confun} must return, in the
+  third and fourth output argument, structures \argfun{Dc}, and
+  \argfun{Dceq} holding the gradient values \argfun{t}, \argfun{x},
+  \argfun{u}, \argfun{p} with respect to themselves. 
+  {\small \verbatiminput{userfunctions/confungrad.m}}
+  The gradients \argfun{Dc.t}, \argfun{Dc.x}, \argfun{Dc.u},
+  \argfun{Dc.p} are the partial derivatives of \argfun{c} at the
+  points \argfun{t}, \argfun{x}, \argfun{u}, \argfun{p}. That means,
+  \argfun{Dc.t} is the partial derivative of \argfun{c} with respect
+  to \argfun{t}, the ith component of \argfun{Dc.x} is the partial
+  derivative of \argfun{c} with respect to the ith component of
+  \argfun{x}, the ith component of \argfun{Dc.u} is the partial
+  derivative of \argfun{c} with respect to the ith component of
+  \argfun{u}, the ith component of \argfun{Dc.p} is the partial
+  derivative of \argfun{c} with respect to the ith component of
+  \argfun{p}, and the gradients \argfun{Dceq.t}, \argfun{Dceq.x},
+  \argfun{Dceq.u}, \argfun{Dceq.p} are the partial derivatives of
+  \argfun{ceq} at the points \argfun{t}, \argfun{x}, \argfun{u},
+  \argfun{p}. 
+\item[\argfun{process}] The function wich describes process model,
+  that means the right hand sizes of ODE or DAE equations. If the
+  process model is described by system of ODE's the mass matrix M in
+  \argfun{flag} = 7 shall be left an empty matrix, because of being
+  set by \fun{dynopt} by default. If the system is describe by DAE's
+  the mass matrix M in \argfun{flag} = 7 should be singular.
+  \argfun{process} is a string containing the name of an M-file
+  function, e.g., \subor{process.m}. \fun{process} takes a time
+  \argfun{t}, scalar/vector of state variable \argfun{x}, scalar
+  \argfun{flag}, scalar/vector of control variable \argfun{u}, both
+  coresponding to time \argfun{t}, and scalar/vector of time
+  independent parameters \argfun{p}, and returns \argfun{sys} values
+  with respect to \argfun{flag} value evaluated at time \argfun{t}.
+  The M-file function has to be written in the following form: 
+  {\small \verbatiminput{userfunctions/process.m}}
+\end{description}
+
+
+\subsection{Algorithm}
+
+\begin{description}
+\item[Large-scale optimisation] 
+By default~\fun{dynopt} will choose the large-scale algorithm if the
+user supplies the gradient in objfun (and~\argfun{GradObj} is 'on'
+in~\argfun{options}) and if only upper and lower bounds exists or only
+linear equality constraints exist. This algorithm is a subspace trust
+region method and is based on the interior-reflective Newton method
+described in ~\cite{col96}. Each iteration involves the approximate
+solution of a large linear system using the method of preconditioned
+conjugate gradients (PCG). See the trust-region and preconditioned
+conjugate gradient method descriptions in the Large-Scale Algorithms
+chapter in~\cite{col99}. 
+\item[Medium-scale optimisation]
+\fun{dynopt} uses through the~\fun{fmincon} Sequential Programming
+(SQP) method. In this method, a Quadratic Programming (QP) 
+subproblem is solved at each iteration. An estimate of the Hessian of
+the Lagrangian is updated at each iteration using the BFGS
+formula~\cite{col96}.  
+
+A line search is performed using a merit function similar to that
+proposed by~\cite{han77}. The QP subproblem is solved using an 
+active set strategy similar to that described in~\cite{gil81}. A full
+description of this algorithm is found in the Constrained optimisation
+section of the Introduction to algorithms chapter of the Optimization
+Toolbox manual. See also the SQP implementation section in the
+Introduction to Algorithms chapter for more details on the algorithm
+used. 
+\end{description}
+
+\section{Additional Functions}
+\label{sec:addfun}
+
+In this section, two functions are presented: \fun{profiles}, which
+prepares plotable state and control profiles and \fun{constraints},
+which prepares a user given equality and inequality plotable
+constraints from the optimisation results returned in
+\argfun{optimout}.
+
+\subsection{Function~\fun{profiles}}
+\label{sec:profiles}
+
+\begin{verbatim}
+[tplot,uplot,xplot] = profiles(optimout,optimparam,ntimes)
+\end{verbatim}
+takes an optimal output \argfun{optimout} and other input arguments
+\argfun{optimparam} described in section \ref{sec:inarg}, and returns
+vector \argfun{tplot}, vector/matrix \argfun{uplot}, vector/matrix
+\argfun{xplot} with respect to \argfun{ntimes} which defines the
+number of points ploted per interval.
+
+\subsection{Function~\fun{constraints}}
+\label{sec:constraints}
+
+\begin{verbatim}
+[tp,cp,ceqp] = constraints(optimout,optimparam,ntimes)
+\end{verbatim}
+takes an optimal output \argfun{optimout} returned by \fun{dynopt}, and
+other input arguments \argfun{optimparam} described in section
+\ref{sec:inarg}, and returns vector \argfun{tp},nonlinear inequality 
+constraint vector/matrix \argfun{cp}, nonlinear equality constraint
+vector/matrix \argfun{ceqp} defined in \argfun{confun} with respect to
+\argfun{ntimes} which defines the number of points ploted per interval.
+
+It is simple to make a graphical representation of obtained results by
+using MATLAB's \fun{plot} function.
+
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "dynopt_guide"
+%%% End: 

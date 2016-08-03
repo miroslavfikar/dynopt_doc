@@ -1,0 +1,54 @@
+\documentclass[a4paper,12pt,oneside]{book}
+\usepackage{anysize} %\usepackage{a4wide}
+%\linespread{1.3} %riadkovanie 11/2
+\usepackage[sort]{natbib}
+\bibpunct{[}{]}{,}{n}{}{}
+\usepackage[nottoc,notlof,notlot]{tocbibind}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{psfrag}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage[Sonny]{fncychap}
+\usepackage{xtab}
+\usepackage{longtable}
+\usepackage[hang,footnotesize]{caption2}
+\usepackage{enumerate}
+\usepackage{ae}
+\usepackage{url}
+\usepackage{moreverb}
+\usepackage{dynoptpack}
+\usepackage[colorlinks,citecolor=red,linkcolor=blue,urlcolor=blue,pdfauthor={MiCi},bookmarks,bookmarksnumbered,pagebackref,hypertexnames=false,breaklinks,pdfview=FitH,pdfstartview=FitH,dvips]{hyperref}
+
+
+
+\begin{document}
+\bibliographystyle{plainnat}
+\pagestyle{empty}
+\include{title}
+\include{contact}
+\pagestyle{fancy}
+\pagenumbering{roman}
+\tableofcontents
+\newpage
+\listoffigures
+\newpage
+\listoftables
+\newpage
+\pagestyle{fancy}
+\pagenumbering{arabic}
+\include{chap01}
+\include{chap02}
+\include{chap03}
+\include{chap04}
+\include{chap05}
+
+\bibliography{abbrev,bib}
+\end{document}
+
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "dynopt_guide"
+%%% End: 

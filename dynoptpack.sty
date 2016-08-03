@@ -1,0 +1,171 @@
+\ProvidesPackage{dynoptpack}
+\RequirePackage{amsmath}
+\RequirePackage{fancyhdr}
+\RequirePackage{anysize}
+\RequirePackage{fancybox,graphicx}
+
+ 
+% vzhlad stranky
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% nastavenie stranky
+%===================================================================
+% pouzitie balicka anysize a v~nom pouzitie prikazu
+% \marginsize{left}{right}{top}{bottom} 
+% standardne nastavenie \marginsize{3.0cm}{2.0cm}{2.0cm}{2.0cm} 
+\marginsize{2.5cm}{2.0cm}{2.0cm}{1.5cm} 
+%===================================================================
+
+% zahlavie a zapatie
+%===================================================================
+% zahlavie a zapatie dokumentu, v zahlavi bude na pravej strane nazov
+% aktualnej sekcie a v zapati budu cisla stranok 
+%-------------------------------------------------------------------
+\fancyhead{}
+\fancyhead[RE,RO]{\slshape \rightmark}
+%\fancyhead[RE]{\slshape \leftmark}
+\fancyfoot[C]{\bfseries \thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+%-------------------------------------------------------------------
+% pozri balik fancyhdr
+%===================================================================
+
+% narrow environment na posuvanie obrazkov na stranke
+%===================================================================
+\newenvironment{narrow}[2]{%
+\begin{list}{}{%
+\setlength{\topsep}{0pt}%
+\setlength{\leftmargin}{#1}%
+\setlength{\rightmargin}{#2}%
+\setlength{\listparindent}{\parindent}%
+\setlength{\itemindent}{\parindent}%
+\setlength{\parsep}{\parskip}}%
+\item[]}{\end{list}}
+%===================================================================
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% matematicke prostredie
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%definovanie vektorov
+%===================================================================
+\def\ve#1{\mathchoice{\mbox{\boldmath$\displaystyle#1$}}
+{\mbox{\boldmath$\textstyle#1$}}
+{\mbox{\boldmath$\scriptstyle#1$}}
+{\mbox{\boldmath$\scriptscriptstyle#1$}}}
+%===================================================================
+
+% definovanie matematickych fontov
+%===================================================================
+\newcommand{\mf}[1]{\mathcal{#1}}
+%===================================================================
+
+% ine prospesne definicie
+%===================================================================
+%-dx/dt, vo vzorcoch vlozi stojate d
+\newcommand{\dd}{\textnormal{\text{d}}}
+\newcommand{\dt}{\dd{}t} 
+
+%e$^{}$, vo vzorcoch vlozi stojate e
+\newcommand{\ee}{\textrm{e}}
+%===================================================================
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% definovanie nazvu na titulnej strane
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\dynopttitle}{%
+  \boxput*(0.55,-1){%
+     \makebox(0,0)[c]{%
+        \colorbox{white}{%
+           \shadowbox{%
+              \color{red!80!white}
+              {\Huge{\sl{\textcolor{red!80!white}{~DYNOPT~}}}}
+           }%
+        }%
+     }%
+  }%
+  {%
+     \setlength{\fboxsep}{20pt}%
+     \Ovalbox{%
+        \begin{minipage}{0.82\linewidth}
+           \setlength{\abovedisplayskip}{0pt}%
+           \begin{flushright}
+              \large{%
+                 \textbf{MATLAB
+                   \emph{\textcolor{red!80!white}{DYN}}amic
+                   \emph{\textcolor{red!80!white}{OPT}}imisation Code} 
+              } 
+           \end{flushright}
+        \end{minipage}%
+     }%
+  }%
+}%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% definovanie boxu v~contakt liste
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \mybox{}{}
+%===================================================================
+\newcommand{\mybox}[2]{%
+  \begin{center}
+     \boxput*(0,1){%
+        \makebox(0,0)[c]{%
+           \colorbox{white}{\Large{\textbf{~#1~}}}
+        }%
+     }%
+     {%
+        \setlength{\fboxsep}{20pt}%
+        \Ovalbox{%
+          \begin{minipage}{0.92\textwidth}
+              \setlength{\abovedisplayskip}{0pt}%
+              \setlength{\belowdisplayskip}{0pt}%
+              ~#2~ 
+          \end{minipage}
+        }%
+     }%
+  \end{center}   
+}%
+%===================================================================
+
+% \myallertbox{}{}
+%===================================================================
+\newcommand{\myallertbox}[2]{%
+  \begin{center}
+     \boxput*(0,1){%
+        \makebox(0,0)[c]{%
+           \colorbox{white}{%
+              \shadowbox{%
+                 \color{red!80!white}{\Large{\textbf{~#1~}}}
+              }%
+           }%
+        }%
+     }%
+     {%
+        \setlength{\fboxsep}{20pt}%
+        \Ovalbox{%
+           \begin{minipage}{0.92\textwidth}
+              \setlength{\abovedisplayskip}{0pt}%
+              \setlength{\belowdisplayskip}{0pt}%
+              ~#2~ 
+           \end{minipage}%
+        }%
+     }%
+  \end{center}   
+}%
+%===================================================================
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% definovanie vybranych typov slov
+%------------------------------------------------------------------
+% -funkcia, zmeni font a tvar pisma pre neznamu funkcia 
+\newcommand{\fun}[1]{\textit{#1}}
+
+% -subor, zmeni font a tvar pisma pre neznamu subor
+\newcommand{\subor}[1]{\textsl{#1}}
+
+% -argument funkcie, zmeni font a tvar pisma pre neznamu argument
+% funkcie 
+\newcommand{\argfun}[1]{\texttt{#1}}
+%------------------------------------------------------------------
+
+
+
