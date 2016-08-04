@@ -24,11 +24,6 @@ It is assumed, that the optimised dynamic model may be described by a
 set of ordinary differential equations (ODE's) or
 differential-algebraic equations (DAE's).
 
-This collection of functions extend the capability of the MATLAB
-Optimization Toolbox, specifically of the constrained nonlinear
-minimisation routine~\fun{fmincon}. 
-
-
 \section{What is New in this Version}
 \label{sec:what-new-this}
 
@@ -45,6 +40,10 @@ Version 4 introduces several new properties of the package:
 Version 4.2 enables definition of min/max constraints on state and
 control independently on each interval (see
 Section~\ref{sec:unconprobgradbound}).
+
+Version 4.3 makes possible to use different NLP solvers (see
+Chapter~\ref{sec:conprobgrad} for example of use Ipopt and
+Chapter~\ref{cha:reference} for reference).
 
 \section{How to Use this Manual}
 \label{sec:howtouseman}
@@ -63,18 +62,85 @@ This manual has four main parts:
   their definitions and solutions.
 \end{description}
 
-\section{Installing~\fun{dynopt}}
+\section{Code, Documentation, and License}
+Starting with the version 4.3, \fun{dynopt} has been moved to
+bitbucket and both source code of the toolbox and this documentation
+are available. 
+
+Project: \\
+\url{https://bitbucket.org/dynopt/}
+
+Code:\\
+\url{https://bitbucket.org/dynopt/dynopt_code}
+
+Documentation:\\
+\url{https://bitbucket.org/dynopt/dynopt_doc}
+
+\medskip
+\noindent
+dynopt is free of charge to use and is openly distributed, but note
+that (YALMIP license)
+\begin{itemize}
+\item Copyright is owned by Miroslav Fikar.
+\item dynopt must be referenced when used in a published work (give me
+  some credit for saving your valuable time!)
+\item dynopt, or forks or versions of dynopt, may not be
+  re-distributed as a part of a commercial product unless agreed upon
+  with the copyright owner (if you make money from dynopt, let me in
+  first!)
+\item dynopt is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE (if your
+  satellite crash or you fail your Phd due to a bug in dynopt, your
+  loss!).
+\item Forks or versions of dynopt must include, and follow, this
+  license in any distribution.
+\end{itemize}
+ 
+\section{Installation}
 \label{sec:instdynopt}
 
-\fun{dynopt} code does not need any special installation procedure. To
-use~\fun{dynopt}, just add the Dynamic Optimisation Tool directory
-\subor{dynoptim} into the path by addpath environment. 
+\subsection{Manual Installation}
+Download \fun{dynopt} from:\\
+\url{https://bitbucket.org/dynopt/dynopt_code/downloads/dynopt_4.3.0.zip}. 
 
-As mentioned before,~\fun{dynopt} is a set of functions that extend
-the capability of the MATLAB Optimization Toolbox. That means, that
-for using~\fun{dynopt} this toolbox has to be provided. To determine
-if the Optimization Toolbox is installed on your system, type this
-command at the MATLAB prompt:
+\fun{dynopt} needs \fun{fminsdp} toolbox~\citep{fminsdp} to be
+installed. For convenience, it is packed in the \subor{fminsdp}
+directory, but feel free to get it from the original location. To
+install it, add directories \subor{fminsdp},
+\subor{fminsdp/interfaces}, and \subor{fminsdp/utilities} to MATLAB path.
+
+Next, install \fun{dynopt}: add the directory \subor{dynoptim} to
+MATLAB path. 
+
+Both packages can be installed by getting into \subor{dynopt}
+directory in MATLAB and running the following commands:
+\begin{verbatim}
+addpath([pwd '/dynoptim']);
+addpath([pwd '/fminsdp']);
+addpath([pwd '/fminsdp/interfaces']);
+addpath([pwd '/fminsdp/utilities']);
+\end{verbatim}
+and then saving the path for future.
+
+\subsection{Installation using tbxmanager}
+\fun{tbxmanager} (\url{https://www.tbxmanager.com}) is a tool to
+install and manage several third party optimisation toolboxes for
+MATLAB.  The complete list of available packages is disponible at its
+home page.
+
+Install \fun{tbxmanager} according to directions at its home
+page. Then, \fun{dynopt} is installed (or upgraded) as:
+\begin{verbatim}
+tbxmanager install dynopt
+\end{verbatim}
+
+\subsection{Optimisation Toolbox}
+\fun{dynopt} is a set of functions that extend the capability of the
+MATLAB Optimization Toolbox. That means, that for using~\fun{dynopt}
+this toolbox has to be provided. To determine if the Optimization
+Toolbox is installed on your system, type this command at the MATLAB
+prompt:
 \begin{verbatim}
 ver
 \end{verbatim}
@@ -85,11 +151,11 @@ Optimization Toolbox is not installed, check the Installation Guide
 for instructions on how to install it.
 
 \fun{dynopt} has been developed and tested since MATLAB 6.5 (R13). The
-results in this guide are obtained with MATLAB 2013b (Linux 64b) using
-SQP or interior point solver. It is quite usual that results obtained
-and convergence criteria achieved with different versions of MATLAB or
-its toolboxes can produce slightly different (better, worse) results.
-
+results in this guide are obtained with MATLAB 2015a (Linux 64b) using
+solvers \fun{fmincon} and \fun{ipopt}. It is quite usual that results
+obtained and convergence criteria achieved with different versions of
+MATLAB or its toolboxes can/will produce slightly different (better,
+worse) results.
 
 
 %%% Local Variables: 

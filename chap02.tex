@@ -24,19 +24,19 @@ The performance index (cost functional or optimisation criterion) can
 in general be written in one of three forms as follows:
 \paragraph{Bolza form}
 \begin{equation}
-\mf{J}(\ve{u}(t),\ve{p}) = \mf{G}(\ve{x}(t_{f}),\ve{p},t_{f}) +
+\mf{J}(\ve{u}(t),\ve{p},t_{f}) = \mf{G}(\ve{x}(t_{f}),\ve{p},t_{f}) +
 \int_{t_{0}}^{t_{f}}\mf{F}(\ve{x}(t),\ve{u}(t),\ve{p},t)\dt
 \label{eq:bolza} 
 \end{equation} 
 \paragraph{Lagrange form}
 \begin{equation}
-\mf{J}(\ve{u}(t),\ve{p}) =
+\mf{J}(\ve{u}(t),\ve{p},t_{f}) =
 \int_{t_{0}}^{t_{f}}\mf{F}(\ve{x}(t),\ve{u}(t),\ve{p},t)\dt
 \label{eq:lagrange}
 \end{equation} 
 \paragraph{Mayer form}
 \begin{equation}
-\mf{J}(\ve{u}(t),\ve{p}) = \mf{G}(\ve{x}(t_{f}),\ve{p},t_{f})
+\mf{J}(\ve{u}(t),\ve{p},t_{f}) = \mf{G}(\ve{x}(t_{f}),\ve{p},t_{f})
 \label{eq:mayer} 
 \end{equation}where
 \begin{description}
@@ -48,7 +48,8 @@ in general be written in one of three forms as follows:
   function evaluated over a period of time, 
 \item[$\ve{x}(t)$] --  vector of state variables,
 \item[$\ve{u}(t)$] -- vector of control variables,
-\item[$\ve{p}$] -- vector of time independent parameters.
+\item[$\ve{p}$] -- vector of time independent parameters,
+\item[$t_0,t_{f}$] -- initial and final times.
 \end{description}
 Note that all three forms are interchangeable and can be derived one
 from another. In the sequel, Mayer form will be used.
@@ -77,9 +78,9 @@ terminal-point constraints~\cite{goh88}. Moreover, they may be written
 in the following canonical form similar to the cost
 form~\eqref{eq:mayer}: 
 \begin{equation}
-\mf{J}_{i}(\ve{u}(t),\ve{p}) = \mf{G}_{i}(\ve{x}(t_{i}),\ve{p},t_{i}) 
+\mf{J}_{i}(\ve{u}(t),\ve{p},t_i) = \mf{G}_{i}(\ve{x}(t_{i}),\ve{p},t_i) 
 \label{eq:constraints} 
-\end{equation} where $t_{i} \leq t_{f},~i=1,\ldots,nc$, and $nc$ is
+\end{equation} where $t_i \leq t_f$, $i=1,\ldots,nc$, and $nc$ is
 the number of constraints.
 
 \section{Optimal Control Problem Solutions}
@@ -321,15 +322,18 @@ coefficients for the state and control profiles. Problem
 \eqref{eq:gencontprob} can be now solved by any large-scale nonlinear
 programming solver.
 
-To solve this problem within MATLAB, the Optimization Toolbox was
-used. This includes several programs for treating optimisation
-problems. In this case function~\fun{fmincon} was chosen. This can
+To solve this problem within MATLAB, default settings of~\fun{dynopt}
+use the Optimization Toolbox and its function~\fun{fmincon}. This can
 minimise/maximise given objective function with respect to nonlinear
 equality and inequality constraints. In order to use this function it
 was necessary to create and program series of additional
 functions. These additional functions together with~\fun{fmincon} are
 formed within~\fun{dynopt} which is simple for user to employ. This
-function is presented in next chapter. 
+function is presented in next chapter.
+
+Alternate nonlinear programming solvers can be used thanks to
+interface~\fun{fminsdp}. This version of~\fun{dynopt} was also tested
+with Ipopt~\citep{waech06}.
 
 
 

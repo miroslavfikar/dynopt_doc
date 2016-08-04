@@ -38,7 +38,9 @@ by \cite{dad95}. Moreover the value of 0.57284 was reported by
 2 collocation points for control variables on the same number of
 intervals as in the literature to this problem, we obtained a slightly
 closer value of performance index of 0.5734171 to the reported global
-maximum (109 iterations, exitflag equal to~1). The optimal control
+maximum (109 iterations, exitflag equal to~1). Ipopt needed more than
+5400 iterations and converged to 0.57305461.  
+The optimal control
 and state profiles are given in Figs. \ref{fig:prob4_u} and
 \ref{fig:prob4_x}.
 
@@ -89,12 +91,14 @@ reactor where the reaction $A \rightarrow B \rightarrow C$ take
 place. The problem was solved using a relaxed reduced space SQP
 strategy by~\cite{log89} and the value of 0.610775 was reported as
 global maximum.~\citeauthor{raj01} reached the value of 0.61045. We
-obtained optimal value of 0.610682 (1000 iterations, 11468 function
+obtained optimal value of 0.6107682 (1000 iterations, 11468 function
 evaluations, exitflag equal to~0 (maxiter exceeded), by using
 5 collocation points for state variables and keeping control variable
 profile as piecewise linear on 4 time intervals. This is quite closer
-to the global one. The optimal control and state profiles are given in
-Figs.~\ref{fig:prob5_u} and \ref{fig:prob5_x}.
+to the global one. The same settings for ipopt resulted in
+a non-optimal solution. The optimal control
+and state profiles are given in Figs.~\ref{fig:prob5_u} and
+\ref{fig:prob5_x}.
   
 \begin{figure}[htb]
 \begin{minipage}[t]{0.5\linewidth}
@@ -137,11 +141,12 @@ where
 Optimisation of this problem has also been analysed. This problem was
 solved by~\cite{log89,raj01} and the optima 0.476946, 0.47615 were
 reported. Value of the performance index obtained for this problem
-using~\fun{dynopt} was 0.477712 (243 iterations, exitflag equal
-to~1). In this case 5 collocation points for state variables and
-2 collocation points for control variables were chosen. The number of
-time-intervals have been set to 12. The optimal control and state
-profiles are given in Figs.~\ref{fig:prob6_u} and \ref{fig:prob6_x}.
+using~\fun{dynopt} was 0.477712 (243 iterations, exitflag equal to~1,
+fmincon) or 0.477458 (172 iterations, ipopt). In this case
+5 collocation points for state variables and 2 collocation points for
+control variables were chosen. The number of time-intervals have been
+set to 12. The optimal control and state profiles are given in
+Figs.~\ref{fig:prob6_u} and \ref{fig:prob6_x}.
 
 \begin{figure}[htb]
 \begin{minipage}[t]{0.5\linewidth}
@@ -201,43 +206,18 @@ This problem was solved by~\cite{fik02,jac69}. Reported optimal value
 of 21.757 was obtained using CVP method implemented in DYNO. For this
 problem, 4 collocation points for state variables, 2 collocation
 points for control variables for 10 intervals were defined and an
-optimum was found at value of 21.82317 (870 iterations, exitflag equal
-to~1). The optimal control profiles are given in
-Figs. \ref{fig:prob7_u1}, \ref{fig:prob7_u2}, \ref{fig:prob7_u3},
-\ref{fig:prob7_u4} and optimal state profiles are represented in
-Fig.~\ref{fig:prob7_x}.
+optimum was found at value of 21.82317 (860 iterations, exitflag equal
+to~1, fmincon). The solver Ipopt did not converge after 10000
+iterations. The optimal control and state profiles are given in
+Fig.~\ref{fig:prob7}.
 
 \begin{figure}[htb]
-\begin{minipage}[t]{0.5\linewidth}
-\centering
-\includegraphics[width=0.9\textwidth]{examples/problem7/graphs/u1_4210.eps}
-\caption[Problem 7: Control profile for $u_{1}$]{Control $u_{1}$ for
-  problem 7} \label{fig:prob7_u1} 
-\end{minipage}
-\begin{minipage}[t]{0.5\linewidth}
-\centering
-\includegraphics[width=0.9\textwidth]{examples/problem7/graphs/u2_4210.eps}
-\caption[Problem 7: Control profile for $u_{2}$]{Control $u_{2}$ for
-  problem 7} \label{fig:prob7_u2} 
-\end{minipage}
-\begin{minipage}[t]{0.5\linewidth}
-\centering
-\includegraphics[width=0.9\textwidth]{examples/problem7/graphs/u3_4210.eps}
-\caption[Problem 7: Control profile for $u_{3}$]{Control $u_{3}$ for
-  problem 7} \label{fig:prob7_u3} 
-\end{minipage}
-\begin{minipage}[t]{0.5\linewidth}
-\centering
-\includegraphics[width=0.9\textwidth]{examples/problem7/graphs/u4_4210.eps}
-\caption[Problem 7: Control profile for $u_{4}$]{Control $u_{4}$ for
-  problem 7} \label{fig:prob7_u4}
-\end{minipage}
-\begin{minipage}[t]{0.5\linewidth}
-\centering
-\includegraphics[width=0.9\textwidth]{examples/problem7/graphs/x17_4210.eps}
-\caption[Problem 7: State profiles]{State profiles for problem 7}
-\label{fig:prob7_x} 
-\end{minipage}
+\includegraphics[width=0.45\textwidth]{examples/problem7/graphs/u1_4210.eps}
+\includegraphics[width=0.45\textwidth]{examples/problem7/graphs/u2_4210.eps}
+\includegraphics[width=0.45\textwidth]{examples/problem7/graphs/u3_4210.eps}
+\includegraphics[width=0.45\textwidth]{examples/problem7/graphs/u4_4210.eps}
+\includegraphics[width=0.45\textwidth]{examples/problem7/graphs/x17_4210.eps}
+\caption{Control and state profiles for problem 7} \label{fig:prob7}
 \end{figure}
 
 

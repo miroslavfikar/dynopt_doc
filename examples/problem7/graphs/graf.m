@@ -11,7 +11,7 @@ axis tight
 set(1,'PaperUnits','centimeters')
 set(1,'PaperPosition',[3 10 11 8.25])
 
-print -depsc u1_3210.eps
+print -depsc u1_4210.eps
 pause
 
 plot(tplot,uplot(:,2),'k-')
@@ -23,7 +23,7 @@ axis tight
 set(1,'PaperUnits','centimeters')
 set(1,'PaperPosition',[3 10 11 8.25])
 
-print -depsc u2_3210.eps
+print -depsc u2_4210.eps
 pause
 
 plot(tplot,uplot(:,3),'k-')
@@ -35,7 +35,7 @@ axis tight
 set(1,'PaperUnits','centimeters')
 set(1,'PaperPosition',[3 10 11 8.25])
 
-print -depsc u3_3210.eps
+print -depsc u3_4210.eps
 pause
 
 plot(tplot,uplot(:,4),'k-')
@@ -47,7 +47,7 @@ axis tight
 set(1,'PaperUnits','centimeters')
 set(1,'PaperPosition',[3 10 11 8.25])
 
-print -depsc u4_3210.eps
+print -depsc u4_4210.eps
 pause
 
 plot(tplot,xplot(:,1),'k-',tplot,xplot(:,2),'b-',tplot,xplot(:,3),'r-', ...
@@ -62,7 +62,7 @@ axis tight
 set(1,'PaperUnits','centimeters')
 set(1,'PaperPosition',[3 10 11 8.25])
 
-print -depsc x17_3210.eps
+print -depsc x17_4210.eps
 pause
 
 plot(tplot,xplot(:,8),'k-')
@@ -74,7 +74,7 @@ axis tight
 set(1,'PaperUnits','centimeters')
 set(1,'PaperPosition',[3 10 11 8.25])
 
-print -depsc x8_3210.eps
+print -depsc x8_4210.eps
 pause
 close
 %..........................................................................

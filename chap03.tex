@@ -85,23 +85,22 @@ The results returned by \fun{dynopt} in \argfun{optimout} structure
 contain the vector of times \argfun{t}, the vector of optimal control
 profile \argfun{u}. They are ready to be plotted.\\
 The objective function at the optimal solution [\argfun{t},\argfun{u}]
-is returned after 31 iterations in before mentioned output structure
+is returned after 133 iterations in above mentioned output structure
 \argfun{optimout} as parameter \argfun{fval}:
 \begin{verbatim}
-optimout.fval = 0.7615968
+optimout.fval = 7.615959e-01
 \end{verbatim}
 The parameter \argfun{exitflag} tells if the algorithm converged. An
 \argfun{exitflag} $>$ 0 means a local minimum was found: 
 \begin{verbatim}
-optimout.exitflag = 2
+optimout.exitflag = 1
 \end{verbatim}
 More details about the optimisation are given by the
 \argfun{optimout.output} structure. In this example, the default
 selection of the large-scale algorithm has been turned off, so the
 medium-scale algorithm is used. Also all termination tolerances have
 been changed. For more information about \argfun{options} and
-\fun{dynopt} input and output arguments, see chapter
-\ref{cha:reference}. 
+\fun{dynopt} input and output arguments, see Chapter~\ref{cha:reference}. 
 
 The user may want to plot also the state profiles but without
 integrating the \fun{process} with respect to the optimal control
@@ -111,10 +110,14 @@ function \fun{profiles} for this reason as follows:
 [tplot,uplot,xplot] = profiles(optimout,optimparam,ntimes);
 \end{verbatim}
 where \argfun{ntimes} represents the density of the points plotted per
-interval.
+interval. Note that profiles are represented by collocation
+polynomials and not as a solution of the original ODE/DAE
+system. Therefore, there might be slight differences with regard to
+the original problem. For more precise plots, integrate the original
+problem with optimal control trajectories.
 
 Graphical representation of the problem \eqref{eq:ucp} solution is
-shown in Figs. \ref{fig:prob1a_u_323n} and \ref{fig:prob1a_x12_323n}. 
+shown in Figs.~\ref{fig:prob1a_u_323n} and \ref{fig:prob1a_x12_323n}. 
 
 \begin{figure}[htb]
 \begin{minipage}[t]{0.5\linewidth}
@@ -273,11 +276,11 @@ constraint applied in final time $t_{f} = 1$, the input parameter
 \argfun{optimparam.confun} is set to the constraint function name
 $@confun$. Next, 6 collocation points for state variables, 4 intervals
 with the same initial lengths of intervals equal to $1/4$ have been
-chosen. Other parameter are as same as in problem \eqref{eq:ucp}.
+chosen. Other parameters are as same as in problem \eqref{eq:ucp}.
 
 The optimal solution is shown in Figs. \ref{fig:prob1b_u} and
 \ref{fig:prob1b_x}. The value of the objective function at this
-solution is 0.9245624 after 1136 iterations and with \argfun{exitflag}
+solution is 9.245704e-01 after 1440 iterations and with \argfun{exitflag}
 equal to~2.
 
 \begin{figure}[htb]
@@ -294,6 +297,15 @@ equal to~2.
   constrained problem with gradients} \label{fig:prob1b_x} 
 \end{minipage}
 \end{figure}
+
+Alternative NLP solver Ipopt can be invoked when uncommenting the line 
+\begin{verbatim}
+options.NLPsolver='ipopt';
+\end{verbatim}
+in the main file. A~slightly better value of the optimum is found in
+622 iterations and the value of the objective function is
+9.242380-01. More about alternate NLP solvers can be found in
+Chapter~\ref{cha:reference}.
 
 \subsection{Example 3: Unconstrained Problem  with Gradients and Bounds}
 \label{sec:unconprobgradbound}
@@ -330,10 +342,12 @@ such that $t_{f}=1$.
 {\small \verbatiminput{examples/problem2/problem2.m}}
 
 The value of the objective function evaluated for optimal control
-profile is of value of 0.1202688 after 175 iterations with exitflag
-equal to~1. Graphical representation of the solution of the problem
-\eqref{eq:ucpgb} is shown in Figs. \ref{fig:prob2_u} and
-\ref{fig:prob2_x}.
+profile is of value of 1.202688e-01 after 175 iterations with exitflag
+equal to~1 (using default NLP solver~\fun{fmincon}). Graphical
+representation of the solution of the problem \eqref{eq:ucpgb} is
+shown in Figs. \ref{fig:prob2_u} and \ref{fig:prob2_x}. Ipopt solver
+finished after 1366 iterations with the cost function value of
+1.2047839e-01. 
 
 \begin{figure}[htb]
 \begin{minipage}[t]{0.5\linewidth}
@@ -427,10 +441,11 @@ M-file~\subor{problem3.m} as follows:
 
 {\small \verbatiminput{examples/problem3/problem3.m}}
 
-An optimal value of $x_{3}(t_{f})=0.1701564$ was computed after 3013
-iterations with exitflag equal to~1. Graphical representation of the
-solution of the problem~\eqref{eq:ispcpb} is shown in
-Figs. \ref{fig:prob3_u}, \ref{fig:prob3_x}, and \ref{fig:prob3_c}.
+An optimal value of $x_{3}(t_{f})=0.1701564$ was computed after 3069
+iterations with exitflag equal to~1 (using~\fun{fmincon}). Graphical
+representation of the solution of the problem~\eqref{eq:ispcpb} is
+shown in Figs. \ref{fig:prob3_u}, \ref{fig:prob3_x}, and
+\ref{fig:prob3_c}.
 
 \begin{figure}[htb]
 \begin{minipage}[t]{0.5\linewidth}
@@ -441,19 +456,19 @@ Figs. \ref{fig:prob3_u}, \ref{fig:prob3_x}, and \ref{fig:prob3_c}.
 \end{minipage}
 \begin{minipage}[t]{0.5\linewidth}
 \centering
-\includegraphics[width=0.99\textwidth]{examples/problem3/graphs/x12_627a.eps}
+\includegraphics[width=0.99\textwidth,clip]{examples/problem3/graphs/x12_627a.eps}
 \caption[Tutorial example 4: state profiles]{State profiles for
   inequality state path constraint problem} \label{fig:prob3_x}
 \end{minipage}
 \begin{minipage}[t]{0.5\linewidth}
 \centering
-\includegraphics[width=0.99\textwidth]{examples/problem3/graphs/c_627a.eps}
+\includegraphics[width=0.99\textwidth,clip]{examples/problem3/graphs/c_627a.eps}
 \caption[Tutorial example 4: constraints]{Constraint profile for
   inequality state path constraint problem} \label{fig:prob3_c}
 \end{minipage}
 \begin{minipage}[t]{0.5\linewidth}
 \centering
-\includegraphics[width=0.99\textwidth]{examples/problem8/graphs/xpa.eps}
+\includegraphics[width=0.99\textwidth,clip]{examples/problem8/graphs/xpa.eps}
 \caption[Tutorial example 5: state profiles]{Comparison of estimated
   and measured state trajectory for state $x_{1}$ in parameter
   estimation problem} \label{fig:prob8_x} 
@@ -545,56 +560,37 @@ acceleration.
 {\small \verbatiminput{examples/problem-car/objfun.m}}
 
 \paragraph{Step3: Invoke~\fun{dynopt}} writing an M-file
-\subor{car.m} as follows: 
+\subor{car.m} as follows. Note that optimising the final time is
+indicated by setting it to an empty matrix: \verb+optimparam.tf=[]+
+and by optimising the time interval lengths. 
 
 {\small \verbatiminput{examples/problem-car/car.m}}
 
 The value of the objective function evaluated for optimal control
-profile is of value of 30.00 after 85 iterations with exitflag
-equal to~1. Graphical representation of the solution of the
-problem~\eqref{eq:car} is shown in Figs. \ref{fig:car_u} and
-\ref{fig:car_x}.
+profile is of value of 30.00 after 85 iterations with exitflag equal
+to~1 (\fun{fmincon}) or after 28 iterations (\fun{ipopt}). Graphical
+representation of the solution of the problem~\eqref{eq:car} is shown
+in Fig.~\ref{fig:car}.
 
 \begin{figure}[htb]
-\begin{minipage}[t]{0.48\linewidth}
-\centering
-\includegraphics[width=0.99\textwidth]{examples/problem-car/car_u.eps}
-\caption[Tutorial example car: control profile]{Control profile for
-  minimum time car problem} \label{fig:car_u} 
-\end{minipage}
-\begin{minipage}[t]{0.48\linewidth}
-\centering
-\includegraphics[width=0.99\textwidth]{examples/problem-car/car_x.eps}
-\caption[Tutorial example car: state profile]{State profiles for
-  minimum time car problem} \label{fig:car_x} 
-\end{minipage}
+\includegraphics[width=0.49\textwidth]{examples/problem-car/car_u.eps}
+\includegraphics[width=0.49\textwidth]{examples/problem-car/car_x.eps}
+\caption{Control and state profiles for minimum time car
+  problem} \label{fig:car}
 \end{figure}
 
 The same problem with constrained velocity during the whole trajectory
-$x_2 < 10$ (problem car2) converged to the minimum value of 37.50 after
-139 iterations with exitflag equal to~1. Graphical representation of
-the solution is shown in Figs. \ref{fig:car2_u},  \ref{fig:car2_x1}, and \ref{fig:car2_x2}.
+$x_2 < 10$ (problem car2) converged to the minimum value of 37.50
+after 139/31 iterations (fmincon/ipopt). Graphical representation of
+the solution is shown in Fig.~\ref{fig:car2}.
 
 
 \begin{figure}[htb]
-\begin{minipage}[t]{0.32\linewidth}
-\centering
-\includegraphics[width=0.99\textwidth]{examples/problem-car2/car_u.eps}
-\caption[Tutorial example constrained car: control profile]{Control profile for
-  constrained minimum time car problem} \label{fig:car2_u} 
-\end{minipage}
-\begin{minipage}[t]{0.32\linewidth}
-\centering
-\includegraphics[width=0.99\textwidth]{examples/problem-car2/car_x1.eps}
-\caption[Tutorial example constrained car: state profile 1]{Distance profile for
-  minimum time car problem} \label{fig:car2_x1} 
-\end{minipage}
-\begin{minipage}[t]{0.32\linewidth}
-\centering
-\includegraphics[width=0.99\textwidth]{examples/problem-car2/car_x2.eps}
-\caption[Tutorial example constrained car: state profile 2]{Velocity profile for
-  minimum time car problem} \label{fig:car2_x2} 
-\end{minipage}
+\includegraphics[width=0.32\textwidth]{examples/problem-car2/car_u.eps}
+\includegraphics[width=0.32\textwidth]{examples/problem-car2/car_x1.eps}
+\includegraphics[width=0.32\textwidth]{examples/problem-car2/car_x2.eps}
+\caption{Control and state profiles for
+  constrained minimum time car problem} \label{fig:car2} 
 \end{figure}
 
 \section{DAE systems}
@@ -634,12 +630,11 @@ M-file~\subor{problem5dae.m} as follows:
 
 {\small \verbatiminput{examples/problem5_dae/problem5.m}}
 
-After 134 iteration and 347 function evaluations, optimal value of
-$x_{2}(t_{f}) = 0.6106136$ was found. The higher number of iteration
-and function evaluations is resulting from an higher accuracy set to
-$10^{-7}$. Graphical representation of the problem
+After 134 iterations, optimal value of $x_{2}(t_{f}) = 0.6106136$ was
+found using fmincon. The same solution was found using ipopt but after
+almost 20000 iterations. Graphical representation of the problem
 \eqref{eq:batch_dae} solution is shown in Figs. \ref{fig:prob5dae_u}
-and \ref{fig:prob5dae_x}. 
+and \ref{fig:prob5dae_x}.
 
 \begin{figure}[htb]
 \begin{minipage}[t]{0.5\linewidth}

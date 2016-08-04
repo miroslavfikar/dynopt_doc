@@ -137,7 +137,16 @@ has following fields to be set:
   parameter is defined by MATLAB for all optimisation routines of
   MATLAB Optimization Toolbox. For information about the parameters 
   which are important for \fun{dynopt}, see Tab.~\ref{tab:optpar} or
-  the individual function reference pages.
+  the individual function reference pages. These parameters can be
+  specified using the function \fun{optimset}.
+
+  In addition to these, parameter \argfun{NLPsolver} determines NLP
+  solver using the \fun{fminsdp} toolbox. The default one is
+  \fun{fmincon} but others can be specified as well if installed
+  separately. This parameter can be set directly as
+\begin{verbatim}
+options.NLPsolver='ipopt';
+\end{verbatim}
 \end{description}
 
 % continualna tabulka
@@ -201,6 +210,10 @@ value: 1.0000e-006.\\
 \hline
 \argfun{TypicalX} & Typical x values (large-scale algorithm only), default
 value: 'ones(numberofvariables,1)'.\\
+\hline
+\argfun{NLPsolver} & Choice of NLP solver, possible values:
+'fmincon', 'snopt', 'ipopt', 'knitro', 'mma', 'gcmma', default: 
+'fmincon'.\\
 \hline
 \end{longtable}
 %---------------------------------------------------------------------
@@ -462,33 +475,40 @@ included below for \argfun{objfun}, \argfun{confun}, \argfun{process}.
 \subsection{Algorithm}
 
 \begin{description}
-\item[Large-scale optimisation] 
-By default~\fun{dynopt} will choose the large-scale algorithm if the
-user supplies the gradient in objfun (and~\argfun{GradObj} is 'on'
-in~\argfun{options}) and if only upper and lower bounds exists or only
-linear equality constraints exist. This algorithm is a subspace trust
-region method and is based on the interior-reflective Newton method
-described in ~\cite{col96}. Each iteration involves the approximate
-solution of a large linear system using the method of preconditioned
-conjugate gradients (PCG). See the trust-region and preconditioned
-conjugate gradient method descriptions in the Large-Scale Algorithms
-chapter in~\cite{col99}. 
-\item[Medium-scale optimisation]
-\fun{dynopt} uses through the~\fun{fmincon} Sequential Programming
-(SQP) method. In this method, a Quadratic Programming (QP) 
-subproblem is solved at each iteration. An estimate of the Hessian of
-the Lagrangian is updated at each iteration using the BFGS
-formula~\cite{col96}.  
+\item[Large-scale optimisation] By default~\fun{dynopt} will choose
+  the large-scale algorithm of~\fun{fmincon} if the user supplies the
+  gradient in objfun (and~\argfun{GradObj} is 'on'
+  in~\argfun{options}) and if only upper and lower bounds exists or
+  only linear equality constraints exist. This algorithm is a subspace
+  trust region method and is based on the interior-reflective Newton
+  method described in ~\cite{col96}. Each iteration involves the
+  approximate solution of a large linear system using the method of
+  preconditioned conjugate gradients (PCG). See the trust-region and
+  preconditioned conjugate gradient method descriptions in the
+  Large-Scale Algorithms chapter in~\cite{col99}.
+\item[Medium-scale optimisation] \fun{dynopt} uses through
+  the~\fun{fmincon} Sequential Programming (SQP) method. In this
+  method, a Quadratic Programming (QP) subproblem is solved at each
+  iteration. An estimate of the Hessian of the Lagrangian is updated
+  at each iteration using the BFGS formula~\cite{col96}.
 
-A line search is performed using a merit function similar to that
-proposed by~\cite{han77}. The QP subproblem is solved using an 
-active set strategy similar to that described in~\cite{gil81}. A full
-description of this algorithm is found in the Constrained optimisation
-section of the Introduction to algorithms chapter of the Optimization
-Toolbox manual. See also the SQP implementation section in the
-Introduction to Algorithms chapter for more details on the algorithm
-used. 
+  A line search is performed using a merit function similar to that
+  proposed by~\cite{han77}. The QP subproblem is solved using an
+  active set strategy similar to that described in~\cite{gil81}.
+  A full description of this algorithm is found in the Constrained
+  optimisation section of the Introduction to algorithms chapter of
+  the Optimization Toolbox manual. See also the SQP implementation
+  section in the Introduction to Algorithms chapter for more details
+  on the algorithm used.
 \end{description}
+
+The software layer of \fun{fminsdp} toolbox adds different NLP solvers
+that have to be installed separately. This version of \fun{dynopt} was
+tested with open source solver Ipopt 3.12.4. Note that ipopt requires
+user supplied gradients in the cost functions and constraints. If
+these are not supplied, fmincon is used instead. For concrete options
+of this solver and other available other ones see their
+documentations.
 
 \section{Additional Functions}
 \label{sec:addfun}

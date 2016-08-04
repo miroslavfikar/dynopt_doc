@@ -8,6 +8,8 @@ options = optimset(options,'TolX',1e-7);
 options = optimset(options,'Algorithm','sqp'); %2010a
 %options = optimset(options,'Algorithm','active-set'); %2008b
 
+%options.NLPsolver='ipopt';
+
 optimparam.optvar = 3; 
 optimparam.objtype = []; 
 optimparam.ncolx = 6;
@@ -29,4 +31,4 @@ save optimresults optimout optimparam
 [tplot,uplot,xplot] = profiles(optimout,optimparam,50);
 save optimprofiles tplot uplot xplot 
 
-graph
+%graph
