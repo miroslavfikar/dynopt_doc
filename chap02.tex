@@ -127,7 +127,7 @@ be described either by an ODE system or by an DAE system.
 Consider the following general control problem for $t \in
 [t_{0},t_{f}]$:
 \begin{equation}
-\min_{\ve{u}(t),\ve{p}}\{\mf{G}(\ve{x}(t_{f}),\ve{p},t_{f})\}
+\min_{\ve{u}(t),\ve{p},t_f}\{\mf{G}(\ve{x}(t_f),\ve{p},t_f)\}
 \label{eq:gencontprob} 
 \end{equation}
 such that
@@ -290,7 +290,7 @@ discretised on finite elements, continuity equation for state
 variables, and any other equality and inequality constraints that may
 be required. It is given by 
 \begin{equation}
-\min_{\ve{x}_{ij},\ve{u}_{ij},\Delta\zeta_{i},\ve{p}}\Big[\mf{G}(\ve{x}_{f},\ve{p},t_{f})\Big]
+\min_{\ve{x}_{ij},\ve{u}_{ij},\ve{p},\Delta\zeta_{i}}\Big[\mf{G}(\ve{x}_{f},\ve{p},t_{f})\Big]
 \label{eq:nlpform} 
 \end{equation}
 such that
@@ -311,7 +311,7 @@ i=1,\ldots,\textrm{NE} \quad j=0,\ldots,K_{x}\\
 \Delta\zeta_{i}^{L}\leq\Delta\zeta_{i}\leq\Delta\zeta_{i}^{U} \quad
 i=1,\ldots,\textrm{NE}\\
 \ve{p}^{L} \leq \ve{p} \leq \ve{p}^{U}\\
-\sum_{i=1}^{NE}\Delta\zeta_{i} = \zeta_{\textnormal{total}}\\
+\sum_{i=1}^{NE}\Delta\zeta_{i} = t_f\\
 \ve{h}(t_{ij},\ve{x}_{ij},\ve{u}_{ij},\ve{p}) = \ve{0}\\
 \ve{g}(t_{ij}\ve{x}_{ij},\ve{u}_{ij},\ve{p}) \leq \ve{0} 
 \end{gather*} where $i$ refers to the time-interval, $j, k$ refers to
