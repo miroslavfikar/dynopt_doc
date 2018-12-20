@@ -160,7 +160,8 @@
 \newcommand{\fun}[1]{\textit{#1}}
 
 % -subor, zmeni font a tvar pisma pre neznamu subor
-\newcommand{\subor}[1]{\textsl{#1}}
+% underscore is allowed in file name (detokenize)
+\newcommand{\subor}[1]{\textsl{\detokenize{#1}}}
 
 % -argument funkcie, zmeni font a tvar pisma pre neznamu argument
 % funkcie 

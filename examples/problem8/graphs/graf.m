@@ -8,7 +8,7 @@ plot(tm,xm(1,:)','k*',tplot,xplot(:,1),'r-')
 title('')
 xlabel('time')
 ylabel('x_1')
-legend('x_{1,measured}','x_{1,estimated}',4)
+legend('x_{1,measured}','x_{1,estimated}','Location','southeast')
 axis tight
 set(1,'PaperUnits','centimeters')
 set(1,'PaperPosition',[3 10 11 8.25])

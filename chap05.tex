@@ -14,7 +14,8 @@ number of the problem presented in this chapter.
 
 Consider a tubular reactor with  parallel
 reactions $A \rightarrow B$, $A \rightarrow C$ taking place
-\citep{raj01,dad95,log89}:
+\citep{raj01,dad95,log89} (MATLAB code for this example is located
+at \subor{examples/problem4}):
 \begin{equation}
 \max_{\ve{u}(t)} \mf{J} = x_{2}(t_{f}) \label{eq:tubular}
 \end{equation}
@@ -39,7 +40,7 @@ by \cite{dad95}. Moreover the value of 0.57284 was reported by
 intervals as in the literature to this problem, we obtained a slightly
 closer value of performance index of 0.5734171 to the reported global
 maximum (109 iterations, exitflag equal to~1). Ipopt needed more than
-5400 iterations and converged to 0.57305461.  
+11200 iterations and converged to 0.57305461.  
 The optimal control
 and state profiles are given in Figs. \ref{fig:prob4_u} and
 \ref{fig:prob4_x}.
@@ -66,7 +67,8 @@ Consider a batch reactor~\citep{raj01,dad95} where a series of
 reactions $A \rightarrow B\rightarrow C$ is involved. This example is
 similar to that in section \ref{sec:brpdae}. The difference is just in
 the reactor model description. Here the process is described as an ODE
-system.  
+system (MATLAB code for this example is located at
+\subor{examples/problem5}):
 \begin{equation}
 \max_{\ve{u}(t)} \mf{J} = x_{2}(t_{f}) \label{eq:batch}
 \end{equation}
@@ -119,7 +121,8 @@ and state profiles are given in Figs.~\ref{fig:prob5_u} and
 \label{sec:prob6}
 
 Consider a catalytic plug flow reactor~\citep{raj01,dad95} involving
-the following reactions:\\ 
+the following reactions (MATLAB code for this example is located at
+\subor{examples/problem6}):\\ 
 $A \leftrightarrow B\rightarrow C$
 \begin{equation}
 \max_{\ve{u}(t)} \mf{J} = 1-x_{1}(t_{f})-x_{2}(t_{f})
@@ -142,7 +145,7 @@ Optimisation of this problem has also been analysed. This problem was
 solved by~\cite{log89,raj01} and the optima 0.476946, 0.47615 were
 reported. Value of the performance index obtained for this problem
 using~\fun{dynopt} was 0.477712 (243 iterations, exitflag equal to~1,
-fmincon) or 0.477458 (172 iterations, ipopt). In this case
+fmincon) or 0.47745804 (165 iterations, ipopt). In this case
 5 collocation points for state variables and 2 collocation points for
 control variables were chosen. The number of time-intervals have been
 set to 12. The optimal control and state profiles are given in
@@ -206,7 +209,7 @@ This problem was solved by~\cite{fik02,jac69}. Reported optimal value
 of 21.757 was obtained using CVP method implemented in DYNO. For this
 problem, 4 collocation points for state variables, 2 collocation
 points for control variables for 10 intervals were defined and an
-optimum was found at value of 21.82317 (860 iterations, exitflag equal
+optimum was found at value of 21.82346 (840 iterations, exitflag equal
 to~1, fmincon). The solver Ipopt did not converge after 10000
 iterations. The optimal control and state profiles are given in
 Fig.~\ref{fig:prob7}.
@@ -225,7 +228,8 @@ Fig.~\ref{fig:prob7}.
 \label{sec:prob7}
 
 Consider the following problem~\citep{fik10jms} which describes
-diafiltration optimal design problem:
+diafiltration optimal design problem (MATLAB code for this example is located at
+\subor{examples/problem9}):
 \begin{equation}
   \min_{\alpha(t)} \mf{J} = x_2(t_f)
 \end{equation}

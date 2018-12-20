@@ -17,7 +17,7 @@ plot(tplot,xplot(:,1),'b:',tplot,xplot(:,2),'r--')
 title('')
 xlabel('time')
 ylabel('x_1, x_2')
-legend('x_1','x_2',4)
+legend('x_1','x_2','Location','southeast')
 axis tight 
 set(1,'PaperUnits','centimeters')
 set(1,'PaperPosition',[3 10 11 8.25])

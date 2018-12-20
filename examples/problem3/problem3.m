@@ -33,4 +33,4 @@ save optimresults optimout optimparam
 
 save optimprofiles tplot uplot xplot tp cp ceqp
 
-%graph
+%graphplot

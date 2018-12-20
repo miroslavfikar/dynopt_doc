@@ -16,7 +16,8 @@ input argument functions \fun{process}, \fun{objfun}, \fun{confun}.
 \label{sec:unconprob}
 
 Consider a simple integrator with LQ cost function to be
-optimised \citep{luu91,raj01}: 
+optimised \citep{luu91,raj01} (MATLAB code for this example is located
+at \subor{examples/problem1a}): 
 \begin{gather}
 \dot{x}_1 = u, \quad x_{1}(0) = 1\\
 \dot{x}_2 = x^{2}_{1} + u^{2}, \quad x_{2}(0) = 0
@@ -138,7 +139,8 @@ shown in Figs.~\ref{fig:prob1a_u_323n} and \ref{fig:prob1a_x12_323n}.
 \label{sec:conprobgrad}
 
 A process described by the following system of 2
-ODE's \citep{raj01,luu91}:   
+ODE's \citep{raj01,luu91} (MATLAB code for this example is located
+at \subor{examples/problem1b}):   
 \begin{gather}
 \dot{x}_1 = u, \quad x_{1}(0) = 1\\
 \dot{x}_2 = x^{2}_{1} + u^{2}, \quad x_{2}(0) = 0
@@ -274,13 +276,13 @@ follows :
 As this problem differs from the problem \eqref{eq:ucp} in the
 constraint applied in final time $t_{f} = 1$, the input parameter
 \argfun{optimparam.confun} is set to the constraint function name
-$@confun$. Next, 6 collocation points for state variables, 4 intervals
-with the same initial lengths of intervals equal to $1/4$ have been
+$@confun$. Next, 3 collocation points for state variables, 2 intervals
+with the same initial lengths of intervals equal to $1/2$ have been
 chosen. Other parameters are as same as in problem \eqref{eq:ucp}.
 
 The optimal solution is shown in Figs. \ref{fig:prob1b_u} and
 \ref{fig:prob1b_x}. The value of the objective function at this
-solution is 9.245704e-01 after 1440 iterations and with \argfun{exitflag}
+solution is 9.242532e-01 after 45 iterations and with \argfun{exitflag}
 equal to~2.
 
 \begin{figure}[htb]
@@ -303,15 +305,16 @@ Alternative NLP solver Ipopt can be invoked when uncommenting the line
 options.NLPsolver='ipopt';
 \end{verbatim}
 in the main file. A~slightly better value of the optimum is found in
-622 iterations and the value of the objective function is
-9.242380-01. More about alternate NLP solvers can be found in
+8047 iterations and the value of the objective function is
+9.2423977e-01. More about alternate NLP solvers can be found in
 Chapter~\ref{cha:reference}.
 
 \subsection{Example 3: Unconstrained Problem  with Gradients and Bounds}
 \label{sec:unconprobgradbound}
 
 Following mathematical problem \citep{raj01,luu90_51} with system of
-four ODE's:
+four ODE's (MATLAB code for this example is located at
+\subor{examples/problem2}):
 \begin{gather}
 \dot{x}_1 = x_{2}, \quad x_{1}(0) = 0\\
 \dot{x}_2 = -x_{3}u + 16t - 8, \quad x_{2}(0) = -1\\
@@ -346,7 +349,7 @@ profile is of value of 1.202688e-01 after 175 iterations with exitflag
 equal to~1 (using default NLP solver~\fun{fmincon}). Graphical
 representation of the solution of the problem \eqref{eq:ucpgb} is
 shown in Figs. \ref{fig:prob2_u} and \ref{fig:prob2_x}. Ipopt solver
-finished after 1366 iterations with the cost function value of
+finished after 2565 iterations with the cost function value of
 1.2047839e-01. 
 
 \begin{figure}[htb]
@@ -367,16 +370,16 @@ finished after 1366 iterations with the cost function value of
 \subsubsection{Control Constrained on Intervals}
 If we would like to constrain control on the first interval to be at
 most 9, we will redefine variable \argfun{bdu}
-(\verb+problem2_bdu/problem2bdu.m+).  Now it will be a matrix composed
+(\subor{examples/problem2_bdu/problem2bdu.m}).  Now it will be a matrix composed
 of lower and upper bounds on every interval as follows
 \begin{verbatim}
 optimparam.bdu = [-4 9 -4 10 -4 10 -4 10]; 
 \end{verbatim}
 
 The value of the objective function evaluated for optimal control
-profile has increased to 0.1249686 after 153 iterations with exitflag
-equal to~1. Graphical representation of the modified solution is shown in Figs. \ref{fig:prob2bdu_u} and
-\ref{fig:prob2bdu_x}.
+profile has increased to 0.1249686 after 154 iterations with exitflag
+equal to~1. Graphical representation of the modified solution is shown
+in Figs. \ref{fig:prob2bdu_u} and \ref{fig:prob2bdu_x}.
 
 \begin{figure}[htb]
 \begin{minipage}[t]{0.5\linewidth}
@@ -397,11 +400,12 @@ equal to~1. Graphical representation of the modified solution is shown in Figs. 
 \label{sec:statepathconprob}
 
 A~process described by the following system of 2
-ODE's \citep{jac69,fee98}:
-\begin{gather}
-\dot{x}_1 = x_{2}, \quad x_{1}(0) = 0\\
-\dot{x}_2 = -x_{2} + u, \quad x_{2}(0) = -1
-\end{gather}is to be optimised for $u(t)$ with the cost function:
+ODE's \citep{jac69,fee98} (MATLAB code for this example is located
+at \subor{examples/problem3}):
+\begin{align}
+\dot{x}_1 &= x_{2}, &\quad x_{1}(0) &= 0\\
+\dot{x}_2 &= -x_{2} + u, &\quad x_{2}(0) &= -1
+\end{align}is to be optimised for $u(t)$ with the cost function:
 \begin{equation}
 \min_{\ve{u}(t)} \mf{J} = \int_{0}^{1}(x_{1}^{2} + x_{2}^{2} +
 0.005u^{2})\dt \label{eq:ispcpa} 
@@ -441,7 +445,7 @@ M-file~\subor{problem3.m} as follows:
 
 {\small \verbatiminput{examples/problem3/problem3.m}}
 
-An optimal value of $x_{3}(t_{f})=0.1701564$ was computed after 3069
+An optimal value of $x_{3}(t_{f})=0.1701564$ was computed after 3342
 iterations with exitflag equal to~1 (using~\fun{fmincon}). Graphical
 representation of the solution of the problem~\eqref{eq:ispcpb} is
 shown in Figs. \ref{fig:prob3_u}, \ref{fig:prob3_x}, and
@@ -480,17 +484,18 @@ shown in Figs. \ref{fig:prob3_u}, \ref{fig:prob3_x}, and
 
 Consider a state estimation problem~\cite{fik02} where the cost
 functional is defined as the sum of squares of deviations between the
-model and measured outputs as follows:
+model and measured outputs as follows (MATLAB code for this example is
+located at \subor{examples/problem8}):
 \begin{equation}
 \min_{\ve{p}} \mf{J} =
 \sum_{i=1,2,3,5}(x_{1}(t_{i})-x_{1}^{\text{m}}(t_{i}))^{2}
 \label{eq:pep}  
 \end{equation}
 subject to the following ODE's:
-\begin{gather}
-\dot{x}_{1} = x_{2}, \qquad x_{1}(0) = p_{1} \\
-\dot{x}_{2} = 1 - 2x_{2} - x_{1}, \qquad x_{2}(0) = p_{2}
-\end{gather} with $x_{1}, x_{2}$ as states and $t_f = 6$.
+\begin{align}
+\dot{x}_{1} &= x_{2}, &\qquad x_{1}(0) &= p_{1} \\
+\dot{x}_{2} &= 1 - 2x_{2} - x_{1}, &\qquad x_{2}(0) &= p_{2}
+\end{align} with $x_{1}, x_{2}$ as states and $t_f = 6$.
 The task is to find initial conditions denoted by the parameters
 $p_{1}, p_{2} \in [-1.5,1.5]$, if the input to the system is equal to
 1. Measured outputs $x_{1}^{\text{m}}$ and times of measurements are
@@ -537,6 +542,8 @@ estimated and measured state trajectory.
 
 Consider a following problem optimising a car that has to be moved
 from origin and stopped at a distance of 300\,m in a minimum time
+(MATLAB code for this example is located at
+\subor{examples/problem-car})
 \begin{align}
 \dot{x}_1 &= u, \quad  &x_{1}(0) &= 0 , \quad  &x_{1}(t_f) &= 0 \\
 \dot{x}_2 &= x_{1}, \quad &x_{2}(0) &= 0, \quad  &x_{2}(t_f) &= 300  
@@ -580,7 +587,8 @@ in Fig.~\ref{fig:car}.
 \end{figure}
 
 The same problem with constrained velocity during the whole trajectory
-$x_2 < 10$ (problem car2) converged to the minimum value of 37.50
+$x_2 < 10$ (MATLAB code for this example is located at
+\subor{examples/problem-car2}) converged to the minimum value of 37.50
 after 139/31 iterations (fmincon/ipopt). Graphical representation of
 the solution is shown in Fig.~\ref{fig:car2}.
 
@@ -600,7 +608,8 @@ the solution is shown in Fig.~\ref{fig:car2}.
 \label{sec:brpdae}
 
 Consider a batch reactor~\citep{raj01,dad95} with the 
-consecutive reactions $A \rightarrow B\rightarrow C$:
+consecutive reactions $A \rightarrow B\rightarrow C$ (MATLAB code for this example is located
+at \subor{examples/problem5dae}):
 \begin{equation}
 \max_{\ve{u}(t)} \mf{J} = x_{2}(t_{f}) \label{eq:batch_dae}
 \end{equation}
