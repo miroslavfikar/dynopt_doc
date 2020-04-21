@@ -132,6 +132,11 @@ has following fields to be set:
   process. \subor{process} is the name of an M-file. For more
   information about this input argument, see section
   \ref{sec:fundesarg}. 
+\item[\argfun{M}] -- If the process model is described by system of
+  ODE's the mass matrix $\ve{M}$ does not need to be defined and
+  \fun{dynopt} sets it to identity matrix. If the system is described
+  by DAE's the mass matrix $\ve{M}$ is specified here.
+
 \item[\argfun{options}] -- An optimisation options parameter structure
   that defines parameters used by the optimisation functions. This
   parameter is defined by MATLAB for all optimisation routines of
@@ -144,12 +149,15 @@ has following fields to be set:
   solver using the \fun{fminsdp} toolbox. The default one is
   \fun{fmincon} but others can be specified as well if installed
   separately. This parameter can be set directly as
-\begin{verbatim}
-options.NLPsolver='ipopt';
-\end{verbatim}
+  \begin{verbatim}
+  options.NLPsolver='ipopt';
+  \end{verbatim}
+  Parameter \argfun{options.adoptions} contains automatic
+  differentiation arguments. It is supposed to be set using function
+  \argfun{adoptionset} as name/value pairs (see
+  Tab.~\ref{tab:adoptpar}).
 \end{description}
 
-% continualna tabulka
 %---------------------------------------------------------------------
 \begin{longtable}{r||p{0.75\textwidth}}
 \caption{Optimisation options parameters} \label{tab:optpar}\\
@@ -175,22 +183,9 @@ options.NLPsolver='ipopt';
 \argfun{Diagnostics} & Print diagnostic information about the function to be
 minimised or solved, default value: 'off'.\\ 
 \hline
-\argfun{DiffMaxChange} & Maximum change in variables for finite difference
-derivatives (medium-scale algorithm only), default value: 0.1000.\\ 
-\hline
-\argfun{DiffMinChange} & Minimum change in variables for finite difference
-derivatives (medium-scale algorithm only), default value:
-1.0000e-008.\\ 
-\hline
 \argfun{Display} & Level of display. 'off' displays no output, 'iter' displays
 output at each iteration, 'final' displays just the final output,
 default value: 'final'.\\ 
-\hline
-\argfun{GradConstr} & Gradients for the nonlinear constraints defined by user,
-default value: 'off'.\\ 
-\hline
-\argfun{GradObj} & Gradient for the objective function defined by user, default
-value: 'off'.\\ 
 \hline
 LargeScale & User large-scale algorithm if possible, default value:
 'on'.\\ 
@@ -214,6 +209,70 @@ value: 'ones(numberofvariables,1)'.\\
 \argfun{NLPsolver} & Choice of NLP solver, possible values:
 'fmincon', 'snopt', 'ipopt', 'knitro', 'mma', 'gcmma', default: 
 'fmincon'.\\
+\hline
+\end{longtable}
+%---------------------------------------------------------------------
+
+Commonly used options are
+  \begin{itemize}
+  \item Save automatically differentiated code for the next run
+  \begin{verbatim}
+  options.adoptions=adoptionset('keep', true);
+  \end{verbatim}
+  \item Automatically differentiated code reused from the previous run
+  \begin{verbatim}
+  options.adoptions=adoptionset('generate', false, 'keep', true);
+  \end{verbatim}
+  \item User defined jacobians, no automatic differentiation takes
+    place
+  \begin{verbatim}
+  options.adoptions=adoptionset('userjac', true);
+  \end{verbatim}
+  This is a shortcut for
+  \end{itemize}
+  \begin{verbatim}
+        options.adoptions=adoptionset('processjac', "processd", 
+              'objfunjac', "objfund", 'confunjac', "confund");
+  \end{verbatim}
+
+%---------------------------------------------------------------------
+\begin{longtable}{r||p{0.75\textwidth}}
+\caption{Automatic differentiation parameters} \label{tab:adoptpar}\\
+\hline \hline
+{\textbf{Parameter Name}} & \multicolumn{1}{c}{\textbf{Description}}\\
+\hline \hline
+\endfirsthead
+\caption*{concluded from previous page}\\
+\hline
+{\textbf{Parameter Name}} & \multicolumn{1}{c}{\textbf{Description}}\\ 
+\hline \hline
+\endhead
+\multicolumn{2}{r}{{Continued on next page}}\\
+\hline
+\endfoot
+\hline \hline
+\endlastfoot
+\hline
+\argfun{processjac} & function for user supplied gradients for the
+process. If not set, gradients are generated using Adigator.
+  Default value: "processd". \\  
+\hline
+\argfun{objfunjac} & function for user supplied gradients for the cost
+function. If not set, gradients are generated using Adigator. 
+Default value: "objfund".\\  
+\hline
+\argfun{confunjac} & function for user supplied gradients for the
+constraints. If not set, gradients are generated using Adigator.  
+Default value: "objfund".\\  
+\hline
+\argfun{userjac} & all gradients are provided manually. If set, it implies default function 
+  names "processd", "objfund", "confund".   Default value: 'false' \\
+\hline
+\argfun{generate} & automatic gradients are generated at the
+initialisation phase. Default value: 'true'. \\  
+\hline
+\argfun{keep} & automatic gradients are not deleted after the solution
+is found. Default value: 'false'. \\  
 \hline
 \end{longtable}
 %---------------------------------------------------------------------
@@ -386,13 +445,13 @@ included below for \argfun{objfun}, \argfun{confun}, \argfun{process}.
     function has to have the following form:   
     {\small \verbatiminput{userfunctions/sumobjfun.m}} 
    \end{description}
-   If the gradients of the objective function can also be computed
-   and \argfun{options.GradObj} is 'on', as set by options =
-   optimset('GradObj','on') then the function~\fun{objfun} must return,
-   in the second output argument, the structure \argfun{Df} holding the
+   If the gradients of the objective function are not generated by
+   Adigator but manually, option \argfun{'objfunjac'} defines the name of
+   the function file (default function~\fun{objfund}) which returns
+   the structure \argfun{Df} holding the
    gradient values with respect to time \argfun{t}, states \argfun{x},
    controls \argfun{u} and parameters \argfun{p} as follows:
-   {\small \verbatiminput{userfunctions/objfungrad.m}}
+   {\small \verbatiminput{userfunctions/objfund.m}}
    The gradients \argfun{Df.t}, \argfun{Df.x}, \argfun{Df.u},
    \argfun{Df.p} are the partial derivatives of \argfun{f} at the
    points \argfun{t}, \argfun{x}, \argfun{u}, \argfun{p}. That means,
@@ -431,15 +490,14 @@ included below for \argfun{objfun}, \argfun{confun}, \argfun{process}.
   example, if confun=@confun, then the M-file \subor{confun.m} would
   have the form: 
   {\small \verbatiminput{userfunctions/confun.m}}
-  If the gradients of the constraints can also be computed and the
-  \argfun{options.GradConstr} is 'on', as set by \argfun{options} =
-  optimset('GradConstr','on') then \argfun{confun} is a string
-  containing the name of an M-file function, e.g.,
-  \subor{confun.m}. The function \fun{confun} must return, in the
-  third and fourth output argument, structures \argfun{Dc}, and
-  \argfun{Dceq} holding the gradient values \argfun{t}, \argfun{x},
-  \argfun{u}, \argfun{p} with respect to themselves. 
-  {\small \verbatiminput{userfunctions/confungrad.m}}
+  If the gradients of the constraints are not generated by Adigator
+  but manually, option \argfun{'confunjac'} defines the name of the
+  function file (default function~\fun{confund}) with the same input
+  arguments and with two output arguments,
+  structures \argfun{Dc}, and \argfun{Dceq} holding the gradient
+  values of constraints with respect to \argfun{t}, \argfun{x},
+  \argfun{u}, \argfun{p}.
+  {\small \verbatiminput{userfunctions/confund.m}}
   The gradients \argfun{Dc.t}, \argfun{Dc.x}, \argfun{Dc.u},
   \argfun{Dc.p} are the partial derivatives of \argfun{c} at the
   points \argfun{t}, \argfun{x}, \argfun{u}, \argfun{p}. That means,
@@ -455,11 +513,12 @@ included below for \argfun{objfun}, \argfun{confun}, \argfun{process}.
   \argfun{ceq} at the points \argfun{t}, \argfun{x}, \argfun{u},
   \argfun{p}. 
 \item[\argfun{process}] The function which describes process model,
-  that means the right hand sizes of ODE or DAE equations. If the
-  process model is described by system of ODE's the mass matrix M in
-  \argfun{flag} = 7 shall be left an empty matrix, because of being
-  set by \fun{dynopt} by default. If the system is describe by DAE's
-  the mass matrix M in \argfun{flag} = 7 should be singular.
+  that means the right hand sizes of ODE or DAE equations and process
+  initial conditions:
+  \begin{description}
+  \item[\argfun{flag} = 0] right hand sides of ODE/DAE's,
+  \item[\argfun{flag} = 5] initial conditions.
+  \end{description}
   \argfun{process} is a string containing the name of an M-file
   function, e.g., \subor{process.m}. \fun{process} takes a time
   \argfun{t}, scalar/vector of state variable \argfun{x}, scalar
@@ -469,6 +528,31 @@ included below for \argfun{objfun}, \argfun{confun}, \argfun{process}.
   with respect to \argfun{flag} value evaluated at time \argfun{t}.
   The M-file function has to be written in the following form: 
   {\small \verbatiminput{userfunctions/process.m}}
+  If the gradients of the differential equations and initial conditions
+  are not generated by Adigator
+  but manually, option \argfun{'processjac'} defines the name of the
+  function file (default function~\fun{processd}) with the same input
+  arguments. The parameter \argfun{flag} defines the respective gradient:
+  \begin{description}
+  \item[\argfun{flag} = 1] 
+    \begin{equation*}
+      \partial \ve{f}/\partial \ve{x} = 
+      \begin{bmatrix}
+      \frac{\displaystyle \partial{f_{1}}}{\displaystyle \partial{x_{1}}}
+      & \ldots &
+      \frac{\displaystyle \partial{f_{nx}}}{\displaystyle \partial{x_{1}}}\\
+      \vdots & \ddots & \vdots \\
+      \frac{\displaystyle \partial{f_{1}}}{\displaystyle \partial{x_{nx}}}
+      & \ldots &
+      \frac{\displaystyle \partial{f_{nx}}}{\displaystyle \partial{x_{nx}}}
+      \end{bmatrix}
+    \end{equation*}
+  \item[\argfun{flag} = 2] $\partial \ve{f}/\partial \ve{u}$,
+  \item[\argfun{flag} = 3] $\partial \ve{f}/\partial \ve{p}$,
+  \item[\argfun{flag} = 4] $\partial \ve{f}/\partial \ve{t}$,
+  \item[\argfun{flag} = 6] $\partial \ve{x}_0/\partial \ve{p}$.
+  \end{description}
+  {\small \verbatiminput{userfunctions/processd.m}}
 \end{description}
 
 
@@ -476,16 +560,14 @@ included below for \argfun{objfun}, \argfun{confun}, \argfun{process}.
 
 \begin{description}
 \item[Large-scale optimisation] By default~\fun{dynopt} will choose
-  the large-scale algorithm of~\fun{fmincon} if the user supplies the
-  gradient in objfun (and~\argfun{GradObj} is 'on'
-  in~\argfun{options}) and if only upper and lower bounds exists or
-  only linear equality constraints exist. This algorithm is a subspace
-  trust region method and is based on the interior-reflective Newton
-  method described in ~\cite{col96}. Each iteration involves the
-  approximate solution of a large linear system using the method of
-  preconditioned conjugate gradients (PCG). See the trust-region and
-  preconditioned conjugate gradient method descriptions in the
-  Large-Scale Algorithms chapter in~\cite{col99}.
+  the large-scale algorithm of~\fun{fmincon} if only upper and lower
+  bounds exists or only linear equality constraints exist. This
+  algorithm is a subspace trust region method and is based on the
+  interior-reflective Newton method described in ~\cite{col96}. Each
+  iteration involves the approximate solution of a large linear system
+  using the method of preconditioned conjugate gradients (PCG). See
+  the trust-region and preconditioned conjugate gradient method
+  descriptions in the Large-Scale Algorithms chapter in~\cite{col99}.
 \item[Medium-scale optimisation] \fun{dynopt} uses through
   the~\fun{fmincon} Sequential Programming (SQP) method. In this
   method, a Quadratic Programming (QP) subproblem is solved at each
@@ -504,9 +586,7 @@ included below for \argfun{objfun}, \argfun{confun}, \argfun{process}.
 
 The software layer of \fun{fminsdp} toolbox adds different NLP solvers
 that have to be installed separately. This version of \fun{dynopt} was
-tested with open source solver Ipopt 3.12.4. Note that ipopt requires
-user supplied gradients in the cost functions and constraints. If
-these are not supplied, fmincon is used instead. For concrete options
+tested with open source solver Ipopt 3.12.4. For concrete options
 of this solver and other available other ones see their
 documentations.
 

@@ -24,10 +24,36 @@ It is assumed, that the optimised dynamic model may be described by a
 set of ordinary differential equations (ODE's) or
 differential-algebraic equations (DAE's).
 
-\section{What is New in this Version}
+\section{What is New}
 \label{sec:what-new-this}
 
+\subsection*{Version 5}
+Version 5 does not bring any improvements in the algorithm but focuses
+on ease of implementation. In the default configuration, it uses
+automatic differentiation package Adigator~\cite{wei17} to construct
+Jacobians of process differential equations, cost function, and
+constraints. This has a consequence that the problem source files from
+version 4 or earlier are not compatible and have to be modified. On
+the other hand, it eases the implementation considerably and reduces
+errors in problem definition. However, manual specification of
+Jacobians is still possible if needed.
 
+\subsubsection*{Incompatibility with Version 4}
+When files from older releases are to be reused, please keep in mind
+following items:
+\begin{itemize}
+\item Main file does not need to turn on gradients in NLP options.
+\item Files \subor{process.m}, \subor{objfun.m}, \subor{confun.m} must
+  not contain \fun{case} statement -- use \fun{if/else} instead. 
+\item File \subor{process.m} contains only information for \fun{flag}
+  equal to 0 (differential euqations) and 5 (initial conditions) -- no
+  gradients. Mass matrix information was moved to main file.
+\item File \subor{objfun.m} does not contain information about gradients.
+\item File \subor{confun.m} does not contain information about gradients.
+\item Gradient information can be moved to newly defined files.
+\end{itemize}
+
+\subsection*{Version 4}
 Version 4 introduces several new properties of the package:
 \begin{itemize}
 \item three type of constraints can be defined in the same
@@ -91,7 +117,7 @@ that (YALMIP license)
 \item dynopt is distributed in the hope that it will be useful, but
   WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE (if your
-  satellite crash or you fail your Phd due to a bug in dynopt, your
+  satellite crash or you fail your PhD due to a bug in dynopt, your
   loss!).
 \item Forks or versions of dynopt must include, and follow, this
   license in any distribution.
@@ -102,24 +128,29 @@ that (YALMIP license)
 
 \subsection{Manual Installation}
 Download \fun{dynopt} from:\\
-\url{https://bitbucket.org/dynopt/dynopt_code/downloads/dynopt_4.3.0.zip}. 
+\url{https://bitbucket.org/dynopt/dynopt_code/downloads/dynopt_5.0.0.zip}. 
 
-\fun{dynopt} needs \fun{fminsdp} toolbox~\citep{fminsdp} to be
-installed. For convenience, it is packed in the \subor{fminsdp}
-directory, but feel free to get it from the original location. To
-install it, add directories \subor{fminsdp},
-\subor{fminsdp/interfaces}, and \subor{fminsdp/utilities} to MATLAB path.
+\fun{dynopt} needs \fun{fminsdp} toolbox~\citep{fminsdp} and
+\fun{adigator} toolbox~\citep{wei17} to be installed. For convenience,
+both are packed within the zip file, but feel free to get them
+from their original locations. To install them, follow directions to add
+respective directories to MATLAB path.
 
 Next, install \fun{dynopt}: add the directory \subor{dynoptim} to
 MATLAB path. 
 
-Both packages can be installed by getting into \subor{dynopt}
+All packages can be installed by getting into \subor{dynopt}
 directory in MATLAB and running the following commands:
 \begin{verbatim}
-addpath([pwd '/dynoptim']);
-addpath([pwd '/fminsdp']);
-addpath([pwd '/fminsdp/interfaces']);
-addpath([pwd '/fminsdp/utilities']);
+currpath = pwd;
+addpath([currpath,filesep,'dynoptim']);
+addpath([currpath,filesep,'adigator']);
+addpath([currpath,filesep,'adigator',filesep,'lib']);
+addpath([currpath,filesep,'adigator',filesep,'lib',filesep,'cadaUtils']);
+addpath([currpath,filesep,'adigator',filesep,'util']);
+addpath([currpath,filesep,'fminsdp']);
+addpath([currpath,filesep,'fminsdp',filesep,'interfaces']);
+addpath([currpath,filesep,'fminsdp',filesep,'utilities']);
 \end{verbatim}
 and then saving the path for future.
 
@@ -152,11 +183,11 @@ Optimization Toolbox is not installed, check the Installation Guide
 for instructions on how to install it.
 
 \fun{dynopt} has been developed and tested since MATLAB 6.5 (R13). The
-results in this guide are obtained with MATLAB 2018b (Linux 64b) using
-solvers \fun{fmincon} and \fun{ipopt}. It is quite usual that results
-obtained and convergence criteria achieved with different versions of
-MATLAB or its toolboxes can/will produce slightly different (better,
-worse) results.
+results in this guide are obtained with MATLAB 2019b (Linux 64b) using
+solvers \fun{fmincon} and \fun{ipopt}. Please, note that it is quite
+usual that results obtained and convergence criteria achieved with
+different versions of MATLAB or its toolboxes can/will produce
+slightly different (better, worse) results.
 
 
 %%% Local Variables: 

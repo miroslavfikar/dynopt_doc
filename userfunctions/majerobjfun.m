@@ -1,3 +1,3 @@
-function [f] = objfun(t,x,u,p)
+function f = objfun(t,x,u,p)
 
 f = []; % J

@@ -4,19 +4,19 @@
 This chapter discusses the \fun{dynopt} application. It shows, that
 \fun{dynopt} is suitable for a quite large variety of problems
 ranging from simple unconstrained problem to inequality state path
-constraint problem described either by ODE's or DAE's. As mentioned in
-the title of this chapter, it is an step by step tutorial. It shows
+constraint problems described either by ODE's or DAE's. As mentioned in
+the title of this chapter, it is a step-by-step tutorial. It shows
 the user how to define his problem into \fun{dynopt} by filling the
 input argument functions \fun{process}, \fun{objfun}, \fun{confun}. 
 
 \section{ODE systems}
 \label{sec:odes}
 
-\subsection{Example 1: Unconstrained Problem}
+\subsection{Unconstrained Problem}
 \label{sec:unconprob}
 
 Consider a simple integrator with LQ cost function to be
-optimised \citep{luu91,raj01} (MATLAB code for this example is located
+optimised \citep{luu91,raj01} (MATLAB code is located
 at \subor{examples/problem1a}): 
 \begin{gather}
 \dot{x}_1 = u, \quad x_{1}(0) = 1\\
@@ -39,17 +39,18 @@ defined in \fun{process}.
 
 {\small \verbatiminput{examples/problem1a/process.m}}
 
-It is important to notice that in \fun{dynopt} the mass matrix
-$\ve{M}$ \eqref{eq:process} is by default a $nx$-by-$nx$ identity
-matrix. Here $nx$ represents the number of state variables $x$. 
+Thus,~\subor{process.m} contains definition of right sides of
+differential equations (\argfun{flag} = 0) and initial conditions
+(\argfun{flag} = 5). These are evaluated at time \argfun{t}, with
+inputs \argfun{x}~-~scalar/vector of state variable(s),
+\argfun{u}~-~scalar/vector of control variable(s),
+\argfun{p}~-~scalar/vector of time independent parameters.
 
-As the performance index is given in Mayer form, \fun{dynopt} 
+As the performance index is given in Mayer form, \fun{dynopt}
 optimises it at final conditions, thus the input arguments of
-\fun{objfun} are as follows: \argfun{t}~-~scalar value $t_{f}$,
-\argfun{x}~-~scalar/vector of state variable(s),
-\argfun{u}~-~scalar/vector of control variable(s), both evaluated at
-corresponding  final time $t_{f}$, \argfun{p}~-~scalar/vector of time
-independent parameters. \fun{objfun} should be defined as follows:
+\fun{objfun} are evaluated at corresponding final time :
+\argfun{t}~-~scalar value $t_{f}$. \fun{objfun} should be defined as
+follows:
 
 \paragraph{Step2: Write an M-file~\subor{objfun.m}}
 
@@ -82,14 +83,21 @@ of this parameters have been left an empty matrix. As mentioned before,
 this problem is unconstrained, so parameter \argfun{optimparam.confun}
 was set to [~].
 
+Optimisation parameters for NLP solver are defined by
+\argfun{optimparam.options}. 
+
+%It is important to notice that in \fun{dynopt} the mass matrix
+%$\ve{M}$ \eqref{eq:process} is by default a $nx$-by-$nx$ identity
+%matrix. Here $nx$ represents the number of state variables $x$. 
+
 The results returned by \fun{dynopt} in \argfun{optimout} structure
 contain the vector of times \argfun{t}, the vector of optimal control
 profile \argfun{u}. They are ready to be plotted.\\
 The objective function at the optimal solution [\argfun{t},\argfun{u}]
-is returned after 133 iterations in above mentioned output structure
+is returned after 1098 iterations in above mentioned output structure
 \argfun{optimout} as parameter \argfun{fval}:
 \begin{verbatim}
-optimout.fval = 7.615959e-01
+optimout.fval = 0.7616
 \end{verbatim}
 The parameter \argfun{exitflag} tells if the algorithm converged. An
 \argfun{exitflag} $>$ 0 means a local minimum was found: 
@@ -135,7 +143,7 @@ shown in Figs.~\ref{fig:prob1a_u_323n} and \ref{fig:prob1a_x12_323n}.
 \end{minipage}
 \end{figure}
 
-\subsection{Example 2: Constrained Problem with Gradients}
+\subsection{Constrained Problem with Gradients}
 \label{sec:conprobgrad}
 
 A process described by the following system of 2
@@ -156,13 +164,9 @@ such that $t_{f} = 1$.
 Problem \eqref{eq:ucp} is similar to problem \eqref{eq:cpg}, it 
 differs in constraint of state variable $x_{1}$ at final time
 $t_{f}=1$. This example will be solved by supplying analytical
-gradients. Ordinarily the medium-scale minimisation routines use
-numerical gradients calculated by finite-difference
-approximation. This procedure systematically perturbs each of the
-variables in order to calculate function and constraint partial
-derivatives. Alternatively, you can provide a function to compute 
-partial derivatives analytically. Typically, the problem is solved
-more accurately and efficiently if such a function is provided. 
+gradients manually. Compared to automatic differentiation using
+Adigator, user has complete control over the code and can implement it
+efficiently and faster. On the other side, this may be error-prone. 
 
 \subsubsection{Function~\fun{process},~\fun{objfun},~\fun{confun}  definitions}
 \label{sec:conprobgrad-fundef}
@@ -175,9 +179,13 @@ user supplied functions: \fun{process}, \fun{objfun},
 function \fun{process} and is valid for all above mentioned user
 functions.  
 
-\paragraph{Step1: Write an M-file~\subor{process.m}}
+\paragraph{Step1a: Write an M-file~\subor{process.m}}
 
 {\small \verbatiminput{examples/problem1b/process.m}}
+
+\paragraph{Step1b: Provide gradients in file~\subor{processd.m}}
+
+{\small \verbatiminput{examples/problem1b/processd.m}}
 
 Definition of gradients results from problem definition
 \eqref{eq:cpg}. As the problem consists of one control variable $u$
@@ -215,23 +223,27 @@ respect to each of the elements in \argfun{u}:
 \end{displaymath}
 If needed, the gradients with respect to other defined variables
 (\argfun{t}, \argfun{p}) are filled similarly. For more information
-about \fun{process} definition, and its input and output arguments
-see chapter \ref{cha:reference}.
+about \fun{process}, \fun{processd} definition, and their input and
+output arguments see chapter \ref{cha:reference}.
 
 As mentioned before user has also to supply the gradients to the
 objective function \fun{objfun} as follows: 
 
-\paragraph{Step2: Write an M-file~\subor{objfun.m}}
+\paragraph{Step2a: Write an M-file~\subor{objfun.m}}
 
 {\small \verbatiminput{examples/problem1b/objfun.m}}
+
+\paragraph{Step2b: Provide gradients in file~\subor{objfund.m}}
+
+{\small \verbatiminput{examples/problem1b/objfund.m}}
 
 Here they are written in the structure \argfun{Df} containing
 variables \argfun{t}, \argfun{u}, \argfun{x}, and \argfun{p} and
 representing the gradients with respect to the appropriate
 variable. Just the variables used in problem are filled by
 user. Unused variables are set to be an empty matrix. For more
-information about \fun{objfun} definition, and its input and output
-arguments see chapter \ref{cha:reference}. 
+information about \fun{objfun}, \fun{objfund} definition, and their
+input and output arguments see chapter \ref{cha:reference}.
 
 \fun{dynopt} optimises a given performance index, subject to the
 constraints defined at the beginning $t =
@@ -244,26 +256,31 @@ appropriate variables in the corresponding flag in which time should
 they be evaluated. How the gradients have to seem like, was explained
 before. \fun{confun} should be defined as follows:  
  
-\paragraph{Step3: Write an M-file~\subor{confun.m}}
+\paragraph{Step3a: Write an M-file~\subor{confun.m}}
 
 {\small \verbatiminput{examples/problem1b/confun.m}}
 
+\paragraph{Step3b: Provide gradients in file~\subor{confund.m}}
+
+{\small \verbatiminput{examples/problem1b/confund.m}}
+
 Here the gradients are written into the structures \argfun{Dc},
 \argfun{Dceq} similar to those, described in \fun{objfun}. For more
-information about \fun{confun} definition, and its input and output
-arguments see chapter \ref{cha:reference}.
+information about \fun{confun}, \fun{confund} definition, and their
+input and output arguments see chapter \ref{cha:reference}.
 
-Since you are providing the gradients of the objective function in
-\subor{objfun.m} and the gradients of the constraints in
-\subor{confun.m}, you must tell \fun{dynopt} that these M-files
-contain this additional information. Use optimset to turn the
-parameters \argfun{GradObj} and \argfun{GradConstr} to 'on' in our
-already existing options structure 
+Since you are providing the gradients of the process in
+\subor{processd.m}, of the objective function in \subor{objfund.m} and
+the gradients of the constraints in \subor{confund.m}, you must tell
+\fun{dynopt} that these M-files contain this additional
+information. Use \fun{adoptionset} to turn the gradients on
 \begin{verbatim}
-options = optimset(options,'GradObj','on','GradConstr','on');
+optimparam.adoptions = adoptionset('jacuser',true);
 \end{verbatim}
-If you do not set these parameters to 'on' in the options structure,
-\fun{dynopt} will not use the analytic gradients.  
+If this option is deactivated, files \subor{processd.m},
+\subor{objfund.m}, \subor{confund.m} are not used and automatic
+gradients are invoked instead. See chapter \ref{cha:reference} for
+more information on \fun{adoptionset} and its parameters.
 
 After the problem has been defined in the functions, user has to invoke
 the \fun{dynopt} function by writing an M-file \subor{problem1b.m} as
@@ -272,6 +289,9 @@ follows :
 \paragraph{Step4: Invoke~\fun{dynopt}}
 
 {\small \verbatiminput{examples/problem1b/problem1b.m}}
+
+Note the parameter \fun{DerivativeCheck=’on’}. As gradients are
+implemented manually, it is wise to check them for correctness.
 
 As this problem differs from the problem \eqref{eq:ucp} in the
 constraint applied in final time $t_{f} = 1$, the input parameter
@@ -282,7 +302,7 @@ chosen. Other parameters are as same as in problem \eqref{eq:ucp}.
 
 The optimal solution is shown in Figs. \ref{fig:prob1b_u} and
 \ref{fig:prob1b_x}. The value of the objective function at this
-solution is 9.242532e-01 after 45 iterations and with \argfun{exitflag}
+solution is 0.9242 after 37 iterations and with \argfun{exitflag}
 equal to~2.
 
 \begin{figure}[htb]
@@ -300,16 +320,14 @@ equal to~2.
 \end{minipage}
 \end{figure}
 
-Alternative NLP solver Ipopt can be invoked when uncommenting the line 
+Alternative NLP solver Ipopt can be invoked by setting the parameter
 \begin{verbatim}
-options.NLPsolver='ipopt';
+NLPsolver = 'ipopt'
 \end{verbatim}
-in the main file. A~slightly better value of the optimum is found in
-8047 iterations and the value of the objective function is
-9.2423977e-01. More about alternate NLP solvers can be found in
-Chapter~\ref{cha:reference}.
+in the main file. The optimum is found in 10940 iterations. More about alternate
+NLP solvers can be found in Chapter~\ref{cha:reference}.
 
-\subsection{Example 3: Unconstrained Problem  with Gradients and Bounds}
+\subsection{Unconstrained Problem with Bounds}
 \label{sec:unconprobgradbound}
 
 Following mathematical problem \citep{raj01,luu90_51} with system of
@@ -345,28 +363,45 @@ such that $t_{f}=1$.
 {\small \verbatiminput{examples/problem2/problem2.m}}
 
 The value of the objective function evaluated for optimal control
-profile is of value of 1.202688e-01 after 175 iterations with exitflag
+profile is of value of 1.204784e-01 after 328 iterations with exitflag
 equal to~1 (using default NLP solver~\fun{fmincon}). Graphical
 representation of the solution of the problem \eqref{eq:ucpgb} is
-shown in Figs. \ref{fig:prob2_u} and \ref{fig:prob2_x}. Ipopt solver
-finished after 2565 iterations with the cost function value of
-1.2047839e-01. 
+shown in Figs.~\ref{fig:prob2_u} and \ref{fig:prob2_x}. Ipopt solver
+converged to a different (worse) local optimum after 5334 iterations
+with the cost function value of 1.3603605e-01.
 
 \begin{figure}[htb]
 \begin{minipage}[t]{0.5\linewidth}
 \centering
-\includegraphics[width=0.99\textwidth]{examples/problem2/graphs/u_624a.eps}
+\includegraphics[width=0.99\textwidth,clip]{examples/problem2/graphs/u_624a.eps}
 \caption[Tutorial example 3: control profile]{Control profile for
-  unconstrained problem with gradients and bounds} \label{fig:prob2_u} 
+  unconstrained problem with bounds} \label{fig:prob2_u} 
 \end{minipage}
 \begin{minipage}[t]{0.5\linewidth}
 \centering
-\includegraphics[width=0.99\textwidth]{examples/problem2/graphs/x13_624a.eps}
+\includegraphics[width=0.99\textwidth,clip]{examples/problem2/graphs/x13_624a.eps}
 \caption[Tutorial example 3: state profiles]{State profiles for
-  unconstrained problem with gradients and bounds} \label{fig:prob2_x}
+  unconstrained problem with bounds} \label{fig:prob2_x}
 \end{minipage}
 \end{figure}
 
+Investigation of the issue with different local optima showed extreme
+sensitivity of gradient calculations and were affected by their
+construction using automatic differentiation. When process gradients
+were specified manually, Ipopt converged to two different local optima
+based on expresion for the gradient $\partial f_4/\partial u$
+specified with different multiplication order:
+\begin{verbatim}
+     2*0.0005*(x(2)+16*t-8-0.1*x(3)*u(1)^2)*(-2*0.1*x(3)*u(1))
+     0.0005*(2*(x(2)+16*t-8-0.1*x(3)*u(1)^2)*(-0.1*x(3)*2*u(1)))
+\end{verbatim}
+These options can be tested by activating either one of the lines:
+\begin{verbatim}
+  optimparam.adoptions = adoptionset('processjac', "processd");
+  optimparam.adoptions = adoptionset('processjac', "processdalt");
+\end{verbatim}
+The multiplication order specified in the file \subor{processd.m} gave
+the same optimum as \fun{fmincon}.
 \subsubsection{Control Constrained on Intervals}
 If we would like to constrain control on the first interval to be at
 most 9, we will redefine variable \argfun{bdu}
@@ -396,7 +431,7 @@ in Figs. \ref{fig:prob2bdu_u} and \ref{fig:prob2bdu_x}.
 \end{minipage}
 \end{figure}
 
-\subsection{Example 4: Inequality State Path Constraint Problem}
+\subsection{Inequality State Path Constraint Problem}
 \label{sec:statepathconprob}
 
 A~process described by the following system of 2
@@ -445,7 +480,7 @@ M-file~\subor{problem3.m} as follows:
 
 {\small \verbatiminput{examples/problem3/problem3.m}}
 
-An optimal value of $x_{3}(t_{f})=0.1701564$ was computed after 3342
+An optimal value of $x_{3}(t_{f})=0.1701564$ was computed after 3012
 iterations with exitflag equal to~1 (using~\fun{fmincon}). Graphical
 representation of the solution of the problem~\eqref{eq:ispcpb} is
 shown in Figs. \ref{fig:prob3_u}, \ref{fig:prob3_x}, and
@@ -479,7 +514,7 @@ shown in Figs. \ref{fig:prob3_u}, \ref{fig:prob3_x}, and
 \end{minipage}
 \end{figure}
 
-\subsection{Example 5: Parameter Estimation Problem}
+\subsection{Parameter Estimation Problem}
 \label{sec:pep}
 
 Consider a state estimation problem~\cite{fik02} where the cost
@@ -534,10 +569,10 @@ M-file~\subor{problem8.m} as follows:
 {\small \verbatiminput{examples/problem8/problem8.m}}
 
 The results obtained by \fun{dynopt} are the same as those published
-in \cite{fik02}. Fig. \ref{fig:prob8_x} shows the comparison of
-estimated and measured state trajectory. 
+in \cite{fik02} ($p_1=0, p_2 = 0$). Fig. \ref{fig:prob8_x} shows the
+comparison of estimated and measured state trajectory.
 
-\subsection{Example: Minimum Time Problem}
+\subsection{Minimum Time Problem}
 \label{sec:car}
 
 Consider a following problem optimising a car that has to be moved
@@ -566,7 +601,11 @@ acceleration.
 
 {\small \verbatiminput{examples/problem-car/objfun.m}}
 
-\paragraph{Step3: Invoke~\fun{dynopt}} writing an M-file
+\paragraph{Step3: Write an M-file~\subor{confun}}
+
+{\small \verbatiminput{examples/problem-car/confun.m}}
+
+\paragraph{Step4: Invoke~\fun{dynopt}} writing an M-file
 \subor{car.m} as follows. Note that optimising the final time is
 indicated by setting it to an empty matrix: \verb+optimparam.tf=[]+
 and by optimising the time interval lengths. 
@@ -604,7 +643,7 @@ the solution is shown in Fig.~\ref{fig:car2}.
 \section{DAE systems}
 \label{sec:daes}
 
-\subsection{Example 6: Batch Reactor Problem}
+\subsection{Batch Reactor Problem}
 \label{sec:brpdae}
 
 Consider a batch reactor~\citep{raj01,dad95} with the 
@@ -621,7 +660,7 @@ such that
 0 = k_{2} - 620000e^{(-\frac{5000}{T})} 
 \end{gather} with $x_{1}, x_{2}$ as states representing concentrations
 of A, and B, temperature $T \in [298,398]$ as control variable, such
-that $t_{f} = 1$.
+that $t_{f} = 1$. The system is defined by two ODEs and two DAEs. 
 
 \subsubsection{Function~\fun{process},~\fun{objfun},~\fun{confun}  definitions}
 \label{sec:example-fundef}
@@ -637,11 +676,15 @@ that $t_{f} = 1$.
 \paragraph{Step3: Invoke~\fun{dynopt}} by writing an
 M-file~\subor{problem5dae.m} as follows:
 
-{\small \verbatiminput{examples/problem5_dae/problem5.m}}
+{\small \verbatiminput{examples/problem5_dae/problem5dae.m}}
+
+Note the definition of the mass matrix $M$. For ODE systems, it is
+implicitly defined as identity matrix, for DAE systems it needs to be
+defined explicitly. 
 
 After 134 iterations, optimal value of $x_{2}(t_{f}) = 0.6106136$ was
 found using fmincon. The same solution was found using ipopt but after
-almost 20000 iterations. Graphical representation of the problem
+13086 iterations. Graphical representation of the problem
 \eqref{eq:batch_dae} solution is shown in Figs. \ref{fig:prob5dae_u}
 and \ref{fig:prob5dae_x}.
 
