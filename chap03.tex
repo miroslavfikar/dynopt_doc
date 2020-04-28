@@ -94,7 +94,7 @@ The results returned by \fun{dynopt} in \argfun{optimout} structure
 contain the vector of times \argfun{t}, the vector of optimal control
 profile \argfun{u}. They are ready to be plotted.\\
 The objective function at the optimal solution [\argfun{t},\argfun{u}]
-is returned after 1098 iterations in above mentioned output structure
+is returned after 1554 iterations in above mentioned output structure
 \argfun{optimout} as parameter \argfun{fval}:
 \begin{verbatim}
 optimout.fval = 0.7616
@@ -324,7 +324,7 @@ Alternative NLP solver Ipopt can be invoked by setting the parameter
 \begin{verbatim}
 NLPsolver = 'ipopt'
 \end{verbatim}
-in the main file. The optimum is found in 10940 iterations. More about alternate
+in the main file. The optimum is found in 1369 iterations. More about alternate
 NLP solvers can be found in Chapter~\ref{cha:reference}.
 
 \subsection{Unconstrained Problem with Bounds}
@@ -363,12 +363,12 @@ such that $t_{f}=1$.
 {\small \verbatiminput{examples/problem2/problem2.m}}
 
 The value of the objective function evaluated for optimal control
-profile is of value of 1.204784e-01 after 328 iterations with exitflag
+profile is of value of 1.204784e-01 after 359 iterations with exitflag
 equal to~1 (using default NLP solver~\fun{fmincon}). Graphical
 representation of the solution of the problem \eqref{eq:ucpgb} is
 shown in Figs.~\ref{fig:prob2_u} and \ref{fig:prob2_x}. Ipopt solver
-converged to a different (worse) local optimum after 5334 iterations
-with the cost function value of 1.3603605e-01.
+converged to a sightly different local optimum after 5883 iterations
+with the cost function value of 1.2026883e-01.
 
 \begin{figure}[htb]
 \begin{minipage}[t]{0.5\linewidth}
@@ -388,9 +388,9 @@ with the cost function value of 1.3603605e-01.
 Investigation of the issue with different local optima showed extreme
 sensitivity of gradient calculations and were affected by their
 construction using automatic differentiation. When process gradients
-were specified manually, Ipopt converged to two different local optima
-based on expresion for the gradient $\partial f_4/\partial u$
-specified with different multiplication order:
+were specified manually, the number of iterations in Ipopt differed
+(421 vs 659) based on expresion for the gradient $\partial
+f_4/\partial u$ specified with different multiplication order.
 \begin{verbatim}
      2*0.0005*(x(2)+16*t-8-0.1*x(3)*u(1)^2)*(-2*0.1*x(3)*u(1))
      0.0005*(2*(x(2)+16*t-8-0.1*x(3)*u(1)^2)*(-0.1*x(3)*2*u(1)))
