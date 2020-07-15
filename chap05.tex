@@ -304,13 +304,69 @@ shown in Fig.~\ref{fig:problem-a}.
 
 \begin{figure}[!h]
   \centering
-  \includegraphics[width=0.32\linewidth]{a-alpha}
-  \includegraphics[width=0.32\linewidth]{a-x12} 
-  \includegraphics[width=0.32\linewidth]{a-x3}
+  \includegraphics[width=0.32\linewidth]{examples/problem9/graphs/a-alpha}
+  \includegraphics[width=0.32\linewidth]{examples/problem9/graphs/a-x12} 
+  \includegraphics[width=0.32\linewidth]{examples/problem9/graphs/a-x3}
   \caption{Diafiltration problem: optimal $\alpha$ (left),
     concentrations (middle), and volume (right) as functions of time}
   \label{fig:problem-a}
 \end{figure}
+
+\section{Park-Ramirez Bioreactor}
+\label{sec:prob_pr_bior}
+
+Consider the following problem~\citep{PR_bior} of the fed-batch reactor for optimal secreted protein production:
+
+\begin{gather}
+\max_{\ve{u}(t)} \mf{J} = x_{1}(t_f)x_{5}(t_f) \label{eq:bior}
+\end{gather}
+such that
+\begin{align}
+\dot{x}_1  & = g_{1}(x_{2}-x_{1})-\frac{u}{x_{5}}x_{1} & x_{1}(0) & = 0\\
+\dot{x}_2  & = g_{2}x_{3}-\frac{u}{x_{5}}x_{2} & x_{2}(0) & = 0\\
+\dot{x}_3  & = g_{3}x_{3}-\frac{u}{x_{5}}x_{3} & x_{3}(0) & = 1 \\
+\dot{x}_4  & = -7.3g_{3}x_{3}+\frac{u}{x_{5}}x_{3} & x_{4}(0) & = 5 \\
+\dot{x}_5  & = u & x_{5}(0) & = 1 \\
+u  & \in [0,2.5] & t_f & = 15
+\end{align}
+with
+\begin{align}
+g_{1}  & =  4.75\frac{g_{3}}{0.12+g_{3}} &\\
+g_{2}  & = \frac{x_{4}}{0.1+x_{4}}\exp(-5x_{4}) &\\
+g_{3}  & = 21.87\frac{x_{4}}{(x_{4}+0.4)(x_{4}+62.5)} &
+\end{align}
+state path constraint:
+\begin{align}
+x_{1} & \leq x_{2}
+\end{align}
+where $x_{1}$ is the concentration of the secreted protein [$l^{-1}$], $x_{2}$ is the concentration of the total protein [$l^{-1}$], $x_{3}$ is the culture cell density [$g/l$], $x_{4}$ is the substrate concentration [$g/l$], $x_{5}$ is the holdup volume [$l$], $u$ is the nutrient (glucose) feed rate [$l/h$] and $\mf{J}$ is the mass of protein produced. The supporting variables $g_{1\text{--}3}$ are, respectively, the secretion rate, the synthesis rate and the growth rate.
+
+\subsubsection{Function~\fun{process},~\fun{objfun},~\fun{confun}  definitions}
+
+\paragraph{Step1: Write an M-file \subor{process.m}}
+
+{\small \verbatiminput{examples/problem_pr_bior/process.m}}
+
+\paragraph{Step2: Write an M-file~\subor{objfun.m}}
+
+{\small \verbatiminput{examples/problem_pr_bior/objfun.m}}
+
+\paragraph{Step3: Write an M-file~\subor{confun.m}}
+
+{\small \verbatiminput{examples/problem_pr_bior/confun.m}}
+
+\paragraph{Step4: Invoke~\fun{dynopt}} writing an
+M-file~\subor{problem.m} as follows: 
+
+{\small \verbatiminput{examples/problem_pr_bior/problem.m}}
+
+\begin{figure}[htb]
+	\includegraphics[width=0.5\textwidth]{examples/problem_pr_bior/graphs/u.eps}
+	\includegraphics[width=0.5\textwidth]{examples/problem_pr_bior/graphs/x.eps}
+	\caption{Control and state profiles for Park-Ramirez bioreactor.} \label{fig:prob_pr_bior}
+\end{figure}
+
+Simulation results are shown in Fig.~\ref{fig:prob_pr_bior}. The optimal control profile increases for the first part of trajectory (almost 10 hours) to increase the holdup volume (magenta trajectory) and to prepare suitable environment in the bioreactor for secreted protein production. The secreted protein (blue trajectory) is not produced during this time interval, and therefore the substrate concentration (cyan trajectory) is almost constant. After around 10 hours, the value of nutrient feed rate suddenly fallen to zero and it stayed constant approximately 1 hour. The secreted protein is produced mainly in the final phase of the process, where its concentration slightly increases. The maximum achieved value of secreted protein mass ($\mf{J}$) is 32.54.
 
 %%% Local Variables: 
 %%% mode: latex
