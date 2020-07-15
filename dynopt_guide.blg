@@ -1,0 +1,66 @@
+This is BibTeX, Version 0.99d (MiKTeX 2.9.7440 64-bit)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: dynopt_guide.aux
+Reallocating 'name_of_file' (item size: 1) to 9 items.
+The style file: plainnat.bst
+Reallocating 'name_of_file' (item size: 1) to 10 items.
+A level-1 auxiliary file: title.aux
+Reallocating 'name_of_file' (item size: 1) to 12 items.
+A level-1 auxiliary file: contact.aux
+Reallocating 'name_of_file' (item size: 1) to 11 items.
+A level-1 auxiliary file: chap01.aux
+Reallocating 'name_of_file' (item size: 1) to 11 items.
+A level-1 auxiliary file: chap02.aux
+Reallocating 'name_of_file' (item size: 1) to 11 items.
+A level-1 auxiliary file: chap03.aux
+Reallocating 'name_of_file' (item size: 1) to 11 items.
+A level-1 auxiliary file: chap04.aux
+Reallocating 'name_of_file' (item size: 1) to 11 items.
+A level-1 auxiliary file: chap05.aux
+Reallocating 'name_of_file' (item size: 1) to 7 items.
+Reallocating 'name_of_file' (item size: 1) to 4 items.
+Database file #1: abbrev.bib
+Database file #2: bib.bib
+Warning--there's a number but no volume in log89
+You've used 21 entries,
+            2758 wiz_defined-function locations,
+            834 strings with 9031 characters,
+and the built_in function-call counts, 9285 in all, are:
+= -- 898
+> -- 424
+< -- 17
++ -- 159
+- -- 132
+* -- 676
+:= -- 1528
+add.period$ -- 64
+call.type$ -- 21
+change.case$ -- 125
+chr.to.int$ -- 20
+cite$ -- 22
+duplicate$ -- 424
+empty$ -- 768
+format.name$ -- 173
+if$ -- 1908
+int.to.chr$ -- 2
+int.to.str$ -- 1
+missing$ -- 18
+newline$ -- 114
+num.names$ -- 84
+pop$ -- 199
+preamble$ -- 1
+purify$ -- 107
+quote$ -- 0
+skip$ -- 310
+stack$ -- 0
+substring$ -- 467
+swap$ -- 26
+text.length$ -- 1
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 226
+warning$ -- 1
+while$ -- 90
+width$ -- 0
+write$ -- 279
+(There was 1 warning)
