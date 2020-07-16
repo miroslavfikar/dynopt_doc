@@ -363,6 +363,7 @@ This problem was also solved by~\citep{tomlab_PR_bior}. The resulting value of t
 		\item initial guess follows from the solution for 80 collocation points.
 	\end{itemize}
 \end{itemize}
+The \fun{dynopt} approach considers relatively large number of collocation points (10 points in each of 9 intervals), but it is still less than the PROPT approach (120 collocation points). \fun{Dynopt} can find the optimal solution even with the smaller number of collocation points (e.g., 8 points in each interval) and in a shorter time. However, the value of the cost function, state and control trajectories diverge compared to the PROPT solution. On the other side, the further increase of the collocation points in \fun{dynopt} algorithm requires too much time and high computational effort.
 
 %%% Local Variables: 
 %%% mode: latex
