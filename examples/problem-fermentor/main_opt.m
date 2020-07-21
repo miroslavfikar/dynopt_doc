@@ -1,14 +1,14 @@
 options = sdpoptionset('LargeScale','on','Display','iter','TolFun',1e-7,...
                        'TolCon',1e-7,'TolX',1e-7,...
-                       'MaxFunEvals',1e5,'MaxIter',2000,'Algorithm','sqp',...
+                       'MaxFunEvals',1e5,'MaxIter',4000,'Algorithm','sqp',...
                        'NLPsolver','fmincon');
 optimparam.optvar = 3;
 optimparam.objtype = [];
-optimparam.ncolx = 5;
+optimparam.ncolx = 3;
 optimparam.ncolu = 2;
-optimparam.li = ones(20,1)*1/2;
+optimparam.li = ones(5,1)*30;
 optimparam.tf = [];
-optimparam.ui = zeros(1,20);
+optimparam.ui = zeros(1,5);
 optimparam.par = [];
 optimparam.bdu = [0 50];
 optimparam.bdx = [];
