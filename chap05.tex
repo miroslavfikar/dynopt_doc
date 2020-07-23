@@ -312,6 +312,123 @@ shown in Fig.~\ref{fig:problem-a}.
   \label{fig:problem-a}
 \end{figure}
 
+\section{Batch Fermentor}
+\label{sec:prob_fermentor}
+Consider a fed-batch fermentor for penicillin production with free
+terminal time~\citep{ban05} where the objective is to maximize the
+amount of penicillin using the feed rate as the control variable. The
+problem is stated as (MATLAB code for this example is located at
+\subor{examples/problem-fermentor}): 
+\begin{equation}
+\max_{u(t),t_f} \mathcal{J} = x_{2}(t_{f})x_{4}(t_{f})
+\end{equation}
+subject to differential equations:
+\begin{align}
+\dot{x}_1 & = 
+h_1x_1-\frac{u x_1}{500 x_4}, &
+x_1(0) &= 1.5  \\
+\dot{x}_2 & = 
+h_2x_1-0.01x_2-\frac{ux_2}{500x_4}, &
+x_1(0) &= 0  \\
+\dot{x}_3 &=
+\frac{h_1x_1}{0.47}-\frac{h_2x_1}{1.2}-\frac{0.029x_1x_3}{0.0001+x3}+ux_4 \left( 1-\frac{x_3}{500} \right),
+&
+x_3(0) &= 0 \\ 
+\dot{x}_4 &= \frac{u}{500}, &
+x_4(0) &= 7
+\end{align}
+box constraints:
+\begin{align}
+0 \le x_1(t) &\le 40, \\
+0 \le x_3(t) &\le 25, \\
+0 \le x_4(t) &\le 10, 
+\end{align}
+control variable constraints:
+\begin{align}
+0 \le u &\le 50, 
+\end{align}
+where $h_1$ and $h_2$ are computed as
+\begin{eqnarray} 
+h_1 &=& \frac{0.11x_3}{0.006x_1+x_3}, \\
+h_2 &=& 0.0055x_3(0.0001+x_3(1+10x_3)),
+\end{eqnarray}
+and 
+\begin{description}
+	\item $x_1(t)$ -- biomass concentration,
+	\item $x_2(t)$ -- penicillin concentration,
+	\item $x_3(t)$ -- substrate concentration,
+	\item $x_4(t)$ -- volume of a fermentor,
+	\item $u(t)$ -- feed rate of a substrate.
+\end{description}
+
+This problem was solved in~\citep{rut10} with reported optimal value of 88.0448. For this problem 3 collocation points for state variables, 2 collocation points for control variables for 5 intervals were defined. The optimum was found at value 88.0707 (470 iterations, exitflag equals to 1, fmincon). The optimal control and state profiles are shown in Fig~\ref{fig:prob_fermentor_u} and Fig~\ref{fig:prob_fermentor_x}.
+
+		\includegraphics[width=0.9\textwidth]{examples/problem-fermentor/graphs/fermentor_control.eps}
+		\caption[Problem 6: Control profile]{Control profile for fermentor problem}
+		\label{fig:prob_fermentor_u} 
+	\end{minipage}
+	\begin{minipage}[t]{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.9\textwidth]{examples/problem-fermentor/graphs/fermentor_states.eps}
+		\caption[Problem 6: State profiles]{State profiles for fermentor problem}
+		\label{fig:prob_fermentor_x}  
+	\end{minipage}
+\end{figure}
+
+\section{Park-Ramirez Bioreactor}
+\label{sec:prob_pr_bior}
+
+Consider the following problem~\citep{PR_bior} of the fed-batch
+reactor for optimal secreted protein production (MATLAB code for this
+example is located at \subor{examples/problem_pr_bior}):
+\begin{gather}
+\max_{\ve{u}(t)} \mf{J} = x_{1}(t_f)x_{5}(t_f) \label{eq:bior}
+\end{gather}
+such that
+\begin{align}
+\dot{x}_1  & = g_{1}(x_{2}-x_{1})-\frac{u}{x_{5}}x_{1} & x_{1}(0) & = 0\\
+\dot{x}_2  & = g_{2}x_{3}-\frac{u}{x_{5}}x_{2} & x_{2}(0) & = 0\\
+\dot{x}_3  & = g_{3}x_{3}-\frac{u}{x_{5}}x_{3} & x_{3}(0) & = 1 \\
+\dot{x}_4  & = -7.3g_{3}x_{3}+\frac{u}{x_{5}}x_{3} & x_{4}(0) & = 5 \\
+\dot{x}_5  & = u & x_{5}(0) & = 1 \\
+u  & \in [0,2.5] & t_f & = 15
+\end{align}
+with
+\begin{align}
+g_{1}  & =  4.75\frac{g_{3}}{0.12+g_{3}} &\\
+g_{2}  & = \frac{x_{4}}{0.1+x_{4}}\exp(-5x_{4}) &\\
+g_{3}  & = 21.87\frac{x_{4}}{(x_{4}+0.4)(x_{4}+62.5)} &
+\end{align}
+state path constraint:
+\begin{align}
+x_{1} & \leq x_{2}
+\end{align}
+where $x_{1}$ is the concentration of the secreted protein [$l^{-1}$], $x_{2}$ is the concentration of the total protein [$l^{-1}$], $x_{3}$ is the culture cell density [$g/l$], $x_{4}$ is the substrate concentration [$g/l$], $x_{5}$ is the holdup volume [$l$], $u$ is the nutrient (glucose) feed rate [$l/h$] and $\mf{J}$ is the mass of protein produced. The supporting variables $g_{1\text{--}3}$ are, respectively, the secretion rate, the synthesis rate and the growth rate.
+
+\begin{figure}[htb]
+	\includegraphics[width=0.5\textwidth]{examples/problem_pr_bior/graphs/u.eps}
+	\includegraphics[width=0.5\textwidth]{examples/problem_pr_bior/graphs/x.eps}
+	\caption{Control and state profiles for Park-Ramirez bioreactor.} \label{fig:prob_pr_bior}
+\end{figure}
+
+Simulation results are shown in Fig.~\ref{fig:prob_pr_bior}. The optimal control profile increases for the first part of trajectory (almost 10 hours) to increase the holdup volume (magenta trajectory) and to prepare suitable environment in the bioreactor for secreted protein production. The secreted protein (blue trajectory) is not produced during this time interval, and therefore the substrate concentration (cyan trajectory) is almost constant. After around 10 hours, the value of nutrient feed rate suddenly fallen to zero and it stayed constant approximately 1 hour. The secreted protein is produced mainly in the final phase of the process, where its concentration slightly increases. The maximum achieved value of secreted protein mass ($\mf{J}$) is 32.54.
+
+This problem was also solved by~\citep{rut10}. The resulting value of the objective function ($\mf{J}=32.72$), control and state trajectories from the PROPT optimization software are similar to the solution from the \fun{dynopt}. The small discrepancies in the compared solutions are caused mainly by the different setups of collocation points:
+\begin{itemize}
+	\item \fun{dynopt} 
+	\begin{itemize}
+		\item 9 intervals,
+		\item 10 collocation points for state variables,
+		\item 3 collocation points for control variable.
+	\end{itemize}
+	\item PROPT
+	\begin{itemize}
+		\item 120 colocation points,
+		\item initial guess follows from the solution for 80 collocation points.
+	\end{itemize}
+\end{itemize}
+The \fun{dynopt} approach considers relatively large number of collocation points (10 points in each of 9 intervals), but it is still less than the PROPT approach (120 collocation points). \fun{Dynopt} can find the optimal solution even with the smaller number of collocation points (e.g., 8 points in each interval) and in a shorter time. However, the value of the cost function, state and control trajectories diverge compared to the PROPT solution. On the other side, the further increase of the collocation points in \fun{dynopt} algorithm requires too much time and high computational effort.
+
 \section{Denbigh's System of Reactions}
 \label{sec:brpdae}
 
@@ -363,7 +480,6 @@ and \ref{fig:probdenbigh_x}. This problem was also solved in \cite{rut10}, using
 \end{figure}
 
   
-
 %%% Local Variables: 
 %%% mode: latex
 %%% TeX-master: "dynopt_guide"
