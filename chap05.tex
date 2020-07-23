@@ -331,7 +331,7 @@ x_1(0) &= 1.5  \\
 h_2x_1-0.01x_2-\frac{ux_2}{500x_4}, &
 x_1(0) &= 0  \\
 \dot{x}_3 &=
-\frac{h_1x_1}{0.47}-\frac{h_2x_1}{1.2}-\frac{x_10.029x_3}{0.0001+x3}+ux_4 \left( 1-\frac{x_3}{500} \right),
+\frac{h_1x_1}{0.47}-\frac{h_2x_1}{1.2}-\frac{0.029x_1x_3}{0.0001+x3}+ux_4 \left( 1-\frac{x_3}{500} \right),
 &
 x_3(0) &= 0 \\ 
 \dot{x}_4 &= \frac{u}{500}, &
@@ -339,24 +339,23 @@ x_4(0) &= 7
 \end{align}
 box constraints:
 \begin{align}
-0 \ge x_1(t) &\ge 40 \\
-%0 \ge x_2(t) &\ge 50 \\
-0 \ge x_3(t) &\ge 25 \\
-0 \ge x_4(t) &\ge 10 
+0 \le x_1(t) &\le 40, \\
+0 \le x_3(t) &\le 25, \\
+0 \le x_4(t) &\le 10, 
 \end{align}
 control variable constraints:
 \begin{align}
-0 \ge u &\ge 50 
+0 \le u &\le 50, 
 \end{align}
 where $h_1$ and $h_2$ are computed as
 \begin{eqnarray} 
-h_1 &=& \frac{0.11x_3}{0.006x_1+x_3} \\
-h_2 &=& 0.0055x_3(0.0001+x_3(1+10x_3))
+h_1 &=& \frac{0.11x_3}{0.006x_1+x_3}, \\
+h_2 &=& 0.0055x_3(0.0001+x_3(1+10x_3)),
 \end{eqnarray}
 and 
 \begin{description}
 	\item $x_1(t)$ -- biomass concentration,
-	\item $x_2(t)$ -- penicilin concentration,
+	\item $x_2(t)$ -- penicillin concentration,
 	\item $x_3(t)$ -- substrate concentration,
 	\item $x_4(t)$ -- volume of a fermentor,
 	\item $u(t)$ -- feed rate of a substrate.
