@@ -312,6 +312,72 @@ shown in Fig.~\ref{fig:problem-a}.
   \label{fig:problem-a}
 \end{figure}
 
+\section{Batch Fermentor}
+\label{sec:prob_fermentor}
+Consider a fed-batch fermentor for penicillin production with free
+terminal time~\citep{ban05} where the objective is to maximize the
+amount of penicillin using the feed rate as the control variable. The
+problem is stated as (MATLAB code for this example is located at
+\subor{examples/problem-fermentor}): 
+\begin{equation}
+\max_{u(t),t_f} \mathcal{J} = x_{2}(t_{f})x_{4}(t_{f})
+\end{equation}
+subject to differential equations:
+\begin{align}
+\dot{x}_1 & = 
+h_1x_1-\frac{u x_1}{500 x_4}, &
+x_1(0) &= 1.5  \\
+\dot{x}_2 & = 
+h_2x_1-0.01x_2-\frac{ux_2}{500x_4}, &
+x_1(0) &= 0  \\
+\dot{x}_3 &=
+\frac{h_1x_1}{0.47}-\frac{h_2x_1}{1.2}-\frac{x_10.029x_3}{0.0001+x3}+ux_4 \left( 1-\frac{x_3}{500} \right),
+&
+x_3(0) &= 0 \\ 
+\dot{x}_4 &= \frac{u}{500}, &
+x_4(0) &= 7
+\end{align}
+box constraints:
+\begin{align}
+0 \ge x_1(t) &\ge 40 \\
+%0 \ge x_2(t) &\ge 50 \\
+0 \ge x_3(t) &\ge 25 \\
+0 \ge x_4(t) &\ge 10 
+\end{align}
+control variable constraints:
+\begin{align}
+0 \ge u &\ge 50 
+\end{align}
+where $h_1$ and $h_2$ are computed as
+\begin{eqnarray} 
+h_1 &=& \frac{0.11x_3}{0.006x_1+x_3} \\
+h_2 &=& 0.0055x_3(0.0001+x_3(1+10x_3))
+\end{eqnarray}
+and 
+\begin{description}
+	\item $x_1(t)$ -- biomass concentration,
+	\item $x_2(t)$ -- penicilin concentration,
+	\item $x_3(t)$ -- substrate concentration,
+	\item $x_4(t)$ -- volume of a fermentor,
+	\item $u(t)$ -- feed rate of a substrate.
+\end{description}
+
+This problem was solved in~\citep{rut10} with reported optimal value of 88.0448. For this problem 3 collocation points for state variables, 2 collocation points for control variables for 5 intervals were defined. The optimum was found at value 88.0707 (470 iterations, exitflag equals to 1, fmincon). The optimal control and state profiles are shown in Fig~\ref{fig:prob_fermentor_u} and Fig~\ref{fig:prob_fermentor_x}.
+
+\begin{figure}[htb]
+	\begin{minipage}[t]{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.9\textwidth]{examples/problem-fermentor/graphs/fermentor_control.eps}
+		\caption[Problem 6: Control profile]{Control profile for fermentor problem}
+		\label{fig:prob_fermentor_u} 
+	\end{minipage}
+	\begin{minipage}[t]{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.9\textwidth]{examples/problem-fermentor/graphs/fermentor_states.eps}
+		\caption[Problem 6: State profiles]{State profiles for fermentor problem}
+		\label{fig:prob_fermentor_x}  
+	\end{minipage}
+\end{figure}
 %%% Local Variables: 
 %%% mode: latex
 %%% TeX-master: "dynopt_guide"
