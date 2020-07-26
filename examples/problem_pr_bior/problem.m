@@ -7,11 +7,11 @@ options = sdpoptionset('LargeScale', 'on', 'Display', 'iter', 'TolFun', 1e-7, ..
     'MaxIter', 4000, 'Algorithm', 'sqp', 'NLPsolver', 'fmincon');
 optimparam.optvar     = 3;
 optimparam.objtype    = [];
-optimparam.ncolx      = 10;
-optimparam.ncolu      = 3;
-optimparam.li         = ones(9,1);
+optimparam.ncolx      = 4;
+optimparam.ncolu      = 2;
+optimparam.li         = ones(10,1)*.3;
 optimparam.tf         = 15;
-optimparam.ui         = zeros(1,9);
+optimparam.ui         = zeros(1,10);
 optimparam.par        = [];
 optimparam.bdu        = [0 2.5];
 optimparam.bdx        = [0 3; 0 3; 0 4; 0 10; 0.5 25];
