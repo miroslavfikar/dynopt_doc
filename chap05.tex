@@ -363,9 +363,8 @@ and
 
 This problem was solved in~\citep{rut10} with reported optimal value of 88.0448. For this problem 3 collocation points for state variables, 2 collocation points for control variables for 5 intervals were defined. The optimum was found at value 88.0707 (470 iterations, exitflag equals to 1, fmincon). The optimal control and state profiles are shown in Fig~\ref{fig:prob_fermentor_u} and Fig~\ref{fig:prob_fermentor_x}.
 
-\begin{figure}[htb]
+\begin{figure} 
 	\begin{minipage}[t]{0.5\linewidth}
-		\centering
 		\includegraphics[width=0.9\textwidth]{examples/problem-fermentor/graphs/fermentor_control.eps}
 		\caption[Problem 6: Control profile]{Control profile for fermentor problem}
 		\label{fig:prob_fermentor_u} 
@@ -381,8 +380,9 @@ This problem was solved in~\citep{rut10} with reported optimal value of 88.0448.
 \section{Park-Ramirez Bioreactor}
 \label{sec:prob_pr_bior}
 
-Consider the following problem~\citep{PR_bior} of the fed-batch reactor for optimal secreted protein production:
-
+Consider the following problem~\citep{PR_bior} of the fed-batch
+reactor for optimal secreted protein production (MATLAB code for this
+example is located at \subor{examples/problem_pr_bior}):
 \begin{gather}
 \max_{\ve{u}(t)} \mf{J} = x_{1}(t_f)x_{5}(t_f) \label{eq:bior}
 \end{gather}
@@ -415,7 +415,7 @@ where $x_{1}$ is the concentration of the secreted protein [$l^{-1}$], $x_{2}$ i
 
 Simulation results are shown in Fig.~\ref{fig:prob_pr_bior}. The optimal control profile increases for the first part of trajectory (almost 10 hours) to increase the holdup volume (magenta trajectory) and to prepare suitable environment in the bioreactor for secreted protein production. The secreted protein (blue trajectory) is not produced during this time interval, and therefore the substrate concentration (cyan trajectory) is almost constant. After around 10 hours, the value of nutrient feed rate suddenly fallen to zero and it stayed constant approximately 1 hour. The secreted protein is produced mainly in the final phase of the process, where its concentration slightly increases. The maximum achieved value of secreted protein mass ($\mf{J}$) is 32.72.
 
-This problem was also solved by~\citep{tomlab_PR_bior}. The resulting value of the objective function ($\mf{J}=32.72$), control and state trajectories from the PROPT optimization software are similar to the solution from the \fun{dynopt}. The small discrepancies in the compared solutions are caused mainly by the different setups of collocation points:
+This problem was also solved by~\citep{rut10}. The resulting value of the objective function ($\mf{J}=32.72$), control and state trajectories from the PROPT optimization software are similar to the solution from the \fun{dynopt}. The small discrepancies in the compared solutions are caused mainly by the different setups of collocation points:
 \begin{itemize}
 	\item \fun{dynopt} 
 	\begin{itemize}
@@ -430,6 +430,58 @@ This problem was also solved by~\citep{tomlab_PR_bior}. The resulting value of t
 	\end{itemize}
 \end{itemize}
 The \fun{dynopt} approach considers relatively large number of collocation points (4 points in each of 10 intervals), but it is still less than the PROPT approach (120 collocation points). \fun{Dynopt} can find the optimal solution even with the smaller number of collocation points (e.g., 3 points in each interval) and in a shorter time. However, the value of the cost function, state and control trajectories diverge compared to the PROPT solution. On the other side, the further increase of the collocation points in \fun{dynopt} algorithm requires too much time and high computational effort.
+
+\section{Denbigh's System of Reactions}
+\label{sec:brpdae}
+
+Consider a system of chemical reactions by Denbigh \cite{den58} with the 
+following reactions:
+\begin{gather}
+A + B \rightarrow X, \\
+A + B \rightarrow P, \\
+X \rightarrow Y, \\
+X \rightarrow Q, \\
+\end{gather}
+where $A$ and $B$ are the reactants, $P$ and $Q$ are the waste products, $X$ is an intermediate and $Y$ is the desired product. The goal of the optimal control problem is to compute the temperature of the reactor $T(t)$, to maximize the yield of the product $Y$ at the end of the given batch time $t_f$. (MATLAB code for this example is located
+at \subor{examples/problem10}):
+\begin{equation}
+\min_{\ve{u}(t)} \mf{J} = -x_{3}(t_{f}) \label{eq:denbigh_dae}
+\end{equation}
+such that
+\begin{align}
+\dot{x}_1 & =  -k_{1}x_{1} -k_{2}x_{1} , &\qquad x_1(0) &= 1 \\
+\dot{x}_{2}& = k_{1}x_{1} - (k_{3} + k_{4})x_{2} , & \qquad x_2(0) & = 0 \\
+\dot{x}_3 & =  k_{3}x_{2} , & \qquad x_3(0) & = 0 
+\end{align}
+
+where $k_{1}, \, k_{2}, \, k_{3}$ and $k_{4}$ are defined as follows:
+\begin{align}
+k_{1} &= 1000 e^{(-\frac{3000}{T})}, \\
+k_{2} &= 1 \times 10^{7} e^{(-\frac{6000}{T})}, \\
+k_{3} &= 10e^{(-\frac{3000}{T})}, \\
+k_{4} &= 1 \times 10^{-3}, 
+\end{align} where $x_{1} \in [0, 1] $  represents concentration
+of $A$, $x_{2} \in [0, 1] $ and $x_{3} \in [0, 1]$  represent concentrations
+of $X$ and $Y$, respectively. The control variable of this process is a temperature of the reactor $T \in [273 \,  415]$\,K.
+Batch time of this process is $t_{f} = 1000$\,s. The given batch time was divided into 10 control steps. State variables computed using \emph{dynopt}, were parametrized using 3 collocation points and the control trajectory was parametrized using 2 collocation points at each control step.  After 351 iterations, optimal value of $x_{3}(t_{f}) = 0.660487$ was
+found using solver fmincon. Graphical representation of the solution is shown in Figs. \ref{fig:probdenbigh_u}
+and \ref{fig:probdenbigh_x}. This problem was also solved in \cite{rut10}, using optimal control platform PROPT. Solver SNOPT reached the optimum in 233 Branch-and-bound iterations. The optimal value of  $x_{3}(t_{f}) = 0.633520$ was computed considering 70 collocation points over the given batch time. 
+
+\begin{figure}[htb]
+	\begin{minipage}[t]{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.99\textwidth]{examples/problem10/graphs/u_denbigh.eps}
+		\caption[Denbigh's system of reactions: control profile]{Control profile for
+			Denbigh's system of reactions}\label{fig:probdenbigh_u} 
+	\end{minipage}
+	\begin{minipage}[t]{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.99\textwidth]{examples/problem10/graphs/x_denbigh.eps}
+		\caption[Denbigh's system of reactions: state profiles]{State profiles for Denbigh's system of reactions}\label{fig:probdenbigh_x} 
+	\end{minipage}
+\end{figure}
+
+
 %%% Local Variables: 
 %%% mode: latex
 %%% TeX-master: "dynopt_guide"
