@@ -363,6 +363,8 @@ and
 
 This problem was solved in~\citep{rut10} with reported optimal value of 88.0448. For this problem 3 collocation points for state variables, 2 collocation points for control variables for 5 intervals were defined. The optimum was found at value 88.0707 (470 iterations, exitflag equals to 1, fmincon). The optimal control and state profiles are shown in Fig~\ref{fig:prob_fermentor_u} and Fig~\ref{fig:prob_fermentor_x}.
 
+\begin{figure} 
+	\begin{minipage}[t]{0.5\linewidth}
 		\includegraphics[width=0.9\textwidth]{examples/problem-fermentor/graphs/fermentor_control.eps}
 		\caption[Problem 6: Control profile]{Control profile for fermentor problem}
 		\label{fig:prob_fermentor_u} 
@@ -460,8 +462,8 @@ k_{3} &= 10e^{(-\frac{3000}{T})}, \\
 k_{4} &= 1 \times 10^{-3}, 
 \end{align} where $x_{1} \in [0, 1] $  represents concentration
 of $A$, $x_{2} \in [0, 1] $ and $x_{3} \in [0, 1]$  represent concentrations
-of $X$ and $Y$, respectively. The control variable of this process is a temperature of the reactor $T \in [273 \, \mathrm{K}, 415 \, \mathrm{K}]$.
-Batch time of this process is $t_{f} = 1000 \, s$. The given batch time was divided into 10 control steps. State variables computed using \emph{dynopt}, were parametrized using 3 collocation points and the control trajectory was parametrized using 2 collocation points at each control step.  After 351 iterations, optimal value of $x_{3}(t_{f}) = 0.660487$ was
+of $X$ and $Y$, respectively. The control variable of this process is a temperature of the reactor $T \in [273 \,  415]$\,K.
+Batch time of this process is $t_{f} = 1000$\,s. The given batch time was divided into 10 control steps. State variables computed using \emph{dynopt}, were parametrized using 3 collocation points and the control trajectory was parametrized using 2 collocation points at each control step.  After 351 iterations, optimal value of $x_{3}(t_{f}) = 0.660487$ was
 found using solver fmincon. Graphical representation of the solution is shown in Figs. \ref{fig:probdenbigh_u}
 and \ref{fig:probdenbigh_x}. This problem was also solved in \cite{rut10}, using optimal control platform PROPT. Solver SNOPT reached the optimum in 233 Branch-and-bound iterations. The optimal value of  $x_{3}(t_{f}) = 0.633520$ was computed considering 70 collocation points over the given batch time. 
 
