@@ -410,18 +410,18 @@ where $x_{1}$ is the concentration of the secreted protein [$l^{-1}$], $x_{2}$ i
 \begin{figure}[htb]
 	\includegraphics[width=0.5\textwidth]{examples/problem_pr_bior/graphs/u.eps}
 	\includegraphics[width=0.5\textwidth]{examples/problem_pr_bior/graphs/x.eps}
-	\caption{Control and state profiles for Park-Ramirez bioreactor.} \label{fig:prob_pr_bior}
+	\caption{Control (left) and state (right) profiles for Park-Ramirez bioreactor.} \label{fig:prob_pr_bior}
 \end{figure}
 
-Simulation results are shown in Fig.~\ref{fig:prob_pr_bior}. The optimal control profile increases for the first part of trajectory (almost 10 hours) to increase the holdup volume (magenta trajectory) and to prepare suitable environment in the bioreactor for secreted protein production. The secreted protein (blue trajectory) is not produced during this time interval, and therefore the substrate concentration (cyan trajectory) is almost constant. After around 10 hours, the value of nutrient feed rate suddenly fallen to zero and it stayed constant approximately 1 hour. The secreted protein is produced mainly in the final phase of the process, where its concentration slightly increases. The maximum achieved value of secreted protein mass ($\mf{J}$) is 32.54.
+Simulation results are shown in Fig.~\ref{fig:prob_pr_bior}. The optimal control profile increases for the first part of trajectory (almost 10 hours) to increase the holdup volume (magenta trajectory) and to prepare suitable environment in the bioreactor for secreted protein production. The secreted protein (blue trajectory) is not produced during this time interval, and therefore the substrate concentration (cyan trajectory) is almost constant. After around 10 hours, the value of nutrient feed rate suddenly fallen to zero and it stayed constant approximately 1 hour. The secreted protein is produced mainly in the final phase of the process, where its concentration slightly increases. The maximum achieved value of secreted protein mass ($\mf{J}$) is 32.72.
 
 This problem was also solved by~\citep{rut10}. The resulting value of the objective function ($\mf{J}=32.72$), control and state trajectories from the PROPT optimization software are similar to the solution from the \fun{dynopt}. The small discrepancies in the compared solutions are caused mainly by the different setups of collocation points:
 \begin{itemize}
 	\item \fun{dynopt} 
 	\begin{itemize}
-		\item 9 intervals,
-		\item 10 collocation points for state variables,
-		\item 3 collocation points for control variable.
+		\item 10 intervals,
+		\item 4 collocation points for state variables,
+		\item 2 collocation points for control variable.
 	\end{itemize}
 	\item PROPT
 	\begin{itemize}
@@ -429,7 +429,7 @@ This problem was also solved by~\citep{rut10}. The resulting value of the object
 		\item initial guess follows from the solution for 80 collocation points.
 	\end{itemize}
 \end{itemize}
-The \fun{dynopt} approach considers relatively large number of collocation points (10 points in each of 9 intervals), but it is still less than the PROPT approach (120 collocation points). \fun{Dynopt} can find the optimal solution even with the smaller number of collocation points (e.g., 8 points in each interval) and in a shorter time. However, the value of the cost function, state and control trajectories diverge compared to the PROPT solution. On the other side, the further increase of the collocation points in \fun{dynopt} algorithm requires too much time and high computational effort.
+The \fun{dynopt} approach considers relatively large number of collocation points (4 points in each of 10 intervals), but it is still less than the PROPT approach (120 collocation points). \fun{Dynopt} can find the optimal solution even with the smaller number of collocation points (e.g., 3 points in each interval) and in a shorter time. However, the value of the cost function, state and control trajectories diverge compared to the PROPT solution. On the other side, the further increase of the collocation points in \fun{dynopt} algorithm requires too much time and high computational effort.
 
 \section{Denbigh's System of Reactions}
 \label{sec:brpdae}
@@ -481,7 +481,7 @@ and \ref{fig:probdenbigh_x}. This problem was also solved in \cite{rut10}, using
 	\end{minipage}
 \end{figure}
 
-  
+
 %%% Local Variables: 
 %%% mode: latex
 %%% TeX-master: "dynopt_guide"
