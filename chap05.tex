@@ -304,14 +304,15 @@ shown in Fig.~\ref{fig:problem-a}.
 
 \begin{figure}[!h]
   \centering
-  \includegraphics[width=0.32\linewidth]{a-alpha}
-  \includegraphics[width=0.32\linewidth]{a-x12} 
-  \includegraphics[width=0.32\linewidth]{a-x3}
+  \includegraphics[width=0.32\linewidth]{examples/problem9/graphs/a-alpha}
+  \includegraphics[width=0.32\linewidth]{examples/problem9/graphs/a-x12} 
+  \includegraphics[width=0.32\linewidth]{examples/problem9/graphs/a-x3}
   \caption{Diafiltration problem: optimal $\alpha$ (left),
     concentrations (middle), and volume (right) as functions of time}
   \label{fig:problem-a}
 \end{figure}
 
+<<<<<<< HEAD
 \section{Fed-bacth Reactor}
 Consider a fed-batch reactor for the production of ethanol. The optimal control problem is to maximize the yield of ethanol using the feed rate as the control variable. The aim is to find the feed flow rate $u(t)$ and the final time $t_f$ in order to maximize
 \begin{equation}
@@ -334,33 +335,226 @@ where
 x_{1}(t) - x_{4}(t) &- states\\
 u(t) &- control.
 \end{align*}
+=======
+\section{Batch Fermentor}
+\label{sec:prob_fermentor}
+Consider a fed-batch fermentor for penicillin production with free
+terminal time~\citep{ban05} where the objective is to maximize the
+amount of penicillin using the feed rate as the control variable. The
+problem is stated as (MATLAB code for this example is located at
+\subor{examples/problem-fermentor}): 
+\begin{equation}
+\max_{u(t),t_f} \mathcal{J} = x_{2}(t_{f})x_{4}(t_{f})
+\end{equation}
+subject to differential equations:
+\begin{align}
+\dot{x}_1 & = 
+h_1x_1-\frac{u x_1}{500 x_4}, &
+x_1(0) &= 1.5  \\
+\dot{x}_2 & = 
+h_2x_1-0.01x_2-\frac{ux_2}{500x_4}, &
+x_1(0) &= 0  \\
+\dot{x}_3 &=
+\frac{h_1x_1}{0.47}-\frac{h_2x_1}{1.2}-\frac{0.029x_1x_3}{0.0001+x3}+ux_4 \left( 1-\frac{x_3}{500} \right),
+&
+x_3(0) &= 0 \\ 
+\dot{x}_4 &= \frac{u}{500}, &
+x_4(0) &= 7
+\end{align}
+box constraints:
+\begin{align}
+0 \le x_1(t) &\le 40, \\
+0 \le x_3(t) &\le 25, \\
+0 \le x_4(t) &\le 10, 
+\end{align}
+control variable constraints:
+\begin{align}
+0 \le u &\le 50, 
+\end{align}
+where $h_1$ and $h_2$ are computed as
+\begin{eqnarray} 
+h_1 &=& \frac{0.11x_3}{0.006x_1+x_3}, \\
+h_2 &=& 0.0055x_3(0.0001+x_3(1+10x_3)),
+\end{eqnarray}
+and 
+\begin{description}
+	\item $x_1(t)$ -- biomass concentration,
+	\item $x_2(t)$ -- penicillin concentration,
+	\item $x_3(t)$ -- substrate concentration,
+	\item $x_4(t)$ -- volume of a fermentor,
+	\item $u(t)$ -- feed rate of a substrate.
+\end{description}
+
+This problem was solved in~\citep{rut10} with reported optimal value of 88.0448. For this problem 3 collocation points for state variables, 2 collocation points for control variables for 5 intervals were defined. The optimum was found at value 88.0707 (470 iterations, exitflag equals to 1, fmincon). The optimal control and state profiles are shown in Fig~\ref{fig:prob_fermentor_u} and Fig~\ref{fig:prob_fermentor_x}.
+
+\begin{figure} 
+	\begin{minipage}[t]{0.5\linewidth}
+		\includegraphics[width=0.9\textwidth]{examples/problem-fermentor/graphs/fermentor_control.eps}
+		\caption[Problem 6: Control profile]{Control profile for fermentor problem}
+		\label{fig:prob_fermentor_u} 
+	\end{minipage}
+	\begin{minipage}[t]{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.9\textwidth]{examples/problem-fermentor/graphs/fermentor_states.eps}
+		\caption[Problem 6: State profiles]{State profiles for fermentor problem}
+		\label{fig:prob_fermentor_x}  
+	\end{minipage}
+\end{figure}
+
+\section{Park-Ramirez Bioreactor}
+\label{sec:prob_pr_bior}
+
+Consider the following problem~\citep{PR_bior} of the fed-batch
+reactor for optimal secreted protein production (MATLAB code for this
+example is located at \subor{examples/problem_pr_bior}):
+\begin{gather}
+\max_{\ve{u}(t)} \mf{J} = x_{1}(t_f)x_{5}(t_f) \label{eq:bior}
+\end{gather}
+such that
+\begin{align}
+\dot{x}_1  & = g_{1}(x_{2}-x_{1})-\frac{u}{x_{5}}x_{1} & x_{1}(0) & = 0\\
+\dot{x}_2  & = g_{2}x_{3}-\frac{u}{x_{5}}x_{2} & x_{2}(0) & = 0\\
+\dot{x}_3  & = g_{3}x_{3}-\frac{u}{x_{5}}x_{3} & x_{3}(0) & = 1 \\
+\dot{x}_4  & = -7.3g_{3}x_{3}+\frac{u}{x_{5}}x_{3} & x_{4}(0) & = 5 \\
+\dot{x}_5  & = u & x_{5}(0) & = 1 \\
+u  & \in [0,2.5] & t_f & = 15
+\end{align}
+with
+\begin{align}
+g_{1}  & =  4.75\frac{g_{3}}{0.12+g_{3}} &\\
+g_{2}  & = \frac{x_{4}}{0.1+x_{4}}\exp(-5x_{4}) &\\
+g_{3}  & = 21.87\frac{x_{4}}{(x_{4}+0.4)(x_{4}+62.5)} &
+\end{align}
+state path constraint:
+\begin{align}
+x_{1} & \leq x_{2}
+\end{align}
+where $x_{1}$ is the concentration of the secreted protein [$l^{-1}$], $x_{2}$ is the concentration of the total protein [$l^{-1}$], $x_{3}$ is the culture cell density [$g/l$], $x_{4}$ is the substrate concentration [$g/l$], $x_{5}$ is the holdup volume [$l$], $u$ is the nutrient (glucose) feed rate [$l/h$] and $\mf{J}$ is the mass of protein produced. The supporting variables $g_{1\text{--}3}$ are, respectively, the secretion rate, the synthesis rate and the growth rate.
+
+\begin{figure}[htb]
+	\includegraphics[width=0.5\textwidth]{examples/problem_pr_bior/graphs/u.eps}
+	\includegraphics[width=0.5\textwidth]{examples/problem_pr_bior/graphs/x.eps}
+	\caption{Control (left) and state (right) profiles for Park-Ramirez bioreactor.} \label{fig:prob_pr_bior}
+\end{figure}
+
+Simulation results are shown in Fig.~\ref{fig:prob_pr_bior}. The optimal control profile increases for the first part of trajectory (almost 10 hours) to increase the holdup volume (magenta trajectory) and to prepare suitable environment in the bioreactor for secreted protein production. The secreted protein (blue trajectory) is not produced during this time interval, and therefore the substrate concentration (cyan trajectory) is almost constant. After around 10 hours, the value of nutrient feed rate suddenly fallen to zero and it stayed constant approximately 1 hour. The secreted protein is produced mainly in the final phase of the process, where its concentration slightly increases. The maximum achieved value of secreted protein mass ($\mf{J}$) is 32.72.
+
+This problem was also solved by~\citep{rut10}. The resulting value of the objective function ($\mf{J}=32.72$), control and state trajectories from the PROPT optimization software are similar to the solution from the \fun{dynopt}. The small discrepancies in the compared solutions are caused mainly by the different setups of collocation points:
+\begin{itemize}
+	\item \fun{dynopt} 
+	\begin{itemize}
+		\item 10 intervals,
+		\item 4 collocation points for state variables,
+		\item 2 collocation points for control variable.
+	\end{itemize}
+	\item PROPT
+	\begin{itemize}
+		\item 120 colocation points,
+		\item initial guess follows from the solution for 80 collocation points.
+	\end{itemize}
+\end{itemize}
+The \fun{dynopt} approach considers relatively large number of collocation points (4 points in each of 10 intervals), but it is still less than the PROPT approach (120 collocation points). \fun{Dynopt} can find the optimal solution even with the smaller number of collocation points (e.g., 3 points in each interval) and in a shorter time. However, the value of the cost function, state and control trajectories diverge compared to the PROPT solution. On the other side, the further increase of the collocation points in \fun{dynopt} algorithm requires too much time and high computational effort.
+
+\section{Denbigh's System of Reactions}
+\label{sec:brpdae}
+
+Consider a system of chemical reactions by Denbigh \cite{den58} with the 
+following reactions:
+\begin{gather}
+A + B \rightarrow X, \\
+A + B \rightarrow P, \\
+X \rightarrow Y, \\
+X \rightarrow Q, \\
+\end{gather}
+where $A$ and $B$ are the reactants, $P$ and $Q$ are the waste products, $X$ is an intermediate and $Y$ is the desired product. The goal of the optimal control problem is to compute the temperature of the reactor $T(t)$, to maximize the yield of the product $Y$ at the end of the given batch time $t_f$. (MATLAB code for this example is located
+at \subor{examples/problem10}):
+\begin{equation}
+\min_{\ve{u}(t)} \mf{J} = -x_{3}(t_{f}) \label{eq:denbigh_dae}
+\end{equation}
+such that
+\begin{align}
+\dot{x}_1 & =  -k_{1}x_{1} -k_{2}x_{1} , &\qquad x_1(0) &= 1 \\
+\dot{x}_{2}& = k_{1}x_{1} - (k_{3} + k_{4})x_{2} , & \qquad x_2(0) & = 0 \\
+\dot{x}_3 & =  k_{3}x_{2} , & \qquad x_3(0) & = 0 
+\end{align}
+
+where $k_{1}, \, k_{2}, \, k_{3}$ and $k_{4}$ are defined as follows:
+\begin{align}
+k_{1} &= 1000 e^{(-\frac{3000}{T})}, \\
+k_{2} &= 1 \times 10^{7} e^{(-\frac{6000}{T})}, \\
+k_{3} &= 10e^{(-\frac{3000}{T})}, \\
+k_{4} &= 1 \times 10^{-3}, 
+\end{align} where $x_{1} \in [0, 1] $  represents concentration
+of $A$, $x_{2} \in [0, 1] $ and $x_{3} \in [0, 1]$  represent concentrations
+of $X$ and $Y$, respectively. The control variable of this process is a temperature of the reactor $T \in [273 \,  415]$\,K.
+Batch time of this process is $t_{f} = 1000$\,s. The given batch time was divided into 10 control steps. State variables computed using \emph{dynopt}, were parametrized using 3 collocation points and the control trajectory was parametrized using 2 collocation points at each control step.  After 351 iterations, optimal value of $x_{3}(t_{f}) = 0.660487$ was
+found using solver fmincon. Graphical representation of the solution is shown in Figs. \ref{fig:probdenbigh_u}
+and \ref{fig:probdenbigh_x}. This problem was also solved in \cite{rut10}, using optimal control platform PROPT. Solver SNOPT reached the optimum in 233 Branch-and-bound iterations. The optimal value of  $x_{3}(t_{f}) = 0.633520$ was computed considering 70 collocation points over the given batch time. 
 
 \begin{figure}[htb]
 	\begin{minipage}[t]{0.5\linewidth}
 		\centering
-		\includegraphics[width=0.9\textwidth]{examples/problem_fed_batch/graphs/batch_control_dynopt.eps}
-		\caption[]{Control profile} 
-		\label{contr_prof}
+		\includegraphics[width=0.99\textwidth]{examples/problem10/graphs/u_denbigh.eps}
+		\caption[Denbigh's system of reactions: control profile]{Control profile for
+			Denbigh's system of reactions}\label{fig:probdenbigh_u} 
 	\end{minipage}
 	\begin{minipage}[t]{0.5\linewidth}
 		\centering
-		\includegraphics[width=0.9\textwidth]{examples/problem_fed_batch/graphs/batch_states_dynopt.eps}
-		\caption[]{State profile} 
-		\label{state_prof}
+		\includegraphics[width=0.99\textwidth]{examples/problem10/graphs/x_denbigh.eps}
+		\caption[Denbigh's system of reactions: state profiles]{State profiles for Denbigh's system of reactions}\label{fig:probdenbigh_x} 
 	\end{minipage}
 \end{figure}
 
-The optimal control trajectory and the state profiles are depicted in Fig.\ref{contr_prof} and Fig.\ref{state_prof}, respectively. First, until approximately 12 seconds, the control input is equal to zero and the concentration of the substrate is decreasing. After this concentration reaches the value equal to 1, the control input starts to increase progressively, what causes the increase of the product concentration, as well as the volume. At the end of the control, the volume is equal to 200, which satisfies the defined constrains. The results obtained by using \textit{dynopt} were compared with \textit{Tomlab}~\cite{tomlab_batch_prod} and are represented in Tab. \ref{tab:compar}.
 
-\begin{table}[t]
-	\centering
-	\begin{tabular}{c|c}
-		Software framework & Objective value \\ \hline
-		\textit{tomdyn} & 20837 \\
-		\textit{dynopt} & 20884		
-	\end{tabular}
-	\label{tab:compar}
-\end{table}
+\section{Fed-bacth Reactor}
+		Consider a fed-batch reactor for the production of ethanol. The optimal control problem is to maximize the yield of ethanol using the feed rate as the control variable. The aim is to find the feed flow rate $u(t)$ and the final time $t_f$ in order to maximize
+		\begin{equation}
+		\max_{\ve{u}(t), t_f} \mf{J} = x_{3}(t_{f})x_{4}(t_{f}) 
+		\end{equation}
+		such that
+		\begin{align*}
+		\dot{x}_1 &= g_1x_1 - u\frac{x_1}{x_4}\\
+		\dot{x}_2 &= -10g_1x_1 + u\frac{150-x_2}{x_4}\\
+		\dot{x}_3 &= g_2x_1 - u\frac{x_3}{x_4}\\
+		\dot{x}_4 &= u\\
+		g_1       &= \frac{0.408}{1+x_3/16} \quad \frac{x_2}{0.22+x_2}\\
+		g_2		  &= \frac{1}{1+x_3/71.5} \quad \frac{x_2}{0.44+x_2}\\
+		x(0)	  &= [1~150~0~10]^{\textrm{T}}\\
+		u &\in [0,12]\\
+		x_4(t_f) &\leq 200
+		\end{align*}
+		where
+		\begin{align*}
+		x_{1}(t) - x_{4}(t) &- states\\
+		u(t) &- control.
+		\end{align*}
+		
+		\begin{figure}[htb]
+			\begin{minipage}[t]{0.5\linewidth}
+				\centering
+				\includegraphics[width=0.9\textwidth]{pictures/batch_control_dynopt.eps}
+				\caption[]{Control profile} 
+				\label{contr_prof}
+			\end{minipage}
+			\begin{minipage}[t]{0.5\linewidth}
+				\centering
+				\includegraphics[width=0.9\textwidth]{pictures/batch_states_dynopt.eps}
+				\caption[]{State profile} 
+				\label{state_prof}
+			\end{minipage}
+		\end{figure}
+		
+		The optimal control trajectory and the state profiles are depicted in Fig.\ref{contr_prof} and Fig.\ref{state_prof}, respectively. First, until approximately 12 seconds, the control input is equal to zero and the concentration of the substrate is decreasing. After this concentration reaches the value equal to 1, the control input starts to increase progressively, what causes the increase of the product concentration, as well as the volume. At the end of the control, the volume is equal to 200, which satisfies the defined constrains. The results obtained by using \textit{dynopt} were compared with \textit{Tomlab}~\cite{tomlab_batch_prod} and are represented in Tab. \ref{tab:compar}.
+		
+		\begin{table}[t]
+			\centering
+			\begin{tabular}{c|c}
+				Software framework & Objective value \\ \hline
+				\textit{tomdyn} & 20837 \\
+				\textit{dynopt} & 20884		
+			\end{tabular}
+			\label{tab:compar}
+		\end{table}
 %%% Local Variables: 
 %%% mode: latex
 %%% TeX-master: "dynopt_guide"
