@@ -506,55 +506,67 @@ and \ref{fig:probdenbigh_x}. This problem was also solved in \cite{rut10}, using
 \end{figure}
 
 
-\section{Fed-bacth Reactor}
-		Consider a fed-batch reactor for the production of ethanol. The optimal control problem is to maximize the yield of ethanol using the feed rate as the control variable. The aim is to find the feed flow rate $u(t)$ and the final time $t_f$ in order to maximize
-		\begin{equation}
-		\max_{\ve{u}(t), t_f} \mf{J} = x_{3}(t_{f})x_{4}(t_{f}) 
-		\end{equation}
-		such that
-		\begin{align*}
-		\dot{x}_1 &= g_1x_1 - u\frac{x_1}{x_4}\\
-		\dot{x}_2 &= -10g_1x_1 + u\frac{150-x_2}{x_4}\\
-		\dot{x}_3 &= g_2x_1 - u\frac{x_3}{x_4}\\
-		\dot{x}_4 &= u\\
-		g_1       &= \frac{0.408}{1+x_3/16} \quad \frac{x_2}{0.22+x_2}\\
-		g_2		  &= \frac{1}{1+x_3/71.5} \quad \frac{x_2}{0.44+x_2}\\
-		x(0)	  &= [1~150~0~10]^{\textrm{T}}\\
-		u &\in [0,12]\\
-		x_4(t_f) &\leq 200
-		\end{align*}
-		where
-		\begin{align*}
-		x_{1}(t) - x_{4}(t) &- states\\
-		u(t) &- control.
-		\end{align*}
+\section{Fed-batch Reactor}
+Consider a fed-batch reactor for the production of ethanol. The
+optimal control problem is to maximize the yield of ethanol using the
+feed rate as the control variable. The aim is to find the feed flow
+rate $u(t)$ and the final time $t_f$ in order to maximize (MATLAB code for this example is located
+at \subor{examples/problem_fed_batch})
+\begin{equation}
+  \max_{\ve{u}(t), t_f} \mf{J} = x_{3}(t_{f})x_{4}(t_{f}) 
+\end{equation}
+such that
+\begin{align*}
+  \dot{x}_1 &= g_1x_1 - u\frac{x_1}{x_4}\\
+  \dot{x}_2 &= -10g_1x_1 + u\frac{150-x_2}{x_4}\\
+  \dot{x}_3 &= g_2x_1 - u\frac{x_3}{x_4}\\
+  \dot{x}_4 &= u\\
+  g_1       &= \frac{0.408}{1+x_3/16} \quad \frac{x_2}{0.22+x_2}\\
+  g_2		  &= \frac{1}{1+x_3/71.5} \quad \frac{x_2}{0.44+x_2}\\
+  x(0)	  &= [1~150~0~10]^{\textrm{T}}\\
+  u &\in [0,12]\\
+  x_4(t_f) &\leq 200
+\end{align*}
+where $ x_{1}(t),x_{2}(t),x_{3}(t),x_{4}(t)$ are states and $u(t)$ is control.
 		
-		\begin{figure}[htb]
-			\begin{minipage}[t]{0.5\linewidth}
-				\centering
-				\includegraphics[width=0.9\textwidth]{pictures/batch_control_dynopt.eps}
-				\caption[]{Control profile} 
-				\label{contr_prof}
-			\end{minipage}
-			\begin{minipage}[t]{0.5\linewidth}
-				\centering
-				\includegraphics[width=0.9\textwidth]{pictures/batch_states_dynopt.eps}
-				\caption[]{State profile} 
-				\label{state_prof}
-			\end{minipage}
-		\end{figure}
+\begin{figure}[htb]
+  \begin{minipage}[t]{0.5\linewidth}
+    \centering
+    \includegraphics[width=0.9\textwidth]{examples/problem_fed_batch/graphs/batch_control_dynopt.eps}
+    \caption[]{Control profile}
+    \label{contr_prof}
+  \end{minipage}
+  \begin{minipage}[t]{0.5\linewidth}
+    \centering
+    \includegraphics[width=0.9\textwidth]{examples/problem_fed_batch/graphs/batch_states_dynopt.eps}
+    \caption[]{State profiles}
+    \label{state_prof}
+  \end{minipage}
+\end{figure}
 		
-		The optimal control trajectory and the state profiles are depicted in Fig.\ref{contr_prof} and Fig.\ref{state_prof}, respectively. First, until approximately 12 seconds, the control input is equal to zero and the concentration of the substrate is decreasing. After this concentration reaches the value equal to 1, the control input starts to increase progressively, what causes the increase of the product concentration, as well as the volume. At the end of the control, the volume is equal to 200, which satisfies the defined constrains. The results obtained by using \textit{dynopt} were compared with \textit{Tomlab}~\cite{tomlab_batch_prod} and are represented in Tab. \ref{tab:compar}.
+The optimal control trajectory and the state profiles are depicted in
+Fig.~\ref{contr_prof} and Fig.~\ref{state_prof}, respectively. First,
+until approximately 12 seconds, the control input is equal to zero and
+the concentration of the substrate is decreasing. After this
+concentration reaches the value equal to 1, the control input starts
+to increase progressively, what causes the increase of the product
+concentration, as well as the volume. At the end of the control, the
+volume is equal to 200, which satisfies the defined constrains. The
+results obtained by using \textit{dynopt} were compared with
+\textit{PROPT}~\cite{rut10} and are represented in
+Tab.~\ref{tab:compar}.
 		
-		\begin{table}[t]
-			\centering
-			\begin{tabular}{c|c}
-				Software framework & Objective value \\ \hline
-				\textit{tomdyn} & 20837 \\
-				\textit{dynopt} & 20884		
-			\end{tabular}
-			\label{tab:compar}
-		\end{table}
+\begin{table}[t]
+  \centering
+  \begin{tabular}{c|c}
+    Software framework & Objective value \\ \hline
+    \textit{PROPT} & 20837 \\
+    \textit{dynopt} & 20884		
+  \end{tabular}
+  \label{tab:compar}
+\end{table}
+\iffalse
+\fi
 %%% Local Variables: 
 %%% mode: latex
 %%% TeX-master: "dynopt_guide"
