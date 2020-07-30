@@ -1,16 +1,6 @@
 clear
 clc
 
-currpath = 'D:\VKzTAR\miro\dynopt_code-master';
-addpath([currpath,filesep,'dynoptim']);
-addpath([currpath,filesep,'adigator']);
-addpath([currpath,filesep,'adigator',filesep,'lib']);
-addpath([currpath,filesep,'adigator',filesep,'lib',filesep,'cadaUtils']);
-addpath([currpath,filesep,'adigator',filesep,'util']);
-addpath([currpath,filesep,'fminsdp']);
-addpath([currpath,filesep,'fminsdp',filesep,'interfaces']);
-addpath([currpath,filesep,'fminsdp',filesep,'utilities']);
-%% 
 options = sdpoptionset('LargeScale','on','Display','iter','TolFun',1e-7,...
                        'TolCon',1e-7,'TolX',1e-7,...
                        'MaxFunEvals',1e5,'MaxIter',300,'Algorithm','sqp',...
