@@ -1,6 +1,4 @@
 clc; clear all; close all;
-global x_0
-x_0 = [0 0 1 5 1]';
 
 options = sdpoptionset('LargeScale', 'on', 'Display', 'iter', 'TolFun', 1e-7, ...
     'TolCon', 1e-7, 'TolX',1e-7, 'MaxFunEvals', 1e6, ...

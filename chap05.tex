@@ -312,30 +312,6 @@ shown in Fig.~\ref{fig:problem-a}.
   \label{fig:problem-a}
 \end{figure}
 
-<<<<<<< HEAD
-\section{Fed-bacth Reactor}
-Consider a fed-batch reactor for the production of ethanol. The optimal control problem is to maximize the yield of ethanol using the feed rate as the control variable. The aim is to find the feed flow rate $u(t)$ and the final time $t_f$ in order to maximize
-\begin{equation}
-\max_{\ve{u}(t), t_f} \mf{J} = x_{3}(t_{f})x_{4}(t_{f}) 
-\end{equation}
-such that
-\begin{align*}
-\dot{x}_1 &= g_1x_1 - u\frac{x_1}{x_4}\\
-\dot{x}_2 &= -10g_1x_1 + u\frac{150-x_2}{x_4}\\
-\dot{x}_3 &= g_2x_1 - u\frac{x_3}{x_4}\\
-\dot{x}_4 &= u\\
-g_1       &= \frac{0.408}{1+x_3/16} \quad \frac{x_2}{0.22+x_2}\\
-g_2		  &= \frac{1}{1+x_3/71.5} \quad \frac{x_2}{0.44+x_2}\\
-x(0)	  &= [1~150~0~10]^{\textrm{T}}\\
-u &\in [0,12]\\
-x_4(t_f) &\leq 200
-\end{align*}
-where
-\begin{align*}
-x_{1}(t) - x_{4}(t) &- states\\
-u(t) &- control.
-\end{align*}
-=======
 \section{Batch Fermentor}
 \label{sec:prob_fermentor}
 Consider a fed-batch fermentor for penicillin production with free
@@ -355,7 +331,8 @@ x_1(0) &= 1.5  \\
 h_2x_1-0.01x_2-\frac{ux_2}{500x_4}, &
 x_1(0) &= 0  \\
 \dot{x}_3 &=
-\frac{h_1x_1}{0.47}-\frac{h_2x_1}{1.2}-\frac{0.029x_1x_3}{0.0001+x3}+ux_4 \left( 1-\frac{x_3}{500} \right),
+-\frac{h_1x_1}{0.47}-\frac{h_2x_1}{1.2}-\frac{0.029x_1x_3}{0.0001+x3}
+  +\frac{u}{x_4} \left( 1-\frac{x_3}{500} \right),
 &
 x_3(0) &= 0 \\ 
 \dot{x}_4 &= \frac{u}{500}, &
@@ -385,7 +362,16 @@ and
 	\item $u(t)$ -- feed rate of a substrate.
 \end{description}
 
-This problem was solved in~\citep{rut10} with reported optimal value of 88.0448. For this problem 3 collocation points for state variables, 2 collocation points for control variables for 5 intervals were defined. The optimum was found at value 88.0707 (470 iterations, exitflag equals to 1, fmincon). The optimal control and state profiles are shown in Fig~\ref{fig:prob_fermentor_u} and Fig~\ref{fig:prob_fermentor_x}.
+This problem was solved in~\citep{rut10} with reported optimal value
+of 88.0448. For this problem 3 collocation points for state variables,
+2 collocation points for control variables for 4 intervals were
+defined. The optimum was found at value 88.06 (288 iterations,
+exitflag equals to 1, fmincon) with $t_f = 138$. The optimal control
+and state profiles are shown in Fig~\ref{fig:prob_fermentor_u} and
+Fig~\ref{fig:prob_fermentor_x}. The constraint on the maximum volume
+$x_4=10$ is active at the final time and the constraint on the minimum
+substrate concentration $x_3=0$ is active several times during the
+optimal trajectory.
 
 \begin{figure} 
 	\begin{minipage}[t]{0.5\linewidth}
@@ -415,7 +401,7 @@ such that
 \dot{x}_1  & = g_{1}(x_{2}-x_{1})-\frac{u}{x_{5}}x_{1} & x_{1}(0) & = 0\\
 \dot{x}_2  & = g_{2}x_{3}-\frac{u}{x_{5}}x_{2} & x_{2}(0) & = 0\\
 \dot{x}_3  & = g_{3}x_{3}-\frac{u}{x_{5}}x_{3} & x_{3}(0) & = 1 \\
-\dot{x}_4  & = -7.3g_{3}x_{3}+\frac{u}{x_{5}}x_{3} & x_{4}(0) & = 5 \\
+\dot{x}_4  & = -7.3g_{3}x_{3}+\frac{u}{x_{5}}(20-x_4) & x_{4}(0) & = 5 \\
 \dot{x}_5  & = u & x_{5}(0) & = 1 \\
 u  & \in [0,2.5] & t_f & = 15
 \end{align}
@@ -429,7 +415,15 @@ state path constraint:
 \begin{align}
 x_{1} & \leq x_{2}
 \end{align}
-where $x_{1}$ is the concentration of the secreted protein [$l^{-1}$], $x_{2}$ is the concentration of the total protein [$l^{-1}$], $x_{3}$ is the culture cell density [$g/l$], $x_{4}$ is the substrate concentration [$g/l$], $x_{5}$ is the holdup volume [$l$], $u$ is the nutrient (glucose) feed rate [$l/h$] and $\mf{J}$ is the mass of protein produced. The supporting variables $g_{1\text{--}3}$ are, respectively, the secretion rate, the synthesis rate and the growth rate.
+where $x_{1}$ is the concentration of the secreted protein
+[$\unit{g\,l^{-1}}$], $x_{2}$ is the concentration of the total protein
+[$\unit{g\,l^{-1}}$], $x_{3}$ is the culture cell density
+[$\unit{g\,l^{-1}}$], $x_{4}$ is the substrate concentration
+[$\unit{g\,l^{-1}}$], $x_{5}$ is the holdup volume [$\unit{l}$], $u$
+is the nutrient (glucose) feed rate [$\unit{l\,h^{-1}}$] and $\mf{J}$
+is the mass of protein produced. The supporting variables
+$g_{1\text{--}3}$ are, respectively, the secretion rate, the synthesis
+rate and the growth rate.
 
 \begin{figure}[htb]
 	\includegraphics[width=0.5\textwidth]{examples/problem_pr_bior/graphs/u.eps}
@@ -437,7 +431,18 @@ where $x_{1}$ is the concentration of the secreted protein [$l^{-1}$], $x_{2}$ i
 	\caption{Control (left) and state (right) profiles for Park-Ramirez bioreactor.} \label{fig:prob_pr_bior}
 \end{figure}
 
-Simulation results are shown in Fig.~\ref{fig:prob_pr_bior}. The optimal control profile increases for the first part of trajectory (almost 10 hours) to increase the holdup volume (magenta trajectory) and to prepare suitable environment in the bioreactor for secreted protein production. The secreted protein (blue trajectory) is not produced during this time interval, and therefore the substrate concentration (cyan trajectory) is almost constant. After around 10 hours, the value of nutrient feed rate suddenly fallen to zero and it stayed constant approximately 1 hour. The secreted protein is produced mainly in the final phase of the process, where its concentration slightly increases. The maximum achieved value of secreted protein mass ($\mf{J}$) is 32.72.
+Simulation results are shown in Fig.~\ref{fig:prob_pr_bior}. The
+optimal control profile increases for the first part of trajectory
+(almost 10 hours) to increase the holdup volume (magenta trajectory)
+and to prepare suitable environment in the bioreactor for secreted
+protein production. The secreted protein (blue trajectory) is not
+produced during this time interval, and therefore the substrate
+concentration (cyan trajectory) is almost constant. After around 10
+hours, the value of nutrient feed rate suddenly falls to zero and it
+stays constant approximately for 1 hour. The secreted protein is
+produced mainly in the final phase of the process, where its
+concentration slightly increases. The maximum achieved value of
+secreted protein mass ($\mf{J}$) is 32.72\,g.
 
 This problem was also solved by~\citep{rut10}. The resulting value of the objective function ($\mf{J}=32.72$), control and state trajectories from the PROPT optimization software are similar to the solution from the \fun{dynopt}. The small discrepancies in the compared solutions are caused mainly by the different setups of collocation points:
 \begin{itemize}
