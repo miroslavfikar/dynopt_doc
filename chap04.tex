@@ -604,6 +604,7 @@ constraints from the optimisation results returned in
 
 \begin{verbatim}
 [tplot,uplot,xplot] = profiles(optimout,optimparam,ntimes)
+[tplot,uplot,xplot] = profiles(optimout,optimparam,ntimes,'ode')
 \end{verbatim}
 takes an optimal output \argfun{optimout} and other input arguments
 \argfun{optimparam} described in section \ref{sec:inarg}, and returns
@@ -611,11 +612,17 @@ vector \argfun{tplot}, vector/matrix \argfun{uplot}, vector/matrix
 \argfun{xplot} with respect to \argfun{ntimes} which defines the
 number of points plotted per interval.
 
+Optional parameter \argfun{ode} specifies that state trajectories are
+obtained using ODE integrator. Default procedure just evaluates
+collocation polynomials and might report slight differences between
+collocation points.
+
 \subsection{Function~\fun{constraints}}
 \label{sec:constraints}
 
 \begin{verbatim}
 [tp,cp,ceqp] = constraints(optimout,optimparam,ntimes)
+[tp,cp,ceqp] = constraints(optimout,optimparam,ntimes,'ode')
 \end{verbatim}
 takes an optimal output \argfun{optimout} returned by \fun{dynopt}, and
 other input arguments \argfun{optimparam} described in section
@@ -623,6 +630,11 @@ other input arguments \argfun{optimparam} described in section
 constraint vector/matrix \argfun{cp}, nonlinear equality constraint
 vector/matrix \argfun{ceqp} defined in \argfun{confun} with respect to
 \argfun{ntimes} which defines the number of points plotted per interval.
+
+Optional parameter \argfun{ode} specifies that state trajectories are
+obtained using ODE integrator. Default procedure just evaluates
+collocation polynomials and might report slight differences between
+collocation points. 
 
 It is simple to make a graphical representation of obtained results by
 using MATLAB's \fun{plot} function.

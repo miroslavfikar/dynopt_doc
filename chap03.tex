@@ -363,7 +363,7 @@ such that $t_{f}=1$.
 {\small \verbatiminput{examples/problem2/problem2.m}}
 
 The value of the objective function evaluated for optimal control
-profile is of value of 1.204784e-01 after 359 iterations with exitflag
+profile is of value of 1.204784e-01 after 443 iterations with exitflag
 equal to~1 (using default NLP solver~\fun{fmincon}). Graphical
 representation of the solution of the problem \eqref{eq:ucpgb} is
 shown in Figs.~\ref{fig:prob2_u} and \ref{fig:prob2_x}. Ipopt solver
@@ -389,8 +389,9 @@ Investigation of the issue with different local optima showed extreme
 sensitivity of gradient calculations and were affected by their
 construction using automatic differentiation. When process gradients
 were specified manually, the number of iterations in Ipopt differed
-(421 vs 659) based on expresion for the gradient $\partial
-f_4/\partial u$ specified with different multiplication order.
+greatly from automatic (421 vs 659) based on expresion for the
+gradient $\partial f_4/\partial u$ specified with different
+multiplication order.
 \begin{verbatim}
      2*0.0005*(x(2)+16*t-8-0.1*x(3)*u(1)^2)*(-2*0.1*x(3)*u(1))
      0.0005*(2*(x(2)+16*t-8-0.1*x(3)*u(1)^2)*(-0.1*x(3)*2*u(1)))
@@ -400,8 +401,10 @@ These options can be tested by activating either one of the lines:
   optimparam.adoptions = adoptionset('processjac', "processd");
   optimparam.adoptions = adoptionset('processjac', "processdalt");
 \end{verbatim}
-The multiplication order specified in the file \subor{processd.m} gave
-the same optimum as \fun{fmincon}.
+The two expressions gave practically same cost function value,
+differing in control trajectories slightly. The multiplication order
+specified in the file \subor{processd.m} gave the same optimum as
+\fun{fmincon}.
 \subsubsection{Control Constrained on Intervals}
 If we would like to constrain control on the first interval to be at
 most 9, we will redefine variable \argfun{bdu}

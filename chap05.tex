@@ -329,7 +329,7 @@ h_1x_1-\frac{u x_1}{500 x_4}, &
 x_1(0) &= 1.5  \\
 \dot{x}_2 & = 
 h_2x_1-0.01x_2-\frac{ux_2}{500x_4}, &
-x_1(0) &= 0  \\
+x_2(0) &= 0  \\
 \dot{x}_3 &=
 -\frac{h_1x_1}{0.47}-\frac{h_2x_1}{1.2}-\frac{0.029x_1x_3}{0.0001+x3}
   +\frac{u}{x_4} \left( 1-\frac{x_3}{500} \right),
@@ -469,7 +469,7 @@ following reactions:
 A + B \rightarrow X, \\
 A + B \rightarrow P, \\
 X \rightarrow Y, \\
-X \rightarrow Q, \\
+X \rightarrow Q, 
 \end{gather}
 where $A$ and $B$ are the reactants, $P$ and $Q$ are the waste products, $X$ is an intermediate and $Y$ is the desired product. The goal of the optimal control problem is to compute the temperature of the reactor $T(t)$, to maximize the yield of the product $Y$ at the end of the given batch time $t_f$. (MATLAB code for this example is located
 at \subor{examples/problem10}):
