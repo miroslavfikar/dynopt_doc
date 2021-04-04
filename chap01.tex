@@ -36,7 +36,7 @@ constraints. This has a consequence that the problem source files from
 version 4 or earlier are not compatible and have to be modified. On
 the other hand, it eases the implementation considerably and reduces
 errors in problem definition. However, manual specification of
-Jacobians is still possible if needed.
+Jacobians is still possible if faster implementation is needed.
 
 \subsubsection*{Incompatibility with Version 4}
 When files from older releases are to be reused, please keep in mind
@@ -50,7 +50,8 @@ following items:
   gradients. Mass matrix information was moved to main file.
 \item File \subor{objfun.m} does not contain information about gradients.
 \item File \subor{confun.m} does not contain information about gradients.
-\item Gradient information can be moved to newly defined files.
+\item Gradient information can be supplied in additional newly defined
+  files.
 \end{itemize}
 
 \subsection*{Version 4}

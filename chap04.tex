@@ -226,7 +226,7 @@ Commonly used options are
   \item User defined jacobians, no automatic differentiation takes
     place
   \begin{verbatim}
-  options.adoptions=adoptionset('userjac', true);
+  options.adoptions=adoptionset('jacuser', true);
   \end{verbatim}
   This is a shortcut for
   \end{itemize}
@@ -265,7 +265,7 @@ Default value: "objfund".\\
 constraints. If not set, gradients are generated using Adigator.  
 Default value: "objfund".\\  
 \hline
-\argfun{userjac} & all gradients are provided manually. If set, it implies default function 
+\argfun{jacuser} & all gradients are provided manually. If set, it implies default function 
   names "processd", "objfund", "confund".   Default value: 'false' \\
 \hline
 \argfun{generate} & automatic gradients are generated at the

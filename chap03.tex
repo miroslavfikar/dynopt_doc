@@ -320,6 +320,22 @@ equal to~2.
 \end{minipage}
 \end{figure}
 
+Comparison of computational times gave the following results. The
+problem was solved using full AD procedure in 13\,s (MATLAB2020a,
+Linux 64b, average notebook with Core I5 processor). The most of this
+time was spent generating gradient files. When the problem reused
+gradients from the previous run
+(\argfun{adoptionset('generate',false,'keep',true)}), it took
+1.8\,s. Finally, when gradients were supplied by user manually, the
+same solution was found in 1.2\,s
+(\argfun{adoptionset('jacuser',true)}). Thus, the increase in
+computational time due to automatic differentiation was 50\% for this
+example. Comparison for case studies shown later confirm this
+behaviour and computational times increase between 50-100\% per
+iteration plus about 6-10\,s to generate gradients. Therefore, if
+speed of computation is desired, it is preferred to use manually
+supplied gradients.
+
 Alternative NLP solver Ipopt can be invoked by setting the parameter
 \begin{verbatim}
 NLPsolver = 'ipopt'
