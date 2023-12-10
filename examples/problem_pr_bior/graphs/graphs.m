@@ -1,3 +1,4 @@
+load optimprofiles tplot uplot xplot
 % control input
 close all
 figure

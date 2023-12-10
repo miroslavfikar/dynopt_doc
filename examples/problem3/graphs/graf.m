@@ -1,3 +1,7 @@
+%[tp,cp,ceqp] = constraints(optimout,optimparam,50);
+%[tplot,uplot,xplot] = profiles(optimout,optimparam,50);
+%save optimresults optimout optimparam
+%save optimprofiles tplot uplot xplot tp cp ceqp
 load optimprofiles tplot uplot xplot tp cp ceqp
 
 % ploting

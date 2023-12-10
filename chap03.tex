@@ -123,7 +123,10 @@ interval. Note that profiles are represented by collocation
 polynomials and not as a solution of the original ODE/DAE
 system. Therefore, there might be slight differences with regard to
 the original problem. For more precise plots, integrate the original
-problem with optimal control trajectories.
+problem with optimal control trajectories
+\begin{verbatim}
+[tplot,uplot,xplot] = profiles(optimout,optimparam,ntimes,'ode');
+\end{verbatim}
 
 Graphical representation of the problem \eqref{eq:ucp} solution is
 shown in Figs.~\ref{fig:prob1a_u_323n} and \ref{fig:prob1a_x12_323n}. 
@@ -224,7 +227,7 @@ respect to each of the elements in \argfun{u}:
 If needed, the gradients with respect to other defined variables
 (\argfun{t}, \argfun{p}) are filled similarly. For more information
 about \fun{process}, \fun{processd} definition, and their input and
-output arguments see chapter \ref{cha:reference}.
+output arguments see Chapter~\ref{cha:reference}.
 
 As mentioned before user has also to supply the gradients to the
 objective function \fun{objfun} as follows: 
@@ -243,7 +246,7 @@ representing the gradients with respect to the appropriate
 variable. Just the variables used in problem are filled by
 user. Unused variables are set to be an empty matrix. For more
 information about \fun{objfun}, \fun{objfund} definition, and their
-input and output arguments see chapter \ref{cha:reference}.
+input and output arguments see Chapter~\ref{cha:reference}.
 
 \fun{dynopt} optimises a given performance index, subject to the
 constraints defined at the beginning $t =
@@ -267,7 +270,7 @@ before. \fun{confun} should be defined as follows:
 Here the gradients are written into the structures \argfun{Dc},
 \argfun{Dceq} similar to those, described in \fun{objfun}. For more
 information about \fun{confun}, \fun{confund} definition, and their
-input and output arguments see chapter \ref{cha:reference}.
+input and output arguments see Chapter~\ref{cha:reference}.
 
 Since you are providing the gradients of the process in
 \subor{processd.m}, of the objective function in \subor{objfund.m} and
@@ -279,7 +282,7 @@ optimparam.adoptions = adoptionset('jacuser',true);
 \end{verbatim}
 If this option is deactivated, files \subor{processd.m},
 \subor{objfund.m}, \subor{confund.m} are not used and automatic
-gradients are invoked instead. See chapter \ref{cha:reference} for
+gradients are invoked instead. See Chapter~\ref{cha:reference} for
 more information on \fun{adoptionset} and its parameters.
 
 After the problem has been defined in the functions, user has to invoke
@@ -321,7 +324,7 @@ equal to~2.
 \end{figure}
 
 Comparison of computational times gave the following results. The
-problem was solved using full AD procedure in 13\,s (MATLAB2020a,
+problem was solved using full AD procedure in 13\,s (MATLAB2023b,
 Linux 64b, average notebook with Core I5 processor). The most of this
 time was spent generating gradient files. When the problem reused
 gradients from the previous run
@@ -379,7 +382,7 @@ such that $t_{f}=1$.
 {\small \verbatiminput{examples/problem2/problem2.m}}
 
 The value of the objective function evaluated for optimal control
-profile is of value of 1.204784e-01 after 443 iterations with exitflag
+profile is of value of 1.2027e-01 after 175 iterations with exitflag
 equal to~1 (using default NLP solver~\fun{fmincon}). Graphical
 representation of the solution of the problem \eqref{eq:ucpgb} is
 shown in Figs.~\ref{fig:prob2_u} and \ref{fig:prob2_x}. Ipopt solver
@@ -431,7 +434,7 @@ optimparam.bdu = [-4 9 -4 10 -4 10 -4 10];
 \end{verbatim}
 
 The value of the objective function evaluated for optimal control
-profile has increased to 0.1249686 after 154 iterations with exitflag
+profile has increased to 0.1250 after 153 iterations with exitflag
 equal to~1. Graphical representation of the modified solution is shown
 in Figs. \ref{fig:prob2bdu_u} and \ref{fig:prob2bdu_x}.
 
@@ -499,7 +502,7 @@ M-file~\subor{problem3.m} as follows:
 
 {\small \verbatiminput{examples/problem3/problem3.m}}
 
-An optimal value of $x_{3}(t_{f})=0.1701564$ was computed after 3012
+An optimal value of $x_{3}(t_{f})=0.1701564$ was computed after 3014
 iterations with exitflag equal to~1 (using~\fun{fmincon}). Graphical
 representation of the solution of the problem~\eqref{eq:ispcpb} is
 shown in Figs. \ref{fig:prob3_u}, \ref{fig:prob3_x}, and

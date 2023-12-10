@@ -94,7 +94,7 @@ reactor where the reaction $A \rightarrow B \rightarrow C$ take
 place. The problem was solved using a relaxed reduced space SQP
 strategy by~\cite{log89} and the value of 0.610775 was reported as
 global maximum.~\citeauthor{raj01} reached the value of 0.61045. We
-obtained optimal value of 0.6107682 (1000 iterations, 11468 function
+obtained optimal value of 0.610774 (5135 iterations, 100000 function
 evaluations, exitflag equal to~0 (maxiter exceeded), by using
 5 collocation points for state variables and keeping control variable
 profile as piecewise linear on 4 time intervals. This is quite closer
@@ -202,7 +202,7 @@ where
 \item $x_{1}(t) - x_{7}(t)$ -- states,
 \item $u_{1}(t) - u_{4}(t)$ -- controls.
 \end{description}
-Analogous to the section \ref{sec:statepathconprob}, the cost function
+Analogous to Chapter~\ref{sec:statepathconprob}, the cost function
 can be rewritten to the Mayer form by introducing a new state defined
 by the integral function with its initial value equal to zero.
 
@@ -210,7 +210,7 @@ This problem was solved by~\cite{fik02,jac69}. Reported optimal value
 of 21.757 was obtained using CVP method implemented in DYNO. For this
 problem, 4 collocation points for state variables, 2 collocation
 points for control variables for 10 intervals were defined and an
-optimum was found at value of 21.82346 (840 iterations, exitflag equal
+optimum was found at value of 21.82346 (851 iterations, exitflag equal
 to~1, fmincon). The solver Ipopt did not converge after 10000
 iterations. The optimal control and state profiles are given in
 Fig.~\ref{fig:prob7}.
@@ -226,7 +226,7 @@ Fig.~\ref{fig:prob7}.
 
 
 \section{Membrane System}
-\label{sec:prob7}
+\label{sec:probmem}
 
 Consider the following problem~\citep{fik10jms} which describes
 diafiltration optimal design problem (MATLAB code for this example is located at
@@ -365,7 +365,7 @@ and
 This problem was solved in~\citep{rut10} with reported optimal value
 of 88.0448. For this problem 3 collocation points for state variables,
 2 collocation points for control variables for 4 intervals were
-defined. The optimum was found at value 88.06 (288 iterations,
+defined. The optimum was found at value 88.06 (194 iterations,
 exitflag equals to 1, fmincon) with $t_f = 138$. The optimal control
 and state profiles are shown in Fig~\ref{fig:prob_fermentor_u} and
 Fig~\ref{fig:prob_fermentor_x}. The constraint on the maximum volume
@@ -461,7 +461,7 @@ This problem was also solved by~\citep{rut10}. The resulting value of the object
 The \fun{dynopt} approach considers relatively large number of collocation points (4 points in each of 10 intervals), but it is still less than the PROPT approach (120 collocation points). \fun{Dynopt} can find the optimal solution even with the smaller number of collocation points (e.g., 3 points in each interval) and in a shorter time. However, the value of the cost function, state and control trajectories diverge compared to the PROPT solution. On the other side, the further increase of the collocation points in \fun{dynopt} algorithm requires too much time and high computational effort.
 
 \section{Denbigh's System of Reactions}
-\label{sec:brpdae}
+\label{sec:dendae}
 
 Consider a system of chemical reactions by Denbigh \cite{den58} with the 
 following reactions:
@@ -492,7 +492,7 @@ k_{4} &= 1 \times 10^{-3},
 \end{align} where $x_{1} \in [0, 1] $  represents concentration
 of $A$, $x_{2} \in [0, 1] $ and $x_{3} \in [0, 1]$  represent concentrations
 of $X$ and $Y$, respectively. The control variable of this process is a temperature of the reactor $T \in [273 \,  415]$\,K.
-Batch time of this process is $t_{f} = 1000$\,s. The given batch time was divided into 10 control steps. State variables computed using \emph{dynopt}, were parametrized using 3 collocation points and the control trajectory was parametrized using 2 collocation points at each control step.  After 351 iterations, optimal value of $x_{3}(t_{f}) = 0.660487$ was
+Batch time of this process is $t_{f} = 1000$\,s. The given batch time was divided into 10 control steps. State variables computed using \emph{dynopt}, were parametrized using 3 collocation points and the control trajectory was parametrized using 2 collocation points at each control step.  After 338 iterations, optimal value of $x_{3}(t_{f}) = 0.660487$ was
 found using solver fmincon. Graphical representation of the solution is shown in Figs. \ref{fig:probdenbigh_u}
 and \ref{fig:probdenbigh_x}. This problem was also solved in \cite{rut10}, using optimal control platform PROPT. Solver SNOPT reached the optimum in 233 Branch-and-bound iterations. The optimal value of  $x_{3}(t_{f}) = 0.633520$ was computed considering 70 collocation points over the given batch time. 
 
@@ -558,16 +558,17 @@ concentration ($x_3$), as well as the volume ($x_4$). At the end of the control,
 volume is equal to 200, which satisfies the defined constrains. The
 results obtained by using \textit{dynopt} were compared with
 \textit{PROPT}~\cite{rut10} and are represented in
-Tab.~\ref{tab:compar}. The optimal control trajectory by \textit{dynopt} was obtained by using 7 collocation points for states and 2 collocation points for input in each one of the 14 control intervals. The calculation required 257 iterations.
+Tab.~\ref{tab:compar}. The optimal control trajectory by \textit{dynopt} was obtained by using 7 collocation points for states and 2 collocation points for input in each one of the 14 control intervals. The calculation required 300 iterations.
 
 \begin{table}[t]
 	\centering
+	\caption{dynopt/PROPT comparison}
+	\label{tab:compar}
 	\begin{tabular}{c|c}
 		Software framework & Objective value \\ \hline
 		\textit{PROPT} & 20837 \\
 		\textit{dynopt} & 20839		
 	\end{tabular}
-	\label{tab:compar}
 \end{table}
 \iffalse
 \fi
